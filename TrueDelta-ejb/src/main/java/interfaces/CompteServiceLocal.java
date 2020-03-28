@@ -1,0 +1,17 @@
+package interfaces;
+
+import java.util.List;
+import javax.ejb.Local;
+import entities.Compte;
+
+@Local
+public interface CompteServiceLocal {
+
+	public long ajouterCompte(Compte c);
+	public Compte getCompteByNumero(long num);
+	public List<Compte> getAllCompte();
+	public void autoriseCompte(long num);
+	public void verifierCompte(long num); 
+	public void supprimerCompte(long num);
+	
+}

@@ -18,21 +18,10 @@ public class Compte implements Serializable {
 	@EmbeddedId
 	private ComptePK id;
 	
-	@Column(unique=true)
-	private String numeroCompte;
+	@Column(unique=true, updatable=false , nullable=false)
+	private long numeroCompte;
 	
 	private float solde;
-	
-	@ManyToOne
-	@JoinColumn(name="idClient", referencedColumnName="utilisateurID", insertable=false , updatable=false, unique=false)
-	private Client proprietaire;
-	
-	@ManyToOne
-	@JoinColumn(name="idAgence", referencedColumnName="agenceID", insertable=false , updatable=false,unique=false)
-	private Agence agence;
-	
-	@OneToMany(mappedBy="compte", cascade = CascadeType.ALL,fetch=FetchType.EAGER)
-	private List<ActifFinancier> actifs= new ArrayList<ActifFinancier>();
 	
 	@Enumerated(EnumType.STRING)
 	private Devise devise;
@@ -43,13 +32,35 @@ public class Compte implements Serializable {
 	
 	private Boolean isAutorise; // Autorisation par la banque
 	private Boolean isVerifie; // Verification par l'admin
-	@Temporal(TemporalType.DATE)
+	
+	@Column(nullable=true)
+	private float score; // score accordé à chaque compte
+	
+	@Column(nullable=true)
+	private float gab; // coefficient de matching 
+	
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable=true)
 	private Date lastVerif;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(nullable=true)
+	private Date lastUpdate;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(nullable=true,name="date_ouverture", updatable=false)
 	private Date dateOuverture;
+	
+	@ManyToOne
+	@JoinColumn(name="idClient", referencedColumnName="utilisateurID", insertable=false , updatable=false, unique=false)
+	private Client proprietaire;
+
+	@ManyToOne
+	@JoinColumn(name="idAgence", referencedColumnName="agenceID", insertable=false , updatable=false,unique=false)
+	private Agence agence;
+	
+	@OneToMany(mappedBy="compte", cascade = CascadeType.ALL,fetch=FetchType.EAGER)
+	private List<ActifFinancier> actifs= new ArrayList<ActifFinancier>();
 	
 	public Compte() {}
 
@@ -61,11 +72,11 @@ public class Compte implements Serializable {
 		this.id = id;
 	}
 
-	public String getNumeroCompte() {
+	public long getNumeroCompte() {
 		return numeroCompte;
 	}
 
-	public void setNumeroCompte(String numeroCompte) {
+	public void setNumeroCompte(long numeroCompte) {
 		this.numeroCompte = numeroCompte;
 	}
 
@@ -156,6 +167,30 @@ public class Compte implements Serializable {
 
 	public void setActifs(List<ActifFinancier> actifs) {
 		this.actifs = actifs;
+	}
+	
+	public float getScore() {
+		return score;
+	}
+
+	public void setScore(float score) {
+		this.score = score;
+	}
+
+	public float getGab() {
+		return gab;
+	}
+
+	public void setGab(float gab) {
+		this.gab = gab;
+	}
+
+	public Date getLastUpdate() {
+		return lastUpdate;
+	}
+
+	public void setLastUpdate(Date lastUpdate) {
+		this.lastUpdate = lastUpdate;
 	}
 
 	@Override

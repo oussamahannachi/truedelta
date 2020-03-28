@@ -19,7 +19,7 @@ public class Transaction implements Serializable {
 	@Column(name="transactionID")
 	private int id;
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 	private String type; // Achat ou vente	
 	
