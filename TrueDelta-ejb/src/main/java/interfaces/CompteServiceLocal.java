@@ -12,6 +12,7 @@ public interface CompteServiceLocal {
 	public List<Compte> getAllCompte();
 	public void autoriseCompte(long num);
 	public void verifierCompte(long num); 
+	public long modifierCompte(Compte c);
 	public void supprimerCompte(long num);
 	
 }

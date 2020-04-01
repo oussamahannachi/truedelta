@@ -29,6 +29,7 @@ public class Agence implements Serializable {
 	private String agenceName;
 	private String adresse; 
 	private String siegeSocial; // Adresse
+	@Column(nullable=true)
 	private long telephone;
 	private String password;
 	

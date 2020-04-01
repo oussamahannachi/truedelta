@@ -11,16 +11,17 @@ import javax.persistence.*;
  * Entity implementation class for Entity: Compte
  *
  */
-@Entity
+@Entity(name="compte")
 public class Compte implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@EmbeddedId
 	private ComptePK id;
 	
-	@Column(unique=true, updatable=false , nullable=false)
-	private long numeroCompte;
+	@Column(nullable=false,updatable=false,unique=true)
+	private long numero;
 	
+	@Column(name="solde")
 	private float solde;
 	
 	@Enumerated(EnumType.STRING)
@@ -71,13 +72,13 @@ public class Compte implements Serializable {
 	public void setId(ComptePK id) {
 		this.id = id;
 	}
-
-	public long getNumeroCompte() {
-		return numeroCompte;
+	
+	public long getNumero() {
+		return numero;
 	}
 
-	public void setNumeroCompte(long numeroCompte) {
-		this.numeroCompte = numeroCompte;
+	public void setNumero(long numero) {
+		this.numero = numero;
 	}
 
 	public float getSolde() {
@@ -195,6 +196,6 @@ public class Compte implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Compte [numeroCompte=" + numeroCompte + ", solde=" + solde + "]";
+		return "Compte [solde=" + solde + "]";
 	}
 }
