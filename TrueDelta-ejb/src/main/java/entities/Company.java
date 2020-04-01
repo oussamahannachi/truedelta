@@ -3,6 +3,7 @@ package entities;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
 
 @Entity
 @Table(name="Company")
@@ -34,7 +36,7 @@ public class Company implements Serializable{
 	private int TelephoneNumber ;
 	//private String logo;
 	
-	@OneToMany(mappedBy="Company")
+	@OneToMany(cascade = CascadeType.ALL,mappedBy="Company")
 	private List<ActifFinancier> Stocks;
 	public int getId() {
 		return id;
@@ -120,6 +122,24 @@ public class Company implements Serializable{
 	public void setSymbol(String symbol) {
 		Symbol = symbol;
 	}
+	public List<ActifFinancier> getStocks() {
+		return Stocks;
+	}
+	public void setStocks(List<ActifFinancier> stocks) {
+		Stocks = stocks;
+	}
 	
+
+	public void addStockes(ActifFinancier ActifFinancier){
+		ActifFinancier.setCompany(this);
+		this.Stocks.add(ActifFinancier);
+	}
+	@Override
+	public String toString() {
+		return "Company [id=" + id + ", Name=" + Name + ", Symbol=" + Symbol + ", Sector=" + Sector + ", Industry="
+				+ Industry + ", Address=" + Address + ", Site=" + Site + ", Description=" + Description
+				+ ", FullTimeEmployer=" + FullTimeEmployer + ", Revenu=" + Revenu + ", TelephoneNumber="
+				+ TelephoneNumber + "]";
+	}
 	
 }

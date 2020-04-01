@@ -1,9 +1,12 @@
 package entities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.*;
+
+
 
 /**
  * Entity implementation class for Entity: ActifFinancier
@@ -24,6 +27,7 @@ public class ActifFinancier implements Serializable {
 	private float risque;
 	private String type; // action ou obligation 
 	private float interet;
+	
 	@Temporal(TemporalType.DATE)
 	@Column(name="date_echeane",nullable=true)
 	private Date dateEcheance; // Pour obligation
@@ -34,7 +38,38 @@ public class ActifFinancier implements Serializable {
 	@OneToOne(mappedBy="actif")
 	private Transaction transaction;
 	
+	 private BigDecimal HighPrice  ;
+	 private BigDecimal LowPrice;
+	 private BigDecimal	ClosedPrice ;
+	 private String Currency;
+	
+	 @ManyToOne(cascade = CascadeType.ALL)
+	// @JoinColumn(name = "Company_Symbol", referencedColumnName = "Symbol")
+	 private Company Company;
+	 
 	public ActifFinancier() {}
+	
+
+	public ActifFinancier(String entreprise, float prix, float rendement, float risque, String type,
+			float interet, Date dateEcheance, Compte compte, Transaction transaction, BigDecimal highPrice,
+			BigDecimal lowPrice, BigDecimal closedPrice, String currency, entities.Company company) {
+		super();
+		this.entreprise = entreprise;
+		this.prix = prix;
+		this.rendement = rendement;
+		this.risque = risque;
+		this.type = type;
+		this.interet = interet;
+		this.dateEcheance = dateEcheance;
+		this.compte = compte;
+		this.transaction = transaction;
+		HighPrice = highPrice;
+		LowPrice = lowPrice;
+		ClosedPrice = closedPrice;
+		Currency = currency;
+		Company = company;
+	}
+
 
 	public int getId() {
 		return id;
@@ -115,9 +150,59 @@ public class ActifFinancier implements Serializable {
 	public void setTransaction(Transaction transaction) {
 		this.transaction = transaction;
 	}
+	
+
+	public BigDecimal getHighPrice() {
+		return HighPrice;
+	}
+
+	public void setHighPrice(BigDecimal highPrice) {
+		HighPrice = highPrice;
+	}
+
+	public BigDecimal getLowPrice() {
+		return LowPrice;
+	}
+
+	public void setLowPrice(BigDecimal lowPrice) {
+		LowPrice = lowPrice;
+	}
+
+	public BigDecimal getClosedPrice() {
+		return ClosedPrice;
+	}
+
+	public void setClosedPrice(BigDecimal closedPrice) {
+		ClosedPrice = closedPrice;
+	}
+
+	public String getCurrency() {
+		return Currency;
+	}
+
+	public void setCurrency(String currency) {
+		Currency = currency;
+	}
+
+	public Company getCompany() {
+		return Company;
+	}
+
+	public void setCompany(Company company) {
+		Company = company;
+	}
+
 
 	@Override
 	public String toString() {
-		return "ActifFinancier [entreprise=" + entreprise + ", prix=" + prix + ", type=" + type + "]";
+		return "ActifFinancier [id=" + id + ", entreprise=" + entreprise + ", prix=" + prix + ", rendement=" + rendement
+				+ ", risque=" + risque + ", type=" + type + ", interet=" + interet + ", dateEcheance=" + dateEcheance
+				+ ", compte=" + compte + ", transaction=" + transaction + ", HighPrice=" + HighPrice + ", LowPrice="
+				+ LowPrice + ", ClosedPrice=" + ClosedPrice + ", Currency=" + Currency + ", Company=" + Company +"/n" +"]";
 	}
+
+
+
+	
+	
 }

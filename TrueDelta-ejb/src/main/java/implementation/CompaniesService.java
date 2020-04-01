@@ -2,14 +2,18 @@ package implementation;
 
 import java.util.List;
 
+import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+
 
 import entities.Company;
 import interfaces.CompaniesServiceRemote;
 
 @Stateless
+@LocalBean
 public class CompaniesService implements CompaniesServiceRemote {
 
 	@PersistenceContext
@@ -22,13 +26,20 @@ public class CompaniesService implements CompaniesServiceRemote {
 	}
 
 	@Override
+	public Company GetCompanyByID(int id) {
+		return em.find(Company.class, id);
+	}
+	@Override
 	public Company GetCompanyBySymbol(String Symbol) {
-		return em.find(Company.class, Symbol);
+	//	return em.find(Company.class, Symbol);
+    TypedQuery<Company> query = em.createQuery("select c from Company c where c.Symbol=:Symbol", Company.class);
+		query.setParameter("Symbol", Symbol);		
+		return query.getSingleResult();
 	}
 
 	@Override
 	public List<Company> GetAllCompanies() {
-		List<Company> Companies = em.createQuery("from company", Company.class).getResultList();
+		List<Company> Companies = em.createQuery("from Company", Company.class).getResultList();
 		return Companies;
 	}
 

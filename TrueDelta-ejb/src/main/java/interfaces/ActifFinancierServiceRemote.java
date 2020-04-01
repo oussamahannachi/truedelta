@@ -11,14 +11,15 @@ import entities.ActifFinancier;
 public interface ActifFinancierServiceRemote {
 	
 	public int AddStock(ActifFinancier ActifFinancier); 
-	public List<ActifFinancier> FindAllstock();
+
 	public ActifFinancier GetStockById(int StockId);
-	public ActifFinancier GetStockByCompany(String name);
+	public List<ActifFinancier> GetStockByCompany(String name);
 	public void updateStock(ActifFinancier ActifFinancier);
-	public List<ActifFinancier> FindAllstock2();
+	public List<ActifFinancier> FindAllstock();
 	public List<ActifFinancier> Top5base();
 	public List<ActifFinancier> Top5hause();
-	public List<ActifFinancier> SortAscending();
-	public List<ActifFinancier> SortDescending();
+	public List<ActifFinancier> SortAscending(String criteria );
+	public List<ActifFinancier> SortDescending(String criteria );
 	List<ActifFinancier> findOrderedBySeatNumberLimitedTo(int limit);
+	void affecterActifAcompany(int ActifId, int compid);
 }
