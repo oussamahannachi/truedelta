@@ -41,6 +41,8 @@ public class ActifFinancier implements Serializable {
 	 private BigDecimal HighPrice  ;
 	 private BigDecimal LowPrice;
 	 private BigDecimal	ClosedPrice ;
+	 private BigDecimal	OpenPrice ;
+	 private BigDecimal	AdjClose ;
 	 private String Currency;
 	
 	 @ManyToOne(cascade = CascadeType.ALL)
@@ -198,7 +200,27 @@ public class ActifFinancier implements Serializable {
 		return "ActifFinancier [id=" + id + ", entreprise=" + entreprise + ", prix=" + prix + ", rendement=" + rendement
 				+ ", risque=" + risque + ", type=" + type + ", interet=" + interet + ", dateEcheance=" + dateEcheance
 				+ ", compte=" + compte + ", transaction=" + transaction + ", HighPrice=" + HighPrice + ", LowPrice="
-				+ LowPrice + ", ClosedPrice=" + ClosedPrice + ", Currency=" + Currency + ", Company=" + Company +"/n" +"]";
+				+ LowPrice + ", ClosedPrice=" + ClosedPrice + ", Currency=" + Currency + ", Company=" + Company +"\n" +"]";
+	}
+
+
+	public BigDecimal getOpenPrice() {
+		return OpenPrice;
+	}
+
+
+	public void setOpenPrice(BigDecimal openPrice) {
+		OpenPrice = openPrice;
+	}
+
+
+	public BigDecimal getAdjClose() {
+		return AdjClose;
+	}
+
+
+	public void setAdjClose(BigDecimal adjClose) {
+		AdjClose = adjClose;
 	}
 
 

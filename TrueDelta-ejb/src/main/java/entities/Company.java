@@ -1,6 +1,8 @@
 package entities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -34,6 +36,10 @@ public class Company implements Serializable{
 	private long FullTimeEmployer;
 	private float Revenu;
 	private int TelephoneNumber ;
+	private BigDecimal AnnualYield;
+	private BigDecimal AnnualYieldPercent;
+	private Date ExDate;
+	private Date PayDate;
 	//private String logo;
 	
 	@OneToMany(cascade = CascadeType.ALL,mappedBy="Company")
@@ -134,12 +140,38 @@ public class Company implements Serializable{
 		ActifFinancier.setCompany(this);
 		this.Stocks.add(ActifFinancier);
 	}
+	public BigDecimal getAnnualYield() {
+		return AnnualYield;
+	}
+	public void setAnnualYield(BigDecimal annualYield) {
+		AnnualYield = annualYield;
+	}
+	public BigDecimal getAnnualYieldPercent() {
+		return AnnualYieldPercent;
+	}
+	public void setAnnualYieldPercent(BigDecimal annualYieldPercent) {
+		AnnualYieldPercent = annualYieldPercent;
+	}
+	public Date getExDate() {
+		return ExDate;
+	}
+	public void setExDate(Date exDate) {
+		ExDate = exDate;
+	}
+	public Date getPayDate() {
+		return PayDate;
+	}
+	public void setPayDate(Date payDate) {
+		PayDate = payDate;
+	}
 	@Override
 	public String toString() {
 		return "Company [id=" + id + ", Name=" + Name + ", Symbol=" + Symbol + ", Sector=" + Sector + ", Industry="
 				+ Industry + ", Address=" + Address + ", Site=" + Site + ", Description=" + Description
 				+ ", FullTimeEmployer=" + FullTimeEmployer + ", Revenu=" + Revenu + ", TelephoneNumber="
-				+ TelephoneNumber + "]";
+				+ TelephoneNumber + ", AnnualYield=" + AnnualYield + ", AnnualYieldPercent=" + AnnualYieldPercent
+				+ ", ExDate=" + ExDate + ", PayDate=" + PayDate + "]";
 	}
+	
 	
 }

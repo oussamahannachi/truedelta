@@ -35,6 +35,9 @@ public class CompaniesService implements CompaniesServiceRemote {
     TypedQuery<Company> query = em.createQuery("select c from Company c where c.Symbol=:Symbol", Company.class);
 		query.setParameter("Symbol", Symbol);		
 		return query.getSingleResult();
+		/*if (query.getSingleResult() == null) 
+			return null;
+		else 	return query.getSingleResult();*/
 	}
 
 	@Override

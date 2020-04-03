@@ -43,6 +43,11 @@
 
         <!-- Declare the APIs we depend on and need for compilation. All of 
             them are provided by JBoss WildFly -->
+        <dependency>
+			<groupId>com.yahoofinance-api</groupId>
+			<artifactId>YahooFinanceAPI</artifactId>
+			<version>3.12.3</version>
+		</dependency>
 
         <!-- Import the EJB API, we use provided scope as the API is included in JBoss WildFly -->
         <dependency>
