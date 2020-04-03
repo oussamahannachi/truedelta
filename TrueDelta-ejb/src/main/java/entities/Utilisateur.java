@@ -1,6 +1,9 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.*;
 
 @Entity
@@ -30,6 +33,10 @@ public class Utilisateur implements Serializable {
 	private String password;
 	@Transient 
 	private String confirmPassword;
+	
+	
+	@OneToMany(mappedBy="user", cascade = CascadeType.ALL)
+	private List<Reclamation> reclamations= new ArrayList<Reclamation>();
 	
 	public Utilisateur() {}
 
@@ -104,6 +111,16 @@ public class Utilisateur implements Serializable {
 	public void setConfirmPassword(String confirmPassword) {
 		this.confirmPassword = confirmPassword;
 	}
+	
+	
+	public List<Reclamation> getReclamations() {
+		return reclamations;
+	}
+
+	public void setReclamations(List<Reclamation> reclamations) {
+		this.reclamations = reclamations;
+	}
+
 
 	@Override
 	public String toString() {

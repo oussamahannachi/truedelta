@@ -1,6 +1,7 @@
 package entities;
 
 import java.io.Serializable;
+import java.lang.Thread.State;
 import java.util.Date;
 
 import javax.persistence.*;
@@ -20,14 +21,18 @@ public class Reclamation implements Serializable {
 	private int id;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dateCreation;
-	private String etat;
-	private String titre;
+	@Enumerated(EnumType.STRING)
+	private ReclamationState state;
+	private String subject;
 	private String description;
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dateTraitement;
+	@Column(name = "assignmentDate")
+	private Date assignmentDate;
+	@Column(name = "closingDate")
+	private Date closingDate;
+	
 	
 	@ManyToOne
-	private Client client;
+	private Utilisateur user;
 	
 	public Reclamation() {}
 
@@ -47,50 +52,105 @@ public class Reclamation implements Serializable {
 		this.dateCreation = dateCreation;
 	}
 
-	public String getEtat() {
-		return etat;
+	
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	public void setEtat(String etat) {
-		this.etat = etat;
+	
+
+	
+
+	
+
+	public Utilisateur getUser() {
+		return user;
 	}
 
-	public String getTitre() {
-		return titre;
+	public void setUser(Utilisateur user) {
+		this.user = user;
 	}
 
-	public void setTitre(String titre) {
-		this.titre = titre;
+	
+
+	public ReclamationState getState() {
+		return state;
+	}
+
+	public void setState(ReclamationState state) {
+		this.state = state;
+	}
+
+	public String getSubject() {
+		return subject;
+	}
+
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+
+	public Date getAssignmentDate() {
+		return assignmentDate;
+	}
+
+	public void setAssignmentDate(Date assignmentDate) {
+		this.assignmentDate = assignmentDate;
+	}
+
+	public Date getClosingDate() {
+		return closingDate;
+	}
+
+	public void setClosingDate(Date closingDate) {
+		this.closingDate = closingDate;
+	}
+	
+	
+	
+
+	public Reclamation(int id, Date dateCreation, ReclamationState state, String subject, String description,
+			Date assignmentDate, Date closingDate, Utilisateur user) {
+		super();
+		this.id = id;
+		this.dateCreation = dateCreation;
+		this.state = state;
+		this.subject = subject;
+		this.description = description;
+		this.assignmentDate = assignmentDate;
+		this.closingDate = closingDate;
+		this.user = user;
+	}
+	public Reclamation(int id, Date dateCreation, ReclamationState state, String subject, String description) {
+		super();
+		this.id = id;
+		this.dateCreation = dateCreation;
+		this.state = state;
+		this.subject = subject;
+		this.description = description;
+		
+	}
+	public Reclamation( Date dateCreation, ReclamationState state, String subject, String description) {
+		super();
+		this.dateCreation = dateCreation;
+		this.state = state;
+		this.subject = subject;
+		this.description = description;
+		
+	}
+
+	@Override
+	public String toString() {
+		return "Reclamation [id=" + id + ", dateCreation=" + dateCreation + ", state=" + state + ", subject=" + subject
+				+ ", description=" + description + ", assignmentDate=" + assignmentDate + ", closingDate=" + closingDate
+				+ ", user=" + user + "]";
 	}
 
 	public String getDescription() {
 		return description;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
 
-	public Date getDateTraitement() {
-		return dateTraitement;
-	}
 
-	public void setDateTraitement(Date dateTraitement) {
-		this.dateTraitement = dateTraitement;
-	}
-
-	public Client getClient() {
-		return client;
-	}
-
-	public void setClient(Client client) {
-		this.client = client;
-	}
-
-	@Override
-	public String toString() {
-		return "Reclamation [dateCreation=" + dateCreation + ", etat=" + etat + "]";
-	}
 	
 	
 }
