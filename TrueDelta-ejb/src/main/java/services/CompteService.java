@@ -5,6 +5,15 @@ import java.util.List;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
+import org.bson.Document;
+
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.MongoIterable;
+
 import entities.Compte;
 import interfaces.CompteServiceLocal;
 import interfaces.CompteServiceRemote;
@@ -14,6 +23,11 @@ public class CompteService implements CompteServiceLocal, CompteServiceRemote {
 
 	@PersistenceContext(unitName="truedelta-ejb")
 	EntityManager em;
+	
+	MongoClient con = new MongoClient("localhost",27017);
+	MongoDatabase db = con.getDatabase("truedelta");
+	MongoCollection<Document> collection = null;
+	Document doc = new Document();
 	
 	@Override
 	public long ajouterCompte(Compte c) {
@@ -29,17 +43,23 @@ public class CompteService implements CompteServiceLocal, CompteServiceRemote {
 
 	@Override
 	public Compte getCompteByNumero(long num) {
-		Compte c = em.createQuery("select c from compte c where c.numero= ? ", Compte.class)
-					 .setParameter(1, num)
-					 .getSingleResult();
-		return c;
+		return em.createQuery("select c from compte c where c.numero= ? ", Compte.class)
+				 .setParameter(1, num)
+				 .getSingleResult();
 	}
 
 	@Override
 	public List<Compte> getAllCompte() {
-		List<Compte> list = em.createQuery("select c from compte c", Compte.class)
+		return em.createQuery("select c from compte c", Compte.class)
 				 .getResultList();
-		return list;
+	}
+	
+	@Override
+	public List<Compte> gelAllCompteByAgence(int id) {
+		return  em.createQuery("select c from compte c where idAgence=? and isVerifie = ?", Compte.class)
+							  .setParameter(1, id)
+							  .setParameter(2, true)
+							  .getResultList();
 	}
 
 	@Override
@@ -68,4 +88,42 @@ public class CompteService implements CompteServiceLocal, CompteServiceRemote {
 		.executeUpdate();
 	}
 
+	@Override
+	public boolean verifierCollection(String nom) {
+		MongoIterable<String> names = db.listCollectionNames();
+		MongoCursor<String> cursor = names.cursor(); 
+		while(cursor.hasNext()) {
+			if (cursor.next().equals(nom))
+				return true;
+		}
+		return false;
+	}
+
+	@Override
+	public Document createDocByCompte(Compte c) {
+		return doc.append("numero",c.getNumero())
+				  .append("devise", c.getDevise().toString())
+				  .append("solde", c.getSolde())
+				  .append("actions", c.getNbAction())
+				  .append("obligations", c.getNbObligation())
+				  .append("source", "truedelta");
+	}
+
+	@Override
+	public void docByTrueDelta(int id) {
+		List<Compte> comptes = gelAllCompteByAgence(id);
+		if(!(comptes.isEmpty()))
+		{
+			for (Compte compte : comptes) {
+				String nom = (compte.getAgence().getBanqueName()+compte.getAgence().getAgenceName()).toLowerCase();
+				if(!(verifierCollection(nom))) { 
+						db.createCollection(nom);
+						db.getCollection(nom).insertOne(createDocByCompte(compte));
+				}
+				else
+					db.getCollection(nom).insertOne(createDocByCompte(compte));
+			}
+		}
+	}
+	
 }

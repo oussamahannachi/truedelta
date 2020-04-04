@@ -8,5 +8,8 @@
         <dependent-module archiveName="TrueDelta-ejb.jar" deploy-path="/" handle="module:/resource/TrueDelta-ejb/TrueDelta-ejb">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="mongo-java-driver.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/mongodb/mongo-java-driver/3.12.2/mongo-java-driver-3.12.2.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
     </wb-module>
 </project-modules>
