@@ -7,14 +7,24 @@ import javax.persistence.*;
  * Entity implementation class for Entity: ProcurationPK
  *
  */
+//@SuppressWarnings("serial")
 @Embeddable
 public class ProcurationPK implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID =  8983558202217591746L;
+	
 	private int idClient;
 	private int idCourtier;
 	
 	public ProcurationPK() {}
+	
+
+	public ProcurationPK(int idClient, int idCourtier) {
+		super();
+		this.idClient = idClient;
+		this.idCourtier = idCourtier;
+	}
+
 
 	public int getIdClient() {
 		return idClient;

@@ -6,13 +6,14 @@ import java.util.Date;
 import javax.persistence.*;
 
 /**
- * Entity implementation class for Entity: Procuration
- *
- */
+ * Entity implementation class for Entity: Procuration */
+//@SuppressWarnings("serial")
 @Entity
 public class Procuration implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+
+	private static final long serialVersionUID =  8983558202217591746L;
+	
 	@EmbeddedId
 	private ProcurationPK id;
 	
@@ -20,7 +21,7 @@ public class Procuration implements Serializable {
 	private Date dateCreation;
 	
 	@Column(unique=true)
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	//@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int numero; // numero de procuration pour que chaque procuration soit unique
 	
 	@ManyToOne
@@ -44,6 +45,19 @@ public class Procuration implements Serializable {
 	private String description; // Pour ecrire la proposition
 	
 	public Procuration() {}
+	public Procuration(ProcurationPK id, Date dateCreation, int numero, String etat,
+			Type type, float rendement, float risque, int dure, String description) {
+		super();
+		this.id = id;
+		this.dateCreation = dateCreation;
+		this.numero = numero;
+		this.etat = etat;
+		this.type = type;
+		this.rendement = rendement;
+		this.risque = risque;
+		this.dure = dure;
+		this.description = description;
+	}
 
 	public ProcurationPK getId() {
 		return id;
