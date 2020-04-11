@@ -25,34 +25,32 @@ public class ActifFinancier implements Serializable {
 	private float prix;
 	private float rendement;
 	private float risque;
-	private String type; // action ou obligation 
+	@Enumerated(EnumType.STRING)
+	private TypeActif type; // action ou obligation 
 	private float interet;
-	
 	@Temporal(TemporalType.DATE)
-	@Column(name="date_echeane",nullable=true)
-	private Date dateEcheance; // Pour obligation
-	
+	@Column(name="date",nullable=true)
+	private Date date;	
 	@ManyToOne()
 	private Compte compte;
-	
 	@OneToOne(mappedBy="actif")
 	private Transaction transaction;
-	
 	 private BigDecimal HighPrice  ;
 	 private BigDecimal LowPrice;
 	 private BigDecimal	ClosedPrice ;
 	 private BigDecimal	OpenPrice ;
 	 private BigDecimal	AdjClose ;
 	 private String Currency;
+	 @ManyToOne(cascade = CascadeType.DETACH)
+	//@JoinColumn(name = "Company_Symbol", referencedColumnName = "Symbol")
+	private Company Company;	 
+	@Temporal(TemporalType.DATE)
+	@Column(name="date_echeane",nullable=true)
+	private Date dateEcheance; // Pour obligation
 	
-	 @ManyToOne(cascade = CascadeType.ALL)
-	// @JoinColumn(name = "Company_Symbol", referencedColumnName = "Symbol")
-	 private Company Company;
-	 
-	public ActifFinancier() {}
+	 public ActifFinancier() {}
 	
-
-	public ActifFinancier(String entreprise, float prix, float rendement, float risque, String type,
+	public ActifFinancier(String entreprise, float prix, float rendement, float risque, TypeActif type,
 			float interet, Date dateEcheance, Compte compte, Transaction transaction, BigDecimal highPrice,
 			BigDecimal lowPrice, BigDecimal closedPrice, String currency, entities.Company company) {
 		super();
@@ -113,11 +111,13 @@ public class ActifFinancier implements Serializable {
 		this.risque = risque;
 	}
 
-	public String getType() {
+
+
+	public TypeActif getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(TypeActif type) {
 		this.type = type;
 	}
 
@@ -195,12 +195,21 @@ public class ActifFinancier implements Serializable {
 	}
 
 
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
 	@Override
 	public String toString() {
 		return "ActifFinancier [id=" + id + ", entreprise=" + entreprise + ", prix=" + prix + ", rendement=" + rendement
-				+ ", risque=" + risque + ", type=" + type + ", interet=" + interet + ", dateEcheance=" + dateEcheance
-				+ ", compte=" + compte + ", transaction=" + transaction + ", HighPrice=" + HighPrice + ", LowPrice="
-				+ LowPrice + ", ClosedPrice=" + ClosedPrice + ", Currency=" + Currency + ", Company=" + Company +"\n" +"]";
+				+ ", risque=" + risque + ", type=" + type + ", interet=" + interet + ", date=" + date + ", compte="
+				+ compte + ", transaction=" + transaction + ", HighPrice=" + HighPrice + ", LowPrice=" + LowPrice
+				+ ", ClosedPrice=" + ClosedPrice + ", OpenPrice=" + OpenPrice + ", AdjClose=" + AdjClose + ", Currency="
+				+ Currency + ", Company=" + Company + ", dateEcheance=" + dateEcheance  +"]" + "\n";
 	}
 
 

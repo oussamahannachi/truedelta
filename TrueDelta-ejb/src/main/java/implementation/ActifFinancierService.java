@@ -286,8 +286,6 @@ public class ActifFinancierService implements ActifFinancierServiceRemote {
 		return interval;
 	}
 
-
-
 	@Override
 	public double Volatility(String name) {
 		double variance=0;
@@ -328,6 +326,5 @@ public class ActifFinancierService implements ActifFinancierServiceRemote {
 		
 		return rendement;
 	}
-	
-	
+		
 }
