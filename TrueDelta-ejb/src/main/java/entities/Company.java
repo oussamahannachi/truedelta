@@ -42,8 +42,9 @@ public class Company implements Serializable{
 	private Date PayDate;
 	//private String logo;
 	
-	@OneToMany(cascade = CascadeType.ALL,mappedBy="Company")
-	private List<ActifFinancier> Stocks;
+	//@OneToMany(cascade = CascadeType.ALL,mappedBy="Company")
+	//private List<ActifFinancier> Stocks;
+	
 	public int getId() {
 		return id;
 	}
@@ -128,7 +129,7 @@ public class Company implements Serializable{
 	public void setSymbol(String symbol) {
 		Symbol = symbol;
 	}
-	public List<ActifFinancier> getStocks() {
+	/*	public List<ActifFinancier> getStocks() {
 		return Stocks;
 	}
 	public void setStocks(List<ActifFinancier> stocks) {
@@ -139,7 +140,7 @@ public class Company implements Serializable{
 	public void addStockes(ActifFinancier ActifFinancier){
 		ActifFinancier.setCompany(this);
 		this.Stocks.add(ActifFinancier);
-	}
+	} */
 	public BigDecimal getAnnualYield() {
 		return AnnualYield;
 	}

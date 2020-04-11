@@ -1,6 +1,8 @@
 package interfaces;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -31,4 +33,14 @@ public interface ActifFinancierServiceRemote {
 	public List<ActifFinancier> getHistory(String stockName) throws IOException;
 
 	public List<ActifFinancier> getHistory(String stockName, int year, String searchType) throws IOException;
+	
+	double Volatility(String name);
+	
+	double RendementAnnuel (String name ,int annee) throws ParseException;
+
+	List<ActifFinancier> GetStockByCompanyPeriode(String name, Date Period1, Date Period2);
+
+	List<ActifFinancier> GetStockByCompanyDate(String name, Date Date);
+
+	double RendementByPeriod(String name, Date d1, Date d2);
 }

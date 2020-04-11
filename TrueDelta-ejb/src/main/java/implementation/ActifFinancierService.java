@@ -2,12 +2,16 @@ package implementation;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URL;
+import java.net.URLConnection;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -26,6 +30,10 @@ import yahoofinance.YahooFinance;
 import yahoofinance.histquotes.HistoricalQuote;
 import yahoofinance.histquotes.Interval;
 import yahoofinance.histquotes2.HistoricalDividend;
+
+//import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Stateless
 @LocalBean
@@ -64,7 +72,22 @@ public class ActifFinancierService implements ActifFinancierServiceRemote {
 		query.setParameter("name", name);		
 		return query.getResultList();
 	}
-
+	@Override
+	public  List<ActifFinancier> GetStockByCompanyPeriode(String name, Date Period1, Date Period2) {
+			TypedQuery<ActifFinancier> query = em.createQuery("select a from ActifFinancier a join a.Company c  where c.Symbol=:name and a.date>:Period1 and a.date<:Period2", ActifFinancier.class);
+			query.setParameter("name", name);
+			query.setParameter("Period2", Period2);
+			query.setParameter("Period1", Period1);
+			return query.getResultList();	
+	}
+	@Override
+	public  List<ActifFinancier> GetStockByCompanyDate(String name, Date Date) {
+			TypedQuery<ActifFinancier> query = em.createQuery("select a from ActifFinancier a join a.Company c  where c.Symbol=:name and a.date=:Date", ActifFinancier.class);
+			query.setParameter("name", name);
+			query.setParameter("Date", Date);
+			
+			return query.getResultList();	
+	}
 	@Override
 	public void updateStock(ActifFinancier ActifFinancier) {
 		ActifFinancier NewActifFi = em.find(ActifFinancier.class, ActifFinancier.getId()); 
@@ -116,7 +139,7 @@ public class ActifFinancierService implements ActifFinancierServiceRemote {
 	    
 	}
 	
-	//=======================================================
+	/*================================YahooFinance==========================================================================*/
 	public  ActifFinancier getStock(String stockName) throws IOException {
 		ActifFinancier dto = null;
 		Stock stock = YahooFinance.get(stockName);
@@ -155,9 +178,9 @@ public class ActifFinancierService implements ActifFinancierServiceRemote {
 		   if (!stock.getDividend(true).equals(null)) {
 		   cp.setAnnualYield(stock.getDividend(true).getAnnualYield());
 		   cp.setAnnualYieldPercent(stock.getDividend(true).getAnnualYieldPercent());}
-	//	if  (!stock.getDividend(true).getExDate().getTime().equals(null))   cp.setExDate(stock.getDividend(true).getExDate().getTime());
-		if (!stock.getDividend(true).getPayDate().getTime().equals(null) )   cp.setPayDate(stock.getDividend(true).getPayDate().getTime());
-		
+			if  (stock.getDividend(true).getExDate() !=null)   cp.setExDate(stock.getDividend(true).getExDate().getTime());
+			if (stock.getDividend(true).getPayDate()!= null )   cp.setPayDate(stock.getDividend(true).getPayDate().getTime());
+			 
 		   actifFinancier.setPrix(stock.getQuote(true).getPrice().floatValue());
 			//actifFinancier.getCompany(). stock.getDividend(true)
 			actifFinancier.setCurrency(stock.getCurrency());
@@ -209,10 +232,10 @@ public class ActifFinancierService implements ActifFinancierServiceRemote {
 		   if (!stock.getDividend(true).equals(null)) {
 		   cp.setAnnualYield(stock.getDividend(true).getAnnualYield());
 		  cp.setAnnualYieldPercent(stock.getDividend(true).getAnnualYieldPercent());
-		   cp.setPayDate(stock.getDividend(true).getPayDate().getTime());
+		 //  cp.setPayDate(stock.getDividend(true).getPayDate().getTime());
 		   }
-	//	if  (!stock.getDividend(true).getExDate().getTime().equals(null))   cp.setExDate(stock.getDividend(true).getExDate().getTime());
-	//	if (!stock.getDividend(true).getPayDate().getTime().equals(null) )   cp.setPayDate(stock.getDividend(true).getPayDate().getTime());
+		if  (stock.getDividend(true).getExDate() !=null)   cp.setExDate(stock.getDividend(true).getExDate().getTime());
+		if (stock.getDividend(true).getPayDate()!= null )   cp.setPayDate(stock.getDividend(true).getPayDate().getTime());
 		 
 		   actifFinancier.setPrix(stock.getQuote(true).getPrice().floatValue());
 			//actifFinancier.getCompany(). stock.getDividend(true)
@@ -239,6 +262,7 @@ public class ActifFinancierService implements ActifFinancierServiceRemote {
        return listactif;
 	}
 
+
 	private String convertDate(Calendar cal) {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		String formatDate = format.format(cal.getTime());
@@ -264,4 +288,46 @@ public class ActifFinancierService implements ActifFinancierServiceRemote {
 
 
 
+	@Override
+	public double Volatility(String name) {
+		double variance=0;
+		double ecart_type=0;
+		List<ActifFinancier> List=GetStockByCompany(name);
+		long Number=List.size();
+		double Mean=List.stream().mapToDouble(a->a.getAdjClose().floatValue()).average().getAsDouble();
+			
+		for(ActifFinancier act : List)
+		{
+			variance=variance+Math.pow((act.getAdjClose().floatValue()-Mean),2);				
+		}
+		variance=(variance/(Number-1));
+		ecart_type = Math.sqrt(variance); 
+		
+		return ecart_type;
+	}
+	@Override
+	public double RendementByPeriod(String name,Date d1, Date d2) {
+		// TODO Auto-generated method stub
+		ActifFinancier A1=GetStockByCompanyDate(name, d1).get(0);
+		ActifFinancier A2=GetStockByCompanyDate(name, d2).get(0);
+		double diff =( A1.getAdjClose().floatValue()-A2.getAdjClose().floatValue());
+		double rendement =diff/ A2.getAdjClose().floatValue();
+		
+		return rendement;
+	}
+	@Override
+	public double RendementAnnuel(String name, int annee) throws ParseException {
+		 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+			Date d1 = dateFormat.parse("30/12/2019");
+			Date d2 = dateFormat.parse("30/12/2020");
+		List<ActifFinancier> List=GetStockByCompanyPeriode(name, d1, d2);
+		double valt1=List.get(0).getAdjClose().floatValue();
+		double valt2=List.get(List.size()).getAdjClose().floatValue();
+		double diff = valt2-valt1;
+		double rendement = diff/valt2;
+		
+		return rendement;
+	}
+	
+	
 }

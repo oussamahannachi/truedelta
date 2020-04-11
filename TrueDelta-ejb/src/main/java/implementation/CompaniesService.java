@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
@@ -32,9 +33,20 @@ public class CompaniesService implements CompaniesServiceRemote {
 	@Override
 	public Company GetCompanyBySymbol(String Symbol) {
 	//	return em.find(Company.class, Symbol);
-    TypedQuery<Company> query = em.createQuery("select c from Company c where c.Symbol=:Symbol", Company.class);
-		query.setParameter("Symbol", Symbol);		
-		return query.getSingleResult();
+		 
+		 TypedQuery<Company> query = em.createQuery("select c from Company c where c.Symbol=:Symbol", Company.class);
+			query.setParameter("Symbol", Symbol);
+			Company cp = null;
+		try{
+					
+		cp = query.getSingleResult();
+				
+		}catch (NoResultException nre){
+			System.out.println("No result forund for... "+nre);
+			//Ignore this because as per your logic this is ok!
+			}
+		return cp;
+	
 		/*if (query.getSingleResult() == null) 
 			return null;
 		else 	return query.getSingleResult();*/
