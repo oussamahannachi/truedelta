@@ -47,6 +47,13 @@ public class ActifFinancier implements Serializable {
 	@Temporal(TemporalType.DATE)
 	@Column(name="date_echeane",nullable=true)
 	private Date dateEcheance; // Pour obligation
+	private BigDecimal BondPrice  ;
+	private BigDecimal Parvalue;
+	private double Tauxcoupon ;
+	private int Duree;
+	private double TauxActuariel;
+	private int Fréquence;
+	
 	
 	 public ActifFinancier() {}
 	
@@ -203,8 +210,8 @@ public class ActifFinancier implements Serializable {
 		this.date = date;
 	}
 
-	@Override
-	public String toString() {
+	//@Override
+	public String GetStock() {
 		return "ActifFinancier [id=" + id + ", entreprise=" + entreprise + ", prix=" + prix + ", rendement=" + rendement
 				+ ", risque=" + risque + ", type=" + type + ", interet=" + interet + ", date=" + date + ", compte="
 				+ compte + ", transaction=" + transaction + ", HighPrice=" + HighPrice + ", LowPrice=" + LowPrice
@@ -232,7 +239,77 @@ public class ActifFinancier implements Serializable {
 		AdjClose = adjClose;
 	}
 
+	public BigDecimal getBondPrice() {
+		return BondPrice;
+	}
 
+	public void setBondPrice(BigDecimal bondPrice) {
+		BondPrice = bondPrice;
+	}
+
+	public BigDecimal getParvalue() {
+		return Parvalue;
+	}
+
+	public void setParvalue(BigDecimal parvalue) {
+		Parvalue = parvalue;
+	}
+
+	public double getTauxcoupon() {
+		return Tauxcoupon;
+	}
+
+	public void setTauxcoupon(double tauxcoupon) {
+		Tauxcoupon = tauxcoupon;
+	}
+
+	public int getDuree() {
+		return Duree;
+	}
+
+	public void setDuree(int duree) {
+		Duree = duree;
+	}
+
+	public double getTauxActuariel() {
+		return TauxActuariel;
+	}
+
+	public void setTauxActuariel(double tauxActuariel) {
+		TauxActuariel = tauxActuariel;
+	}
+
+	
+	public int getFréquence() {
+		return Fréquence;
+	}
+
+	public void setFréquence(int fréquence) {
+		Fréquence = fréquence;
+	}
+
+	//@Override
+	public String GetBonds() {
+		return "ActifFinancier [id=" + id + ", type=" + type + ", date=" + date + ", compte=" + compte
+				+ ", transaction=" + transaction + ", Currency=" + Currency + ", Company=" + Company + ", dateEcheance="
+				+ dateEcheance + ", BondPrice=" + BondPrice + ", Parvalue=" + Parvalue + ", Tauxcoupon=" + Tauxcoupon
+				+ ", Duree=" + Duree + ", TauxActuariel=" + TauxActuariel + "]"+ "\n";
+	}
+
+	@Override
+	public String toString() {
+		return "ActifFinancier [id=" + id + ", entreprise=" + entreprise + ", prix=" + prix + ", rendement=" + rendement
+				+ ", risque=" + risque + ", type=" + type + ", interet=" + interet + ", date=" + date + ", compte="
+				+ compte + ", transaction=" + transaction + ", HighPrice=" + HighPrice + ", LowPrice=" + LowPrice
+				+ ", ClosedPrice=" + ClosedPrice + ", OpenPrice=" + OpenPrice + ", AdjClose=" + AdjClose + ", Currency="
+				+ Currency + ", Company=" + Company + ", dateEcheance=" + dateEcheance + ", BondPrice=" + BondPrice
+				+ ", Parvalue=" + Parvalue + ", Tauxcoupon=" + Tauxcoupon + ", Duree=" + Duree + ", TauxActuariel="
+				+ TauxActuariel + "]"+ "\n";
+	}
+
+
+	
+	
 
 	
 	

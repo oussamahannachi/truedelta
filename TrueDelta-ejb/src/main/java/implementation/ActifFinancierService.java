@@ -15,6 +15,7 @@ import java.util.Scanner;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.enterprise.inject.Any;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -23,6 +24,7 @@ import entities.ActifFinancier;
 import entities.Company;
 import entities.Compte;
 import entities.Transaction;
+import entities.TypeActif;
 import interfaces.ActifFinancierServiceRemote;
 
 import yahoofinance.Stock;
@@ -326,5 +328,79 @@ public class ActifFinancierService implements ActifFinancierServiceRemote {
 		
 		return rendement;
 	}
+	
+	@Override
+	public  List<ActifFinancier> GetAction() {
+		TypedQuery<ActifFinancier> query = em.createQuery("select a from ActifFinancier a.type=:type", ActifFinancier.class);
+		query.setParameter("type", TypeActif.action.toString());		
+		return query.getResultList();
+	}
+	/*==============================Obligation===================================*/
+	@Override
+	public  List<ActifFinancier> GetObligation() {
+		TypedQuery<ActifFinancier> query = em.createQuery("select a from ActifFinancier a.type=:type", ActifFinancier.class);
+		query.setParameter("type", TypeActif.obligation.toString());		
+		return query.getResultList();
+	}
+	@Override
+	public  List<Double> CashFlow(ActifFinancier a) {
+		List<Double> Cf = new ArrayList<Double>();
+		double c = (a.getParvalue().doubleValue()*a.getTauxcoupon())/a.getFréquence();
+		Cf.add(-a.getBondPrice().doubleValue());
+		for(int i=1;i<=a.getDuree();i++) 
+		{
+			double x=0;
+			
+			if(i<(a.getFréquence()*a.getDuree()))
+				{
+				 x =c;
+			
+				}
+			else if (i== (a.getFréquence()*a.getDuree())) {
+				
+				 x =c+a.getParvalue().doubleValue();
+			}
+			
+			Cf.add(x);
+		}
+				
+		return Cf;
 		
+	}
+	@Override
+	public  List<Double> PVCashFlow(ActifFinancier a) {
+		List<Double> PVCf = new ArrayList<Double>();
+		List<Double> Cf = CashFlow(a);
+		PVCf.add(0.00);
+		double x= 0;
+		for(int i=1;i<=a.getDuree();i++) 
+		{
+			x = i/Math.pow((1+a.getTauxActuariel())/a.getFréquence(),Cf.get(i));
+			
+			PVCf.add(x);
+		}
+				
+		return PVCf;
+		
+	}
+	@Override
+	public  List<Double> DurationCalcul(ActifFinancier a) {
+		List<Double> DC = new ArrayList<Double>();
+		List<Double> PVCf = PVCashFlow(a);
+		DC.add(0.00);
+		double x= 0;
+		for(int i=1;i<=a.getDuree();i++) 
+		{
+			x = PVCf.get(i)*i;	
+			DC.add(x);
+		}
+		return DC;
+	}
+	public double Duration(ActifFinancier a) {
+		List<Double> DC = DurationCalcul(a).stream().
+		double d =0;
+		
+		return d;
+	}
+
 }
