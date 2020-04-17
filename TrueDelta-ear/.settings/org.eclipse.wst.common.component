@@ -35,5 +35,11 @@
         <dependent-module archiveName="curvesapi.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/github/virtuald/curvesapi/1.04/curvesapi-1.04.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="fuzzywuzzy.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/me/xdrop/fuzzywuzzy/1.2.0/fuzzywuzzy-1.2.0.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jsoup.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/jsoup/jsoup/1.13.1/jsoup-1.13.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
     </wb-module>
 </project-modules>

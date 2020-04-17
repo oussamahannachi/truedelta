@@ -4,11 +4,19 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Iterator;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -16,13 +24,23 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.bson.Document;
+import org.bson.*;
+import org.bson.types.ObjectId;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import com.mongodb.MongoClient;
 import com.mongodb.client.*;
+import com.mongodb.client.model.Filters;
 
+import entities.Agence;
+import entities.Client;
 import entities.Compte;
+import entities.Devise;
 import interfaces.CompteServiceLocal;
 import interfaces.CompteServiceRemote;
+import me.xdrop.fuzzywuzzy.FuzzySearch;
 
 @Stateful
 public class CompteService implements CompteServiceLocal, CompteServiceRemote {
@@ -33,7 +51,9 @@ public class CompteService implements CompteServiceLocal, CompteServiceRemote {
 	MongoClient con = new MongoClient("localhost",27017);
 	MongoDatabase db = con.getDatabase("truedelta");
 	Document doc = new Document();
-	
+	private static final DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm");	 
+	private Calendar cal = Calendar.getInstance();
+		
 	@Override
 	public long ajouterCompte(Compte c) {
 		c.setIsAutorise(false);
@@ -48,9 +68,14 @@ public class CompteService implements CompteServiceLocal, CompteServiceRemote {
 
 	@Override
 	public Compte getCompteByNumero(long num) {
+		try {
 		return em.createQuery("select c from compte c where c.numero= ? ", Compte.class)
 				 .setParameter(1, num)
 				 .getSingleResult();
+			}catch (NoResultException e) {
+				System.err.println("Verifier le numero du compte");
+			}
+		return null;
 	}
 
 	@Override
@@ -60,25 +85,12 @@ public class CompteService implements CompteServiceLocal, CompteServiceRemote {
 	}
 	
 	@Override
-	public List<Compte> gelAllCompteByAgence(int id) {
+	public List<Compte> getAllCompteByAgence(int id) {
 		return  em.createQuery("select c from compte c where idAgence=? and isVerifie = ?", Compte.class)
 							  .setParameter(1, id)
 							  .setParameter(2, true)
 							  .getResultList();
 	}
-
-	@Override
-	public void autoriseCompte(long num) {
-		Compte c = getCompteByNumero(num);
-		c.setIsAutorise(true);
-	}
-
-	@Override
-	public void verifierCompte(long num) {
-		Compte c = getCompteByNumero(num);
-		c.setIsVerifie(true);
-	}
-
 	
 	@Override
 	public long modifierCompte(Compte c) {
@@ -94,13 +106,14 @@ public class CompteService implements CompteServiceLocal, CompteServiceRemote {
 	}
 
 	// -----------------------------------------------------mongoDB---------------------------------------------------------------------
+	
 	//Verifier l'exsitence d'une collection  
 	@Override
-	public boolean verifierCollection(String nom) {
+	public boolean verifierCollection(String nomCollection) {
 		MongoIterable<String> names = db.listCollectionNames();
 		MongoCursor<String> cursor = names.cursor(); 
 		while(cursor.hasNext()) {
-			if (cursor.next().equals(nom))
+			if (cursor.next().equals(nomCollection))
 				return true;
 		}
 		return false;
@@ -109,33 +122,79 @@ public class CompteService implements CompteServiceLocal, CompteServiceRemote {
 	//Creation d'un doc à partir d'un compte
 	@Override
 	public Document createDocByCompte(Compte c) {
-		return doc.append("numero",c.getNumero())
+		return doc.append("_id", new ObjectId())
+				  .append("numero",c.getNumero())
 				  .append("devise", c.getDevise().toString())
 				  .append("solde", c.getSolde())
 				  .append("actions", c.getNbAction())
 				  .append("obligations", c.getNbObligation())
-				  .append("source", "truedelta");
+				  .append("source", "truedelta")
+				  .append("date", formatter.format(cal.getTime()));
+	}
+	
+	//Creation d'un doc à partir d'un fichier excel
+	@Override
+	public Document createDocByExcel(Compte c) {
+		return doc.append("_id", new ObjectId())
+				  .append("numero",c.getNumero())
+				  .append("devise", c.getDevise().toString())
+				  .append("solde", c.getSolde())
+				  .append("actions", c.getNbAction())
+				  .append("obligations", c.getNbObligation())
+				  .append("source", "excel")
+				  .append("date", formatter.format(cal.getTime()));
+					
 	}
 
-	//Insertion des doc à partir l'id d'un banque
  	@Override
-	public void docByTrueDelta(int id) {
-		List<Compte> comptes = gelAllCompteByAgence(id);
-		if(!(comptes.isEmpty()))
+	public void exceltoMongoDB(File f, int idAgence) throws IOException {
+ 		Agence agence = em.find(Agence.class, idAgence);
+ 		String nom = (agence.getBanqueName()+agence.getAgenceName()).toLowerCase();
+ 		if((verifierCollection(nom))) 
+ 			db.getCollection(nom).deleteMany(Filters.in("source","excel","truedelta"));
+ 		else 
+ 			db.createCollection(nom);
+ 		MongoCollection<Document> collection = db.getCollection(nom);
+		List<Compte> comptes = getAllCompteByAgence(idAgence);
+		FileInputStream excelFile = new FileInputStream(f);
+		Workbook workbook = new XSSFWorkbook(excelFile);
+		Sheet sheet = workbook.getSheet("comptes");
+		if(!(comptes.isEmpty())) 
 		{
-			for (Compte compte : comptes) {
-				String nom = (compte.getAgence().getBanqueName()+compte.getAgence().getAgenceName()).toLowerCase();
-				if(!(verifierCollection(nom))) { 
-						db.createCollection(nom);
-						db.getCollection(nom).insertOne(createDocByCompte(compte));
+			for(Compte compte : comptes) {
+				Compte nvCompte = new Compte();
+				for(Row row : sheet)
+					for (Cell cell : row) {
+						if(cell.getCellType()==0) {
+							if(cell.getNumericCellValue()==compte.getNumero()) {
+								Client nvClient = new Client();
+								nvCompte.setNumero((long)cell.getNumericCellValue());
+								nvClient.setNom(row.getCell(1).getStringCellValue());
+								nvClient.setPrenom(row.getCell(2).getStringCellValue());
+								nvCompte.setProprietaire(nvClient);
+									if(row.getCell(3).getStringCellValue().toLowerCase().equals("euro"))
+										nvCompte.setDevise(Devise.euro);
+									else if(row.getCell(3).getStringCellValue().toLowerCase().equals("dollar"))
+										nvCompte.setDevise(Devise.dollar);
+									else nvCompte.setDevise(Devise.dinar);
+								nvCompte.setSolde((float)row.getCell(4).getNumericCellValue());
+								nvCompte.setNbAction(nbrActions(f, compte.getNumero()));
+								nvCompte.setNbObligation(nbrObligations(f, compte.getNumero()));
+								compte.setLastVerif(new Timestamp(System.currentTimeMillis()));
+								collection.insertOne(createDocByExcel(nvCompte));
+								collection.insertOne(createDocByCompte(compte));
+						}
+					}
 				}
-				else
-					db.getCollection(nom).insertOne(createDocByCompte(compte));
-			}
+			}		
 		}
-	}
-
- 	//Excel service
+ 	  
+ 	}
+ 	
+ 	
+ 	
+ 	
+ 	//----------------------------------------------------------------Excel service----------------------------------------------------------
 	@Override
 	public int isValide(File file) throws IOException, FileNotFoundException {
 		if(!(file.getName().contains("xls"))||(!file.exists())) return 0; // test extension
@@ -202,7 +261,6 @@ public class CompteService implements CompteServiceLocal, CompteServiceRemote {
 						action++;
 					}
 				}
-				
 			}
 		}
 		workbook.close();
@@ -225,12 +283,130 @@ public class CompteService implements CompteServiceLocal, CompteServiceRemote {
 						oblgation++;
 					}
 				}
-				
 			}
 		}
 		workbook.close();
 		excelFile.close();
 		return oblgation;
 	}
+	
+	//----------------------------------------------------------Matching--------------------------------------------------------------------
+	@Override
+	public void matchData(int idAgence) {
+		Agence agence = em.find(Agence.class, idAgence);
+ 		String nom = (agence.getBanqueName()+agence.getAgenceName()).toLowerCase();
+ 		float gab = 0;
+ 		if((verifierCollection(nom))) 
+ 		{ 
+ 			MongoCollection<Document> collection = db.getCollection(nom);
+ 			List<Compte> comptes = getAllCompteByAgence(idAgence);
+ 			if(!(comptes.isEmpty())) 
+ 			{
+ 			for (Compte compte : comptes)
+ 			  {
+ 				Document excel= db.getCollection("stbariana").find(Filters.and(Filters.eq("numero", compte.getNumero()),Filters.eq("source","excel"))).first();
+ 				Document truedelta = db.getCollection("stbariana").find(Filters.and(Filters.eq("numero", compte.getNumero()),Filters.eq("source","truedelta"))).first();
+ 				if((excel!=null)&&(truedelta!=null)) 
+ 				{
+ 					int val = Classification(excel, truedelta);
+ 					String s1 = excel.getString("devise")+""+excel.getDouble("solde")+excel.getInteger("actions")+""+excel.getInteger("obligations");
+ 					String s2 = truedelta.getString("devise")+""+truedelta.getDouble("solde")+truedelta.getInteger("actions")+""+truedelta.getInteger("obligations");
+ 					gab = FuzzySearch.ratio(s1,"euro2000a0o0")/(float)100;
+ 					switch (val) {
+					case 0:
+						compte.setRemarque("Devise non conforme");
+						compte.setGab(gab);
+						compte.setIsAutorise(false);
+						break;
+					case 10:
+						compte.setRemarque("Problème du solde");
+						compte.setGab(gab);
+						compte.setIsAutorise(false);
+						break;
+					case 20:
+						compte.setRemarque("Problème des actions");
+						compte.setGab(gab);
+						compte.setIsAutorise(false);
+						break;
+					case 30:
+						compte.setRemarque("Problème des obligations");
+						compte.setGab(gab);
+						compte.setIsAutorise(false);
+						break;
+					case 1:
+						compte.setRemarque("Aucun problème");
+						compte.setGab(1-gab);
+						compte.setIsAutorise(true);
+						break;
+					default:
+						break;
+					}
+ 					compte.setLastVerif(new Date(formatter.format(cal.getTime())));
+ 				}
+ 			  }
+ 			}
+ 		}
+	}
+	
+	@Override
+	public int Classification(Document excel, Document truedelta) {
+		
+		if(!(excel.get("devise").equals(truedelta.get("devise"))))
+			return 0; // Devise 
+		else 
+		{
+			if(Math.abs(excel.getDouble("solde")-truedelta.getDouble("solde"))>1000) 
+			{
+				return 10;
+			}
+			if(Math.abs(excel.getInteger("actions")-truedelta.getInteger("actions"))>1) 
+			{
+				return 20;
+			}
+			if(Math.abs(excel.getInteger("obligations")-truedelta.getInteger("obligations"))>1)
+			{
+				return 30;	
+			}
+			else {
+				return 1;
+			}
+		}
+	}
+	
+	//------------------------------------------------------------Convertisseur--------------------------------------------------------------
+	
+	@Override
+	public Map<String, Float> lastTaux() throws IOException {
+		org.jsoup.nodes.Document webPage = Jsoup.connect("https://finance.yahoo.com/currencies").timeout(6000).get();
+		Elements dev = webPage.getElementsByClass("data-col1");
+		Elements val = webPage.getElementsByClass("data-col2");
+		List<String> devises = new ArrayList<String>();
+		List<String> valeurs = new ArrayList<String>();
+		Map<String, Float> hm = new HashMap<>();
+		 for (Element element : dev) {
+			devises.add(element.text());
+		 }
+		 for (Element element : val) {
+			 	if(!(element.text().contains(",")))
+			     valeurs.add(element.text());	
+		 }
+		 for (int i = 1; i < valeurs.size(); i++) {
+			hm.put(devises.get(i).toString(),Float.parseFloat(valeurs.get(i).toString()));
+		}
+		return hm;
+	}
+
+	@Override
+	public double convertisseur(String de, String a, double quantite) throws IOException {
+		if(quantite<=0) {
+			return 0;
+		}
+		org.jsoup.nodes.Document convertissuer = Jsoup.connect("https://www.boursorama.com/bourse/devises/convertisseur-devises/"+de+"-"+a).timeout(20000).get();
+		String s=convertissuer.getElementsByClass("c-table__cell c-table__cell--dotted").get(1).text();
+		String[] val1=s.split(" ");
+		double coef = Double.parseDouble(val1[0]);
+		return coef*quantite;
+	}
+	
 	
 }

@@ -13,8 +13,7 @@ import javax.persistence.*;
  */
 @Entity(name="compte")
 public class Compte implements Serializable {
-	private static final long serialVersionUID = 1L;
-	
+	private static final long serialVersionUID = 1L;	
 	@EmbeddedId
 	private ComptePK id;
 	
@@ -39,6 +38,9 @@ public class Compte implements Serializable {
 	
 	@Column(nullable=true)
 	private float gab; // coefficient de matching 
+	
+	@Column(nullable=true)
+	private String remarque;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable=true)
@@ -192,6 +194,14 @@ public class Compte implements Serializable {
 
 	public void setLastUpdate(Date lastUpdate) {
 		this.lastUpdate = lastUpdate;
+	}
+	
+	public String getRemarque() {
+		return remarque;
+	}
+
+	public void setRemarque(String remarque) {
+		this.remarque = remarque;
 	}
 
 	@Override
