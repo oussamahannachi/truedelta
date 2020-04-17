@@ -1,7 +1,6 @@
 package entities;
 
 import java.io.Serializable;
-import java.lang.Thread.State;
 import java.util.Date;
 
 import javax.persistence.*;
@@ -21,20 +20,75 @@ public class Reclamation implements Serializable {
 	private int id;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dateCreation;
-	@Enumerated(EnumType.STRING)
-	private ReclamationState state;
-	private String subject;
 	private String description;
+	private String subject;
+	@Column(name="STATE")
+    @Enumerated(EnumType.STRING)
+    private State state;
 	@Column(name = "assignmentDate")
-	private Date assignmentDate;
-	@Column(name = "closingDate")
-	private Date closingDate;
+    private Date assignmentDate;
+    @Column(name = "closingDate")
+    private Date closingDate;
+	
+
+	public Reclamation(int id, Date dateCreation, String etat, String titre, String description, String subject,
+			State state, Date assignmentDate, Date closingDate, Utilisateur user) {
+		super();
+		this.id = id;
+		this.dateCreation = dateCreation;
+		
+		this.description = description;
+		this.subject = subject;
+		this.state = state;
+		this.assignmentDate = assignmentDate;
+		this.closingDate = closingDate;
+		this.user = user;
+	}
+	
+	public Reclamation( Date dateCreation, String description, String subject,
+			State state, Date assignmentDate, Date closingDate, Utilisateur user) {
+		super();
+		
+		this.dateCreation = dateCreation;
+		this.description = description;
+		this.subject = subject;
+		this.state = state;
+		this.assignmentDate = assignmentDate;
+		this.closingDate = closingDate;
+		this.user = user;
+	}
+	
+	public Reclamation(int id, Date dateCreation,State state, String description, String subject
+			) {
+		super();
+	
+		this.id = id;
+		this.dateCreation = dateCreation;
+		this.state = state;
+		this.description = description;
+		this.subject = subject;
+		
+		
+	}
 	
 	
+
+
 	@ManyToOne
 	private Utilisateur user;
 	
 	public Reclamation() {}
+
+	
+
+	public Reclamation(Date dateCreation,State state, String description, String subject) {
+		super();
+		this.dateCreation = dateCreation;
+		
+		this.description = description;
+		this.subject = subject;
+		this.state = state;
+	}
 
 	public int getId() {
 		return id;
@@ -52,41 +106,32 @@ public class Reclamation implements Serializable {
 		this.dateCreation = dateCreation;
 	}
 
-	
+
+
+	public String getDescription() {
+		return description;
+	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	
 
 	
-
-	
-
-	public Utilisateur getUser() {
-		return user;
-	}
-
-	public void setUser(Utilisateur user) {
-		this.user = user;
-	}
-
-	
-
-	public ReclamationState getState() {
-		return state;
-	}
-
-	public void setState(ReclamationState state) {
-		this.state = state;
-	}
-
 	public String getSubject() {
 		return subject;
 	}
 
 	public void setSubject(String subject) {
 		this.subject = subject;
+	}
+
+	public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
 	}
 
 	public Date getAssignmentDate() {
@@ -104,53 +149,19 @@ public class Reclamation implements Serializable {
 	public void setClosingDate(Date closingDate) {
 		this.closingDate = closingDate;
 	}
-	
-	
-	
 
-	public Reclamation(int id, Date dateCreation, ReclamationState state, String subject, String description,
-			Date assignmentDate, Date closingDate, Utilisateur user) {
-		super();
-		this.id = id;
-		this.dateCreation = dateCreation;
-		this.state = state;
-		this.subject = subject;
-		this.description = description;
-		this.assignmentDate = assignmentDate;
-		this.closingDate = closingDate;
+	public Utilisateur getUser() {
+		return user;
+	}
+
+	public void setUser(Utilisateur user) {
 		this.user = user;
-	}
-	public Reclamation(int id, Date dateCreation, ReclamationState state, String subject, String description) {
-		super();
-		this.id = id;
-		this.dateCreation = dateCreation;
-		this.state = state;
-		this.subject = subject;
-		this.description = description;
-		
-	}
-	public Reclamation( Date dateCreation, ReclamationState state, String subject, String description) {
-		super();
-		this.dateCreation = dateCreation;
-		this.state = state;
-		this.subject = subject;
-		this.description = description;
-		
 	}
 
 	@Override
 	public String toString() {
-		return "Reclamation [id=" + id + ", dateCreation=" + dateCreation + ", state=" + state + ", subject=" + subject
-				+ ", description=" + description + ", assignmentDate=" + assignmentDate + ", closingDate=" + closingDate
-				+ ", user=" + user + "]";
+		return "Reclamation [dateCreation=" + dateCreation  + "]";
 	}
-
-	public String getDescription() {
-		return description;
-	}
-
-
-
 	
 	
 }

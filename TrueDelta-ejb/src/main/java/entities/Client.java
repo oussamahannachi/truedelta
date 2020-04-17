@@ -84,6 +84,7 @@ public class Client extends Utilisateur implements Serializable {
 	}
 
 
+
 	@Override
 	public String toString() {
 		return "Client [metier=" + metier + "]";

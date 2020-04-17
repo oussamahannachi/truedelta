@@ -111,8 +111,12 @@ public class Utilisateur implements Serializable {
 	public void setConfirmPassword(String confirmPassword) {
 		this.confirmPassword = confirmPassword;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "Utilisateur [id=" + id + ", email=" + email + ", username=" + username + "]";
+	}
+
 	public List<Reclamation> getReclamations() {
 		return reclamations;
 	}
@@ -120,12 +124,9 @@ public class Utilisateur implements Serializable {
 	public void setReclamations(List<Reclamation> reclamations) {
 		this.reclamations = reclamations;
 	}
-
-
-	@Override
-	public String toString() {
-		return "Utilisateur [id=" + id + ", email=" + email + ", username=" + username + "]";
-	}
+	
+	
+	
 	
    
 }

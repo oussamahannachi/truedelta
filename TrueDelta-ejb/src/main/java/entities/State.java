@@ -1,6 +1,6 @@
 package entities;
 
-public enum ReclamationState {
+public enum State {
 	Opened,in_progress,treated
 
 }
