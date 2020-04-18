@@ -17,12 +17,28 @@ public class Procuration implements Serializable {
 	@EmbeddedId
 	private ProcurationPK id;
 	
-	@Column(name="date_creation")
-	private Date dateCreation;
+	
 	
 	@Column(unique=true)
 	//@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int numero; // numero de procuration pour que chaque procuration soit unique
+	private int numero;
+	
+	@Enumerated(EnumType.STRING)
+	private Type type;
+	@Column(name="date_creation")
+	private Date dateCreation;
+	@Column(nullable=true)
+	private Date dateTraitement;
+	@Column(nullable=true)
+	private String etat; // Etat de procuration : en cours , terminé , bloqué ...
+	@Column(nullable=true)
+	private int score;
+	@Column(nullable=true)
+	private String avisContrat;
+	@Column(nullable=true)
+	private float gain; 
+	@Column(nullable=true)
+	private String description; // Pour ecrire la proposition
 	
 	@ManyToOne
 	@JoinColumn(name="idClient", referencedColumnName="utilisateurID", insertable=false , updatable=false, unique=false)
@@ -31,31 +47,17 @@ public class Procuration implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="idCourtier", referencedColumnName="utilisateurID", insertable=false , updatable=false,unique=false)
 	private Courtier courtier;
-	
-	private String etat; // Etat de procuration : en cours , terminé , bloqué ...
-	@Enumerated(EnumType.STRING)
-	private Type type;
-	@Column(nullable=true)
-	private float rendement;
-	@Column(nullable=true)
-	private float risque;
-	@Column(nullable=true)
-	private int dure; // Duree du mondat exprimé en jours
-	@Column(nullable=true)
-	private String description; // Pour ecrire la proposition
-	
-	public Procuration() {}
-	public Procuration(ProcurationPK id, Date dateCreation, int numero, String etat,
-			Type type, float rendement, float risque, int dure, String description) {
+
+	public Procuration() {
+		super();
+	}
+
+	public Procuration(ProcurationPK id, int numero, Type type, Date dateCreation, String description) {
 		super();
 		this.id = id;
-		this.dateCreation = dateCreation;
 		this.numero = numero;
-		this.etat = etat;
 		this.type = type;
-		this.rendement = rendement;
-		this.risque = risque;
-		this.dure = dure;
+		this.dateCreation = dateCreation;
 		this.description = description;
 	}
 
@@ -67,14 +69,6 @@ public class Procuration implements Serializable {
 		this.id = id;
 	}
 
-	public Date getDateCreation() {
-		return dateCreation;
-	}
-
-	public void setDateCreation(Date dateCreation) {
-		this.dateCreation = dateCreation;
-	}
-
 	public int getNumero() {
 		return numero;
 	}
@@ -83,6 +77,70 @@ public class Procuration implements Serializable {
 		this.numero = numero;
 	}
 
+	public Type getType() {
+		return type;
+	}
+
+	public void setType(Type type) {
+		this.type = type;
+	}
+
+	public Date getDateCreation() {
+		return dateCreation;
+	}
+
+	public void setDateCreation(Date dateCreation) {
+		this.dateCreation = dateCreation;
+	}
+
+	public Date getDateTraitement() {
+		return dateTraitement;
+	}
+
+	public void setDateTraitement(Date dateTraitement) {
+		this.dateTraitement = dateTraitement;
+	}
+
+	public String getEtat() {
+		return etat;
+	}
+
+	public void setEtat(String etat) {
+		this.etat = etat;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	public String getAvisContrat() {
+		return avisContrat;
+	}
+
+	public void setAvisContrat(String avisContrat) {
+		this.avisContrat = avisContrat;
+	}
+
+	public float getGain() {
+		return gain;
+	}
+
+	public void setGain(float gain) {
+		this.gain = gain;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+/*
 	public Client getClient() {
 		return client;
 	}
@@ -99,57 +157,14 @@ public class Procuration implements Serializable {
 		this.courtier = courtier;
 	}
 
-	public String getEtat() {
-		return etat;
-	}
-
-	public void setEtat(String etat) {
-		this.etat = etat;
-	}
-
-	public Type getType() {
-		return type;
-	}
-
-	public void setType(Type type) {
-		this.type = type;
-	}
-
-	public float getRendement() {
-		return rendement;
-	}
-
-	public void setRendement(float rendement) {
-		this.rendement = rendement;
-	}
-
-	public float getRisque() {
-		return risque;
-	}
-
-	public void setRisque(float risque) {
-		this.risque = risque;
-	}
-
-	public int getDure() {
-		return dure;
-	}
-
-	public void setDure(int dure) {
-		this.dure = dure;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
+*/
 
 	@Override
 	public String toString() {
-		return "Procuration [dateCreation=" + dateCreation + ", etat=" + etat + "]";
+		return "Procuration [id=" + id + ", numero=" + numero + ", type=" + type + ", dateCreation=" + dateCreation
+				+ "]";
 	}
-   
+	
+	
+	
 }
