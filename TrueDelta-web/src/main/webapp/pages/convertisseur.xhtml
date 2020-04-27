@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	template="../template/template.xhtml">
+	<ui:param name="page_name" value="Convertisseur" />
+	<ui:define name="body">
+		<div class="row">
+			<div class="col-lg-8 mb-5 mb-lg-0">
+				<div style="margin-top: 3%;margin-left: 14%">
+					<h2 style="text-align: center">Convertisseur</h2>
+				</div>
+				<form  style="margin-left: 160px; margin-top: 50px">
+					<div class="form-row">
+						<div class="form-group">
+							<label for="inputCity">Montant</label> <input type="text"
+								class="form-control" id="inputCity" />
+						</div>
+						<div class="form-group col-md-4">
+							<label for="inputState">De</label> <select id="inputState"
+								class="form-control">
+								<option selected="">Choisir...</option>
+								<option>...</option>
+							</select>
+						</div>
+						<div class="form-group col-md-4">
+							<label for="inputState">A</label> <select id="inputState"
+								class="form-control">
+								<option selected="false">Choisir...</option>
+								<option>...</option>
+							</select>
+						</div>
+					</div>
+					<button type="submit" class="btn btn-primary" style="margin-left: 42%;margin-top: 20px">Convertir</button>
+				</form>
+			</div>
+			<div class="col-lg-4">
+				<div class="blog_right_sidebar">
+					<aside class="single_sidebar_widget search_widget"
+						style="width: 280px; border-right: 30px">
+						<h2>Derniers taux</h2>
+						<table class="tableconvertisseur" style="width: 100%">
+							<tr>
+								<th class="tableConvertisseurth">Taux</th>
+								<th class="tableConvertisseurth">Valeur</th>
+							</tr>
+							<tr>
+								<td class="tableConvertisseurtd">cellule A1</td>
+								<td class="tableConvertisseurtd">cellule B1</td>
+							</tr>
+							<tr>
+								<td class="tableConvertisseurtd">cellule A2</td>
+								<td class="tableConvertisseurtd">cellule B2</td>
+							</tr>
+							<tr>
+								<td class="tableConvertisseurtd">cellule A1</td>
+								<td class="tableConvertisseurtd">cellule B1</td>
+							</tr>
+							<tr>
+								<td class="tableConvertisseurtd">cellule A2</td>
+								<td class="tableConvertisseurtd">cellule B2</td>
+							</tr>
+						</table>
+						<button
+							class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
+							type="submit" style="margin-top: 10px">Refresh</button>
+					</aside>
+				</div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
