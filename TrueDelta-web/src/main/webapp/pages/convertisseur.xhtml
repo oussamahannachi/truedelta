@@ -2,66 +2,73 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	template="../template/template.xhtml">
 	<ui:param name="page_name" value="Convertisseur" />
 	<ui:define name="body">
 		<div class="row">
 			<div class="col-lg-8 mb-5 mb-lg-0">
-				<div style="margin-top: 3%;margin-left: 14%">
+				<div style="margin-top: 3%; margin-left: 14%">
 					<h2 style="text-align: center">Convertisseur</h2>
 				</div>
-				<form  style="margin-left: 160px; margin-top: 50px">
+				<h:form style="margin-left: 160px; margin-top: 50px">
 					<div class="form-row">
 						<div class="form-group">
-							<label for="inputCity">Montant</label> <input type="text"
-								class="form-control" id="inputCity" />
+							<label for="inputCity">Montant</label>
+							<h:inputText class="form-control" id="inputCity"
+								value="#{convertisseurBean.montant}" required="true">
+							</h:inputText>
 						</div>
 						<div class="form-group col-md-4">
-							<label for="inputState">De</label> <select id="inputState"
-								class="form-control">
-								<option selected="">Choisir...</option>
-								<option>...</option>
-							</select>
+							<label for="inputState">De</label>
+							<h:selectOneMenu id="inputState" class="form-control"
+								value="#{convertisseurBean.de}">
+								<f:selectItems value="#{convertisseurBean.devises}" />
+							</h:selectOneMenu>
 						</div>
 						<div class="form-group col-md-4">
-							<label for="inputState">A</label> <select id="inputState"
-								class="form-control">
-								<option selected="false">Choisir...</option>
-								<option>...</option>
-							</select>
+							<label for="inputState">A</label>
+							<h:selectOneMenu id="inputState2" class="form-control"
+								value="#{convertisseurBean.a}">
+								<f:selectItems value="#{convertisseurBean.devises}" />
+							</h:selectOneMenu>
 						</div>
 					</div>
-					<button type="submit" class="btn btn-primary" style="margin-left: 42%;margin-top: 20px">Convertir</button>
-				</form>
+					<h:commandButton action="#{convertisseurBean.doConvertisseur}"
+						styleClass="btn btn-lg btn-primary"
+						style="margin-left: 42%; margin-top: 10px" value="Convertir" />
+				</h:form>
+				<div class="card" style="width: 200px; margin: 50px 420px">
+					<div class="card-body" style="text-align: center">
+						<Label id="valeur">#{convertisseurBean.valeur} </Label>
+					</div>
+				</div>
 			</div>
 			<div class="col-lg-4">
 				<div class="blog_right_sidebar">
 					<aside class="single_sidebar_widget search_widget"
-						style="width: 280px; border-right: 30px">
-						<h2>Derniers taux</h2>
-						<table class="tableconvertisseur" style="width: 100%">
-							<tr>
-								<th class="tableConvertisseurth">Taux</th>
-								<th class="tableConvertisseurth">Valeur</th>
-							</tr>
-							<tr>
-								<td class="tableConvertisseurtd">cellule A1</td>
-								<td class="tableConvertisseurtd">cellule B1</td>
-							</tr>
-							<tr>
-								<td class="tableConvertisseurtd">cellule A2</td>
-								<td class="tableConvertisseurtd">cellule B2</td>
-							</tr>
-							<tr>
-								<td class="tableConvertisseurtd">cellule A1</td>
-								<td class="tableConvertisseurtd">cellule B1</td>
-							</tr>
-							<tr>
-								<td class="tableConvertisseurtd">cellule A2</td>
-								<td class="tableConvertisseurtd">cellule B2</td>
-							</tr>
+						style="width: 380px; border-right: 30px">
+						<h2 style="text-align: center">Derniers taux</h2>
+						<div style="position: relative;height: 400px;overflow: auto;display: block">
+						<table class="table table-bordered table-striped mb-0">
+							<thead class="thead-dark">
+								<tr>
+									<th scope="col" style="text-align: center">#</th>
+									<th scope="col" style="text-align: center">Nom</th>
+									<th scope="col" style="text-align: center">Valeur</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+								<td	scope="row" style="text-align: center">#{i.index+1}</td>
+								<td style="text-align: center">#{nom}</td>
+								<td style="text-align: center">not found</td>
+								<!-- #{convertisseurBean.taux.get(i.index)} -->
+								</tr>
+							</tbody>
 						</table>
+						</div>
 						<button
 							class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
 							type="submit" style="margin-top: 10px">Refresh</button>

@@ -7,7 +7,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import entities.Compte;
-import interfaces.CompteServiceLocal;
+import services.CompteService;
 
 @RequestScoped
 @Path("compte")
@@ -16,7 +16,7 @@ import interfaces.CompteServiceLocal;
 public class CompteController {
 
 	@Inject
-	CompteServiceLocal cs;
+	CompteService cs;
 	
 	@POST
 	@Path("create")

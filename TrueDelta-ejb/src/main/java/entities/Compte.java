@@ -32,6 +32,7 @@ public class Compte implements Serializable {
 	
 	private Boolean isAutorise; // Autorisation par la banque
 	private Boolean isVerifie; // Verification par l'admin
+	private Boolean isActif;
 	
 	@Column(nullable=true)
 	private float score; // score accordé à chaque compte
@@ -202,6 +203,14 @@ public class Compte implements Serializable {
 
 	public void setRemarque(String remarque) {
 		this.remarque = remarque;
+	}
+
+	public Boolean getIsActif() {
+		return isActif;
+	}
+
+	public void setIsActif(Boolean isActif) {
+		this.isActif = isActif;
 	}
 
 	@Override

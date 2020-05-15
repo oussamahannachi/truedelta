@@ -20,6 +20,7 @@ public interface CompteServiceRemote {
 	public Compte getCompteByNumero(long num);
 	public List<Compte> getAllCompte();
 	public List<Compte> getAllCompteByAgence(int id);
+	public List<Compte> getAllCompteByClient(int id); 
 	public long modifierCompte(Compte c);
 	public void supprimerCompte(long num);
 	
@@ -41,5 +42,6 @@ public interface CompteServiceRemote {
 	
 	//Convertisseur Devise
 	public Map<String,Float> lastTaux() throws IOException; // Map contient les devises et les taux
-	public double convertisseur(String de,String a,double quantite) throws IOException; 
+	public double convertisseur(String de,String a,double quantite) throws IOException;
+	
 }

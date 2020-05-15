@@ -16,6 +16,7 @@ import java.util.Map;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateful;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -39,12 +40,12 @@ import entities.Agence;
 import entities.Client;
 import entities.Compte;
 import entities.Devise;
-import interfaces.CompteServiceLocal;
 import interfaces.CompteServiceRemote;
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 
-@Stateful
-public class CompteService implements CompteServiceLocal, CompteServiceRemote {
+@Stateless
+@LocalBean
+public class CompteService implements CompteServiceRemote {
 
 	@PersistenceContext(unitName="truedelta-ejb")
 	EntityManager em;
@@ -59,6 +60,7 @@ public class CompteService implements CompteServiceLocal, CompteServiceRemote {
 	public long ajouterCompte(Compte c) {
 		c.setIsAutorise(false);
 		c.setIsVerifie(false);
+		c.setIsActif(true);
 		c.setScore(0);
 		c.setGab(0);
 		c.setNbAction(0);
@@ -87,9 +89,17 @@ public class CompteService implements CompteServiceLocal, CompteServiceRemote {
 	
 	@Override
 	public List<Compte> getAllCompteByAgence(int id) {
-		return  em.createQuery("select c from compte c where idAgence=? and isVerifie = ?", Compte.class)
+		return  em.createQuery("select c from compte c where idAgence=? and isVerifie = ? and isActif = ? ", Compte.class)
 							  .setParameter(1, id)
 							  .setParameter(2, true)
+							  .setParameter(3, true)
+							  .getResultList();
+	}
+	
+	@Override
+	public List<Compte> getAllCompteByClient(int id) {
+		return  em.createQuery("select c from compte c where idClient = ?", Compte.class)
+							  .setParameter(1, id)
 							  .getResultList();
 	}
 	
@@ -378,21 +388,15 @@ public class CompteService implements CompteServiceLocal, CompteServiceRemote {
 	
 	@Override
 	public Map<String, Float> lastTaux() throws IOException {
-		org.jsoup.nodes.Document webPage = Jsoup.connect("https://finance.yahoo.com/currencies").timeout(6000).get();
+		org.jsoup.nodes.Document webPage = Jsoup.connect("https://finance.yahoo.com/currencies").timeout(60000).get();
 		Elements dev = webPage.getElementsByClass("data-col1");
 		Elements val = webPage.getElementsByClass("data-col2");
-		List<String> devises = new ArrayList<String>();
-		List<String> valeurs = new ArrayList<String>();
 		Map<String, Float> hm = new HashMap<>();
-		 for (Element element : dev) {
-			devises.add(element.text());
-		 }
-		 for (Element element : val) {
-			 	if(!(element.text().contains(",")))
-			     valeurs.add(element.text());	
-		 }
-		 for (int i = 1; i < valeurs.size(); i++) {
-			hm.put(devises.get(i).toString(),Float.parseFloat(valeurs.get(i).toString()));
+		for(int i=0;i<dev.size();i++) {
+			if(!(val.get(i).text().contains(","))) {
+				
+				hm.put(dev.get(i).text(), Float.parseFloat(val.get(i).text()));
+			}
 		}
 		return hm;
 	}
@@ -402,7 +406,7 @@ public class CompteService implements CompteServiceLocal, CompteServiceRemote {
 		if(quantite<=0) {
 			return 0;
 		}
-		org.jsoup.nodes.Document convertissuer = Jsoup.connect("https://www.boursorama.com/bourse/devises/convertisseur-devises/"+de+"-"+a).timeout(20000).get();
+		org.jsoup.nodes.Document convertissuer = Jsoup.connect("https://www.boursorama.com/bourse/devises/convertisseur-devises/"+de+"-"+a).timeout(200000).get();
 		String s=convertissuer.getElementsByClass("c-table__cell c-table__cell--dotted").get(1).text();
 		String[] val1=s.split(" ");
 		double coef = Double.parseDouble(val1[0]);
