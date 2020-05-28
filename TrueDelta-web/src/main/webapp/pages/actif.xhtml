@@ -1,0 +1,204 @@
+<!DOCTYPE persistence PUBLIC "http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd" "">  
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="../template/template.xhtml">
+
+
+	<ui:param name="page_name" value="cotisation" />
+	<ui:define name="body">
+	  <!-- Toolbar    -->  
+	  <div class="navbar navbar-light bg-light">
+  <a class="navbar-brand">Actif</a>
+  
+  
+   <h:commandButton  value="pdf" action="#{actifBean.pdf(1)}"/>
+   <h:commandButton   action="#{actifBean.Asc('OpenPrice')}"/>
+     <div class="btn-group">
+   <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+   Sector
+  </button>
+  <div class="dropdown-menu">
+  	<ui:repeat value="#{actifBean.listsector}" var="item">
+  
+    <a class="dropdown-item" href="#">#{item}</a>
+   
+    </ui:repeat>
+   </div>
+  </div>
+  <div class="btn-group">
+   <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+   <img src="../vendor/icon/line.png" alt=""  width="20" height="20"/>
+  </button>
+  <div class="dropdown-menu">
+  <a class="dropdown-item"  action="#{actifBean.Asc('ClosedPrice')}"> Closed Price</a>
+    <a class="dropdown-item" href="../pages/actif.jsf" action="#{actifBean.Asc('OpenPrice')}">Open Price</a>
+    <a class="dropdown-item" href="#">Something else here</a>
+   </div>
+  </div>
+   <div class="btn-group">
+   <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+   <img src="../vendor/icon/business.png" alt=""  width="20" height="20"/>
+  </button>
+  <div class="dropdown-menu">
+    <a class="dropdown-item" href="../pages/actif.jsf" action="#{actifBean.Redirect()}">Closed Price</a>
+    <a class="dropdown-item" href="../pages/actif.jsf" action="#{actifBean.Redirect()}">Open Price</a>
+    <a class="dropdown-item" href="#">Something else here</a>
+   </div>
+  </div>
+  <h:form>  
+<p:growl id="msgs" showDetail="true" />  
+<h:panelGrid columns="2" cellpadding="5">  
+<p:outputLabel value="symbol: " />  
+<p:autoComplete value="#{actifBean.countryName}" completeMethod="#{actifBean.countryList()}" />  
+</h:panelGrid>  
+</h:form> 
+  <form class="form-inline">
+  <h:inputText value="#{actifBean.search}" class="form-control mr-sm-2"  />
+    <!--  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->
+    <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+  </form>
+</div>
+	  <!-- end toolbar -->
+	  
+
+	  <!-- table  -->
+		<div class="row">
+	
+	 
+	 
+	   
+	  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+  <ol class="carousel-indicators">
+    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+    <c:forEach  var="i" begin="1" end="#{companyBean.companies.size()}">
+   
+
+  
+    <li data-target="#carouselExampleIndicators" data-slide-to="${ i}"></li>
+  
+  </c:forEach>
+  </ol>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+    <div class="row">
+    <div class="col"><img src="../vendor/img/about/about.png" class="d-block w-100" alt="..."/></div>
+      
+    </div>
+    </div>
+    <ui:repeat value="#{companyBean.companies}" var="company">
+    <div class="carousel-item">
+    <div><h:outputText value="#{company.name}" /></div>
+ 
+     
+    <img   src="../vendor/img/Company/#{company.symbol}.png" class="d-block w-100" alt="..."/>
+    
+    </div>
+    </ui:repeat>
+    
+  </div>
+  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+	
+	 <!-- end carousel -->
+	 
+	 </div>
+	 	<div class="row">
+	 <div>laebel :  <h:outputText value="#{companyBean.companies.size()}" /></div>
+			<div class="col-lg-10 mb-5 mb-lg-0">
+				<div class="section-top-border">
+				<h3 class="mb-30"></h3>
+				<div class="progress-table-wrap">
+					<div class="progress-table">
+						<div class="table-head">
+							<div class="serial">#</div>
+							<div class="visit">symbol </div>
+							<div class="visit">HighPrice</div>
+							<div class="visit">LowPrice</div>
+							<div class="visit">Closedprice</div>
+							<div class="visit">OpenPrice</div>
+							<div class="visit">Currency</div>
+							<div class="percentage">xxxx</div>
+			
+						</div>
+						 <h:form>
+        				<ui:repeat value="#{actifBean.actifs}" var="actif">
+						<div class="table-row">
+						<div class="serial">
+							
+						</div>
+						<div class="visit">
+						<img src="img/elements/f1.jpg" alt=""/>
+						<h:link outcome="/pages/company.jsf" value="#{actif.company.symbol}" action="#{actifBean.getCompany(actif)}" />
+						<h:commandButton  value="#{actif.company.symbol}" action="#{actifBean.getCompany(actif)}" />
+						</div>
+						<div class="visit"> <h:outputText value="#{actif.highPrice}" /></div>
+						<div class="visit"> <h:outputText value="#{actif.lowPrice}" /></div>
+						<div class="visit"><h:outputText value="#{actif.closedPrice}" /></div>
+						<div class="visit"><h:outputText value="#{actif.openPrice}" /></div>
+						<div class="visit"><h:outputText value="#{actif.currency}" /></div>
+								
+							<div class="percentage">
+								<div class="progress">
+									<div class="progress-bar color-1" role="progressbar" style="width: 80%"
+										aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+								</div>
+							</div>
+						</div>
+				
+				</ui:repeat>   
+				
+					<p:chart type="pie" model="#{pieChart.pieModel}" style="width:400px;height:300px" />
+   			 </h:form>
+			
+					</div>
+				</div>
+			</div>
+			</div>
+			<div class="col-lg-2">
+				<div class="blog_right_sidebar">
+					<aside class="single_sidebar_widget search_widget">
+					
+						<!-- <p:chart type="pie" model="#{pieChart.pieModel}" style="width:400px;height:300px" /> -->
+						
+				
+						<p:chart type="pie" model="#{pieChart.pieModel}" style="width:400px;height:300px" />
+
+						<button
+							class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
+							style="margin-top: 10px" >
+							<h:link outcome="/pages/portefeuil.jsf" />add</button>
+							<h:link outcome="/pages/portefeuil.jsf" value="add" />
+					</aside>
+				</div>
+			</div>
+		
+		
+	
+		</div>
+		<div  class="row">
+		<p:chart type="pie" model="#{pieChart.pieModel}" style="width:400px;height:300px" />
+		</div>
+		<div  class="row">
+	<h:form>  
+<p:growl id="msgs" showDetail="true" />  
+<h:panelGrid columns="2" cellpadding="5">  
+<p:outputLabel value="Provide Country: " />  
+<p:autoComplete value="#{actifBean.countryName}" completeMethod="#{actifBean.countryList()}" />  
+</h:panelGrid>  
+</h:form> 
+	</div>
+	</ui:define>
+</ui:composition>

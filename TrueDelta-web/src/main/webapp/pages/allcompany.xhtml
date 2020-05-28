@@ -1,0 +1,30 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	template="../template/template.xhtml"
+	
+	>
+
+	<ui:param name="page_name" value="cotisation" />
+	<ui:define name="body">
+	
+	  
+	<ui:repeat value="#{companyBean.companies}" var="company">
+	<div class="row">
+	<div class="col">
+	<div class="card" style="width: 18rem;">
+  <img src="..." class="card-img-top" alt="..."/>
+  <div class="card-body">
+    <h5 class="card-title">Card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
+  </div>
+</div>
+		
+		</div></div>
+		</ui:repeat>   
+
+	</ui:define>
+</ui:composition>

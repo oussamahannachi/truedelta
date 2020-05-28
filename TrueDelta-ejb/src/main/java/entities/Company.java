@@ -40,7 +40,7 @@ public class Company implements Serializable{
 	private BigDecimal AnnualYieldPercent;
 	private Date ExDate;
 	private Date PayDate;
-	//private String logo;
+	private String logo;
 	
 	//@OneToMany(cascade = CascadeType.ALL,mappedBy="Company")
 	//private List<ActifFinancier> Stocks;
@@ -172,6 +172,12 @@ public class Company implements Serializable{
 				+ ", FullTimeEmployer=" + FullTimeEmployer + ", Revenu=" + Revenu + ", TelephoneNumber="
 				+ TelephoneNumber + ", AnnualYield=" + AnnualYield + ", AnnualYieldPercent=" + AnnualYieldPercent
 				+ ", ExDate=" + ExDate + ", PayDate=" + PayDate + "]";
+	}
+	public String getLogo() {
+		return logo;
+	}
+	public void setLogo(String logo) {
+		this.logo = logo;
 	}
 	
 	

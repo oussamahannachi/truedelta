@@ -14,4 +14,10 @@ public interface CompaniesServiceRemote {
 	public void UpdateCompany(Company Company);
 	public void RemoveCompany(int id);
 	Company GetCompanyByID(int id);
+	Float GetMaxReveuu();
+	List<String> GetAllSector();
+	Company GetCompByMaxReveuu();
+	List<Company> GetCompBy();
+	List<Company> GetCompByAdresse(String address);
+	List<String> GetAllSymbol();
 }

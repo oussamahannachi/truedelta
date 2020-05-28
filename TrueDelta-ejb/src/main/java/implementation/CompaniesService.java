@@ -78,5 +78,42 @@ public class CompaniesService implements CompaniesServiceRemote {
 	public void RemoveCompany(int id) {
 		em.remove(em.find(Company.class, id));		
 	}
+	@Override
+	public Float GetMaxReveuu() {
+	  TypedQuery<Float> query = em.createQuery("select max(c.Revenu) from Company c",Float.class);
+	  return  query.getSingleResult();
+	}
+	@Override
+	public Company GetCompByMaxReveuu() {
+	  TypedQuery<Company> query = em.createQuery("select c from Company c where c.Revenu = max (c.Revenu)",Company.class);
+	  return  query.getSingleResult(); //à couriger
+	}
+	@Override
+	public List<String> GetAllSector() {
+		List<String> Sector = em.createQuery("Select DISTINCT (c.Sector) from Company c", String.class).getResultList();
+		return Sector;
+		
+	}
 
+	@Override
+	public List<Company> GetCompByAdresse(String address) {
+		
+		//utuliser %like%
+		TypedQuery<Company> query= em.createQuery("select c from Company c where c.Address like '%"+address+"%'",Company.class) ;
+	//	query.setParameter("address", address);
+			
+		return query.getResultList();
+	}
+
+	@Override
+	public List<Company> GetCompBy() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<String> GetAllSymbol() {
+		List<String> Sector = em.createQuery("Select DISTINCT (c.Symbol) from Company c", String.class).getResultList();
+		return Sector;
+	}
 }

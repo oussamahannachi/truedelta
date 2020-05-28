@@ -1,7 +1,11 @@
 package implementation;
 
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.ParseException;
@@ -26,7 +30,6 @@ import entities.Compte;
 import entities.Transaction;
 import entities.TypeActif;
 import interfaces.ActifFinancierServiceRemote;
-
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 import yahoofinance.histquotes.HistoricalQuote;
@@ -35,8 +38,11 @@ import yahoofinance.histquotes2.HistoricalDividend;
 
 //import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.CMYKColor;
+import com.itextpdf.text.pdf.PdfWriter;
 @Stateless
 @LocalBean
 public class ActifFinancierService implements ActifFinancierServiceRemote {
@@ -123,14 +129,18 @@ public class ActifFinancierService implements ActifFinancierServiceRemote {
 
 	@Override
 	public List<ActifFinancier> SortAscending(String criteria ) {
-		List<ActifFinancier>  sortQuery = em.createQuery("SELECT a FROM ActifFinancier a ORDER BY a."+criteria+" ASC", ActifFinancier.class).getResultList();
-		return sortQuery;
+		TypedQuery<ActifFinancier>  sortQuery = em.createQuery("select a from ActifFinancier a where a.type=:type ORDER BY a."+criteria+" ASC", ActifFinancier.class);
+		sortQuery.setParameter("type", TypeActif.action);
+		return sortQuery.getResultList();
+		
+		
 	}
 
 	@Override
 	public List<ActifFinancier> SortDescending(String criteria ) {
-		List<ActifFinancier>  sortQuery = em.createQuery("SELECT a FROM ActifFinancier a ORDER BY a."+criteria+" DESC", ActifFinancier.class).getResultList();
-		return sortQuery;
+		TypedQuery<ActifFinancier>  sortQuery = em.createQuery("select a from ActifFinancier a where a.type=:type ORDER BY a."+criteria+" DESC", ActifFinancier.class);
+		sortQuery.setParameter("type", TypeActif.action);
+		return sortQuery.getResultList();
 	}
 
 	@Override
@@ -331,25 +341,26 @@ public class ActifFinancierService implements ActifFinancierServiceRemote {
 	
 	@Override
 	public  List<ActifFinancier> GetAction() {
-		TypedQuery<ActifFinancier> query = em.createQuery("select a from ActifFinancier a.type=:type", ActifFinancier.class);
-		query.setParameter("type", TypeActif.action.toString());		
+		TypedQuery<ActifFinancier> query = em.createQuery("select a from ActifFinancier a where a.type=:type", ActifFinancier.class);
+		query.setParameter("type", TypeActif.action);		
 		return query.getResultList();
 	}
 	/*==============================Obligation===================================*/
 	@Override
 	public  List<ActifFinancier> GetObligation() {
-		TypedQuery<ActifFinancier> query = em.createQuery("select a from ActifFinancier a.type=:type", ActifFinancier.class);
-		query.setParameter("type", TypeActif.obligation.toString());		
+		TypedQuery<ActifFinancier> query = em.createQuery("select a from ActifFinancier a where a.type=:type", ActifFinancier.class);
+		query.setParameter("type", TypeActif.obligation);		
 		return query.getResultList();
 	}
 	@Override
-	public  List<Double> CashFlow(ActifFinancier a) {
-		List<Double> Cf = new ArrayList<Double>();
-		double c = (a.getParvalue().doubleValue()*a.getTauxcoupon())/a.getFréquence();
-		Cf.add(-a.getBondPrice().doubleValue());
+	public  List<BigDecimal> CashFlow(ActifFinancier a) {
+		List<BigDecimal> Cf = new ArrayList<BigDecimal>();
+		BigDecimal c = (a.getParvalue().multiply(a.getTauxcoupon()));
+	//	c=c.divide(a.getFréquence());
+		Cf.add(a.getBondPrice().negate());
 		for(int i=1;i<=a.getDuree();i++) 
 		{
-			double x=0;
+			BigDecimal x = null;
 			
 			if(i<(a.getFréquence()*a.getDuree()))
 				{
@@ -358,7 +369,7 @@ public class ActifFinancierService implements ActifFinancierServiceRemote {
 				}
 			else if (i== (a.getFréquence()*a.getDuree())) {
 				
-				 x =c+a.getParvalue().doubleValue();
+				 x =c.add(a.getParvalue());
 			}
 			
 			Cf.add(x);
@@ -368,14 +379,16 @@ public class ActifFinancierService implements ActifFinancierServiceRemote {
 		
 	}
 	@Override
-	public  List<Double> PVCashFlow(ActifFinancier a) {
-		List<Double> PVCf = new ArrayList<Double>();
-		List<Double> Cf = CashFlow(a);
-		PVCf.add(0.00);
-		double x= 0;
+	public  List<BigDecimal> PVCashFlow(ActifFinancier a) {
+		List<BigDecimal> PVCf = new ArrayList<BigDecimal>();
+		List<BigDecimal> Cf = CashFlow(a);
+		PVCf.add(BigDecimal.ZERO);
+		BigDecimal x= BigDecimal.ZERO;
 		for(int i=1;i<=a.getDuree();i++) 
 		{
-			x = i/Math.pow((1+a.getTauxActuariel())/a.getFréquence(),Cf.get(i));
+			x = (a.getTauxActuariel().add(BigDecimal.ONE)).pow(i);
+			x = Cf.get(i).divide(x,2, RoundingMode.HALF_UP);
+			//x = Cf.get(i).divide(x, MathContext.DECIMAL128);
 			
 			PVCf.add(x);
 		}
@@ -384,23 +397,160 @@ public class ActifFinancierService implements ActifFinancierServiceRemote {
 		
 	}
 	@Override
-	public  List<Double> DurationCalcul(ActifFinancier a) {
-		List<Double> DC = new ArrayList<Double>();
-		List<Double> PVCf = PVCashFlow(a);
-		DC.add(0.00);
-		double x= 0;
+	public  List<BigDecimal> DurationCalcul(ActifFinancier a) {
+		List<BigDecimal> DC = new ArrayList<BigDecimal>();
+		List<BigDecimal> PVCf = PVCashFlow(a);
+		DC.add(BigDecimal.ZERO);
+		BigDecimal x= BigDecimal.ZERO;
+		BigDecimal sum= BigDecimal.ZERO;
 		for(int i=1;i<=a.getDuree();i++) 
 		{
-			x = PVCf.get(i)*i;	
+			x = PVCf.get(i).multiply(BigDecimal.valueOf(i));	
+			System.out.println(x);
+			sum =x.add(sum);
 			DC.add(x);
 		}
+		
+		DC.add(sum);
 		return DC;
 	}
-	public double Duration(ActifFinancier a) {
-		List<Double> DC = DurationCalcul(a).stream().
-		double d =0;
+	@Override
+	public BigDecimal Duration(ActifFinancier a) {
+		//List<Double> DC = DurationCalcul(a);
+		BigDecimal sum = DurationCalcul(a).get(DurationCalcul(a).size()-1);
+		BigDecimal d = sum.divide(a.getBondPrice(),2, RoundingMode.HALF_UP);
+				d.divide(BigDecimal.valueOf(a.getFréquence()),2, RoundingMode.HALF_UP) ;
 		
 		return d;
 	}
+	
+	@Override
+	public BigDecimal Sensibilite(ActifFinancier a) {
+		BigDecimal Duration = Duration(a);
+		//BigDecimal x = BigDecimal.ZERO;
+		BigDecimal x =BigDecimal.ONE.add(a.getTauxActuariel());
+		x=x.divide(BigDecimal.valueOf(a.getFréquence()),2, RoundingMode.HALF_UP);
+				
+		x=Duration.divide(x,2, RoundingMode.HALF_UP);
+		return x;
+	}
+	@Override
+	public BigDecimal SommeConvexité(ActifFinancier a) {
+		
+		List<BigDecimal> PVCashFlow = PVCashFlow(a);
+		
+		BigDecimal z;
+		BigDecimal y =( BigDecimal.ONE.add(a.getTauxActuariel())).divide(BigDecimal.valueOf(a.getFréquence()), 2,RoundingMode.HALF_UP);
+		y=y.pow(2);
+		y = BigDecimal.ONE.divide(y, 2,RoundingMode.HALF_UP);
+		
+		BigDecimal x = BigDecimal.ZERO;
+		BigDecimal s = BigDecimal.ZERO;
+		for(int i=1;i<=a.getDuree();i++) 
+		{
+			z=BigDecimal.valueOf(i).pow(2);
+			z=z.add(BigDecimal.valueOf(i));
+			x=y.multiply(PVCashFlow.get(i)).multiply(z);
+			s = s.add(x);
+		}
+		return s;
+	}
+	@Override
+	public List<BigDecimal> ConvexitéCalcul(ActifFinancier a) {
+		List<BigDecimal> PVCashFlow = PVCashFlow(a);
+		List<BigDecimal> CC =new ArrayList<BigDecimal>();
+		CC.add(BigDecimal.ZERO);
+		BigDecimal z;
+		BigDecimal y =( BigDecimal.ONE.add(a.getTauxActuariel())).divide(BigDecimal.valueOf(a.getFréquence()), 2,RoundingMode.HALF_UP);
+		y=y.pow(2);
+		y = BigDecimal.ONE.divide(y, 2,RoundingMode.HALF_UP);
+		
+		BigDecimal x = BigDecimal.ZERO;
+	
+		for(int i=1;i<=a.getDuree();i++) 
+		{
+			z=BigDecimal.valueOf(i).pow(2);
+					z=z.add(BigDecimal.valueOf(i));
+			x=y.multiply(PVCashFlow.get(i));
+			x=x.multiply(z);
+		
+			CC.add(x);
+		}
+		return CC;
+	}
 
-}
+	public BigDecimal Convexité(ActifFinancier a) {
+		return SommeConvexité(a).divide(a.getBondPrice(),2 ,RoundingMode.HALF_UP).divide(BigDecimal.valueOf(a.getFréquence()),2, RoundingMode.HALF_UP);
+	}
+	
+	//=====================portfeill==========================
+	 
+	@Override
+	public List<ActifFinancier> getStockByClient(int idp,int ida) {	
+		TypedQuery<ActifFinancier> query= em.createQuery("select DISTINCT a from ActifFinancier a join a.compte c join c.proprietaire p join c.agence g where p.id=:idp  and g.id=:ida", ActifFinancier.class);
+		query.setParameter("idp", idp);
+		query.setParameter("ida", ida);
+		return query.getResultList();
+	}
+	
+	//actifs
+	@Override
+	public List<ActifFinancier> getStockByClient(int idp) {	
+		TypedQuery<ActifFinancier> query= em.createQuery("select DISTINCT a from ActifFinancier a join a.compte c join c.proprietaire p  where p.id=:idp ", ActifFinancier.class);
+		query.setParameter("idp", idp);
+		
+		return query.getResultList();
+	}
+	@Override
+	public List<ActifFinancier> getStockBynumeroCompte(String numeroCompte) {	
+		TypedQuery<ActifFinancier> query= em.createQuery("select DISTINCT a from ActifFinancier a join a.compte c where c.numeroCompte=:numeroCompte ", ActifFinancier.class);
+		query.setParameter("numeroCompte", numeroCompte);
+		
+		return query.getResultList();
+	}
+	
+	@Override
+	 public void pdfToGenerate(int clientId) throws  IOException {
+	       Font blueFont = FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD, new CMYKColor(0, 100, 100, 0));
+	        Font redFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.BOLD, new CMYKColor(0, 255, 0, 0));
+	        Font yellowFont = FontFactory.getFont(FontFactory.HELVETICA, 14, Font.BOLD, new CMYKColor(0, 0, 255, 0));
+	        Document document = new Document();
+	        try {
+	            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("../vendor/img/portfolio.pdf"));
+	          //  String pdf = getStockByClient(clientId).toString();
+	            
+	            LocalDateTime date = LocalDateTime.now();
+	            document.open();
+
+	            document.add(new Paragraph("TrueDelta Project", blueFont));
+	            document.add(new Paragraph("N° : "+clientId+ "(Compte LIBRE INDIVIDUEL)",redFont));
+	            document.add(new Paragraph("Votre Conseiller : Mme.Ezzeddine Mouna",redFont));
+	            document.add(new Paragraph("Veuillez trouver ci-jointe la situation au"+date+"de votre compte :"
+	));
+
+	            document.add(new Paragraph("La liste de vos action est : "));
+	           // document.add(new Paragraph(pdf));
+	            document.addAuthor("Mouna Ezzeddine");
+	            document.addCreationDate();
+	            document.addSubject(" Portefeuille - Compte LIBRE INDIVIDUEL : "+clientId);
+	            document.getHtmlStyleClass();
+	        //Add Image
+	           // Image image1 = Image.getInstance("temp.jpg");
+	            //Fixed Positioning
+	         //   image1.setAbsolutePosition(5f, 300f);
+	            //Scale to new height and new width of image
+	        //    image1.scaleAbsolute(70, 120);
+	            //Add to document
+	        //    document.add(image1);
+
+
+	            document.close();
+	            writer.close();
+	        } catch (DocumentException e) {
+	            e.printStackTrace();
+	        } catch (FileNotFoundException e) {
+	            e.printStackTrace();
+	        }
+	        System.out.println("msg11");
+	    }
+	}
