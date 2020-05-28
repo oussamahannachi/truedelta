@@ -33,7 +33,7 @@ public class ConvertisseurBean implements Serializable  {
 	private String de;
 	private String a;
 	private double montant;
-
+	
 	private List<String> devises = Arrays.asList("euro", "dollar", "dinartunisien", "dollarcanadien", "yen",
 			"francsuisse", "dirham", "livresterling", "rouble", "baht", "dollaraustralien", "rialduqatar", "riyal");
 

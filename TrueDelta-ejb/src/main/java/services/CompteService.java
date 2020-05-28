@@ -21,6 +21,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -28,6 +29,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.bson.*;
 import org.bson.types.ObjectId;
+import org.hibernate.validator.constraints.br.CPF;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -65,6 +67,7 @@ public class CompteService implements CompteServiceRemote {
 		c.setGab(0);
 		c.setNbAction(0);
 		c.setNbObligation(0);
+		c.setRemarque("Le compte n'est pas encore vérifié");
 		em.persist(c);
 		return c.getNumero();
 	}
@@ -89,7 +92,7 @@ public class CompteService implements CompteServiceRemote {
 	
 	@Override
 	public List<Compte> getAllCompteByAgence(int id) {
-		return  em.createQuery("select c from compte c where idAgence=? and isVerifie = ? and isActif = ? ", Compte.class)
+		return  em.createQuery("select c from compte c where idAgence=? and isAutorise = ? and isActif = ? ", Compte.class)
 							  .setParameter(1, id)
 							  .setParameter(2, true)
 							  .setParameter(3, true)
@@ -97,10 +100,85 @@ public class CompteService implements CompteServiceRemote {
 	}
 	
 	@Override
+	public List<Compte> getAllCompteByBanque(int id) {
+		return  em.createQuery("select c from compte c where idAgence=? ", Compte.class)
+							  .setParameter(1, id)
+							  .getResultList();
+	}
+	
+	
+	@Override
 	public List<Compte> getAllCompteByClient(int id) {
 		return  em.createQuery("select c from compte c where idClient = ?", Compte.class)
 							  .setParameter(1, id)
 							  .getResultList();
+	}
+	
+	@Override
+	public List<Compte> filtrerComptes(String banquename, String devise,int actif){
+		List<Compte> comptes ;
+		List <Compte> l = new ArrayList<Compte>();
+		int inf=0;
+		int sup=0;
+		switch(actif) {
+			case 0:
+				inf=0;
+				sup=10000;
+				break;
+			case 1:
+				inf=0;
+				sup=4;
+				break;
+			case 2:
+				inf=5;
+				sup=9;
+				break;
+			case 3:
+				inf=10;
+				sup=19;
+				break;
+			case 4:
+				inf=20;
+				sup=100000;
+				break;
+		}
+		if(banquename.equals("Tous") && devise.equals("Tous"))
+			l = em.createQuery("select c from compte c where c.isActif=? AND c.nbAction + c.nbObligation BETWEEN ? and ?", Compte.class)
+					 .setParameter(1, true)
+					 .setParameter(2, inf)
+					 .setParameter(3, sup)
+					 .getResultList();
+		else if (banquename.equals("Tous") && !(devise.equals("Tous"))) {
+			comptes = em.createQuery("select c from compte c where c.isActif=? AND c.nbAction + c.nbObligation BETWEEN ? and ?", Compte.class)
+					 .setParameter(1, true)
+					 .setParameter(2, inf)
+					 .setParameter(3, sup)
+					 .getResultList();
+			for (int i=0;i<comptes.size();i++) {
+				if((comptes.get(i).getDevise().toString().equals(devise))) {
+					l.add(getCompteByNumero(comptes.get(i).getNumero()));
+				}
+			}
+		}
+		else {
+		comptes = em.createQuery("select c from compte c "
+									  + "left join c.agence Agence "
+									  + "where Agence.banqueName = ? AND c.isActif=? AND c.nbAction + c.nbObligation BETWEEN ? and ? ", Compte.class)
+				  .setParameter(1, banquename)
+				  .setParameter(2, true)
+				  .setParameter(3, inf)
+				  .setParameter(4, sup)
+				  .getResultList();
+		if (devise.equals("Tous")) {
+			l=comptes;
+		}
+		for (int i=0;i<comptes.size();i++) {
+			if((comptes.get(i).getDevise().toString().equals(devise))) {
+				l.add(getCompteByNumero(comptes.get(i).getNumero()));
+			}
+		}
+		}
+		return l;
 	}
 	
 	@Override
@@ -212,7 +290,12 @@ public class CompteService implements CompteServiceRemote {
 		else
 		{
 			FileInputStream excelFile = new FileInputStream(file);
-			Workbook workbook = new XSSFWorkbook(excelFile);
+			Workbook workbook ;
+			if (file.getName().toLowerCase().endsWith("xls")) {
+				workbook = new HSSFWorkbook(excelFile);
+			} else {
+				workbook = new XSSFWorkbook(excelFile);
+			}
 			if(workbook.getNumberOfSheets()!=3) {
 				workbook.close();
 				excelFile.close();
@@ -237,7 +320,12 @@ public class CompteService implements CompteServiceRemote {
 	@Override
 	public int isEmpty(File file) throws IOException {
 		FileInputStream excelFile = new FileInputStream(file);
-		Workbook workbook = new XSSFWorkbook(excelFile);
+		Workbook workbook ;
+		if (file.getName().toLowerCase().endsWith("xls")) {
+			workbook = new HSSFWorkbook(excelFile);
+		} else {
+			workbook = new XSSFWorkbook(excelFile);
+		}
 		int c = 0;
 		for (Sheet sheet : workbook) 
 		{
@@ -260,7 +348,12 @@ public class CompteService implements CompteServiceRemote {
 	@Override
 	public int nbrActions(File file, long num) throws IOException {
 		FileInputStream excelFile = new FileInputStream(file);
-		Workbook workbook = new XSSFWorkbook(excelFile);
+		Workbook workbook ;
+		if (file.getName().toLowerCase().endsWith("xls")) {
+			workbook = new HSSFWorkbook(excelFile);
+		} else {
+			workbook = new XSSFWorkbook(excelFile);
+		}
 		Sheet sheet = workbook.getSheet("actions");
 		int action =0;
 		for(Row row : sheet) 
@@ -282,7 +375,12 @@ public class CompteService implements CompteServiceRemote {
 	@Override
 	public int nbrObligations(File file, long num) throws IOException {
 		FileInputStream excelFile = new FileInputStream(file);
-		Workbook workbook = new XSSFWorkbook(excelFile);
+		Workbook workbook ;
+		if (file.getName().toLowerCase().endsWith("xls")) {
+			workbook = new HSSFWorkbook(excelFile);
+		} else {
+			workbook = new XSSFWorkbook(excelFile);
+		}
 		Sheet sheet = workbook.getSheet("obligations");
 		int oblgation =0;
 		for(Row row : sheet) 
@@ -407,9 +505,10 @@ public class CompteService implements CompteServiceRemote {
 			return 0;
 		}
 		org.jsoup.nodes.Document convertissuer = Jsoup.connect("https://www.boursorama.com/bourse/devises/convertisseur-devises/"+de+"-"+a).timeout(200000).get();
-		String s=convertissuer.getElementsByClass("c-table__cell c-table__cell--dotted").get(1).text();
-		String[] val1=s.split(" ");
-		double coef = Double.parseDouble(val1[0]);
+		Elements tr = convertissuer.select("tr.c-table__row");
+        String s = tr.select("td").get(1).text();
+        String[] val1=s.split(" ");
+        double coef = Double.parseDouble(val1[0]);
 		return coef*quantite;
 	}
 	

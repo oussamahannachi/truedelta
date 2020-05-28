@@ -35,15 +35,15 @@
 							</h:selectOneMenu>
 						</div>
 					</div>
-					<h:commandButton action="#{convertisseurBean.doConvertisseur}"
+					<h:commandButton action="#{convertisseurBean.doConvertisseur()}"
 						styleClass="btn btn-lg btn-primary"
 						style="margin-left: 42%; margin-top: 10px" value="Convertir" />
-				</h:form>
 				<div class="card" style="width: 200px; margin: 50px 420px">
 					<div class="card-body" style="text-align: center">
-						<Label id="valeur">#{convertisseurBean.valeur} </Label>
+						<h:outputText id="valeur" value="#{convertisseurBean.valeur}" /> 
 					</div>
 				</div>
+				</h:form>
 			</div>
 			<div class="col-lg-4">
 				<div class="blog_right_sidebar">
