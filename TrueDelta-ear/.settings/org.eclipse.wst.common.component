@@ -3,9 +3,11 @@
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/ear-resources"/>
         <wb-resource deploy-path="/" source-path="/src/main/application" tag="defaultRootSource"/>
         <dependent-module archiveName="TrueDelta-web.war" deploy-path="/" handle="module:/resource/TrueDelta-web/TrueDelta-web">
+            <dependent-object/>
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="TrueDelta-ejb.jar" deploy-path="/" handle="module:/resource/TrueDelta-ejb/TrueDelta-ejb">
+            <dependent-object/>
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="mongo-java-driver.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/mongodb/mongo-java-driver/3.12.2/mongo-java-driver-3.12.2.jar">

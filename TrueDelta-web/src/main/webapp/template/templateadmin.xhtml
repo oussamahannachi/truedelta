@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//FR" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<head>
+	<title>#{page_name}</title>
+    <link href="../vendoradmin/css/font-face.css" rel="stylesheet" media="all" />
+    <link href="../vendoradmin/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all" />
+    <link href="../vendoradmin/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all" />
+    <link href="../vendoradmin/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all" />
+    <link href="../vendoradmin/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all" />
+    <link href="../vendoradmin/vendor/animsition/animsition.min.css" rel="stylesheet" media="all" />
+    <link href="../vendoradmin/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all" />
+    <link href="../vendoradmin/vendor/wow/animate.css" rel="stylesheet" media="all" />
+    <link href="../vendoradmin/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all" />
+    <link href="../vendoradmin/vendor/slick/slick.css" rel="stylesheet" media="all" />
+    <link href="../vendoradmin/vendor/select2/select2.min.css" rel="stylesheet" media="all" />
+    <link href="../vendoradmin/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all" />
+    <link href="../vendoradmin/css/theme.css" rel="stylesheet" media="all" />
+</head>
+<body class="animsition">
+    <div class="page-wrapper">
+        <!-- MENU SIDEBAR-->
+        <aside class="menu-sidebar d-none d-lg-block">
+            <div class="logo">
+                <a href="#">
+                    <img src="images/icon/logo.png" alt="Cool Admin" />
+                </a>
+            </div>
+            <div class="menu-sidebar__content js-scrollbar1">
+                <nav class="navbar-sidebar">
+                    <ul class="list-unstyled navbar__list">
+                        <li class="active has-sub">
+                            <a class="js-arrow" href="#">
+                                <i class="fas fa-tachometer-alt"></i>Accueil</a>
+                        </li>
+                        <li>
+                            <a href="chart.html">
+                                <i class="fas fa-chart-bar"></i>Comptes bancaires</a>
+                        </li>
+                        <li>
+                            <a href="table.html">
+                                <i class="fas fa-table"></i>Banques</a>
+                        </li>
+                        <li>
+                            <a href="form.html">
+                                <i class="far fa-check-square"></i>Procurations</a>
+                        </li>
+                        <li>
+                            <a href="calendar.html">
+                                <i class="fas fa-calendar-alt"></i>Transactions</a>
+                        </li>
+                        <li class="has-sub">
+                            <a class="js-arrow" href="#">
+                                <i class="fas fa-copy"></i>Bourse</a>
+                        </li>
+                        <li class="has-sub">
+                            <a class="js-arrow" href="#">
+                                <i class="fas fa-desktop"></i>Réclamations</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+        <!-- END MENU SIDEBAR-->
+
+        <!-- PAGE CONTAINER-->
+        <div class="page-container">
+            <!-- HEADER DESKTOP-->
+            <header class="header-desktop">
+                <div class="section__content section__content--p30">
+                    <div class="container-fluid">
+                        <div class="header-wrap">
+                            <form class="form-header" action="" method="POST">
+                                <input class="au-input au-input--xl" type="text" name="search" placeholder="Chercher" />
+                                <button class="au-btn--submit" type="submit">
+                                    <i class="zmdi zmdi-search"></i>
+                                </button>
+                            </form>
+                            <div class="header-button">
+                                <div class="noti-wrap">
+                                    <div class="noti__item js-item-menu">
+                                        <i class="zmdi zmdi-comment-more"></i>
+                                        <span class="quantity">0</span>
+                                        <div class="mess-dropdown js-dropdown">
+                                            <div class="mess__title">
+                                                <p>Aucun nouveau message</p>
+                                            </div>
+                                            <div class="mess__footer">
+                                                <a href="#">Voir tous</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="noti__item js-item-menu">
+                                        <i class="zmdi zmdi-email"></i>
+                                        <span class="quantity">0</span>
+                                        <div class="email-dropdown js-dropdown">
+                                            <div class="email__title">
+                                                <p>Aucun nouveau email</p>
+                                            </div>
+                                            <div class="email__footer">
+                                                <a href="#">Voir tous</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="noti__item js-item-menu">
+                                        <i class="zmdi zmdi-notifications"></i>
+                                        <span class="quantity">0</span>
+                                        <div class="notifi-dropdown js-dropdown">
+                                            <div class="notifi__title">
+                                                <p>Aucune nouvelle notifaction</p>
+                                            </div>
+                                            <div class="notifi__footer">
+                                                <a href="#">Voir tous</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="account-wrap">
+                                    <div class="account-item clearfix js-item-menu">
+                                        <div class="image">
+                                            <img src="../vendoradmin/images/icon/avatar-01.jpg" alt="John Doe" />
+                                        </div>
+                                        <div class="content">
+                                            <a class="js-acc-btn" href="#">Amin</a>
+                                        </div>
+                                        <div class="account-dropdown js-dropdown">
+                                            <div class="info clearfix">
+                                                <div class="image">
+                                                    <a href="#">
+                                                        <img src="images/icon/avatar-01.jpg" alt="John Doe" />
+                                                    </a>
+                                                </div>
+                                                <div class="content">
+                                                    <h5 class="name">
+                                                        <a href="#">Admin</a>
+                                                    </h5>
+                                                    <span class="email">admin@treudelta.tn</span>
+                                                </div>
+                                            </div>
+                                            <div class="account-dropdown__body">
+                                                <div class="account-dropdown__item">
+                                                    <a href="#">
+                                                        <i class="zmdi zmdi-account"></i>Compte</a>
+                                                </div>
+                                                <div class="account-dropdown__item">
+                                                    <a href="#">
+                                                        <i class="zmdi zmdi-settings"></i>Paramètres</a>
+                                                </div>
+                                            </div>
+                                            <div class="account-dropdown__footer">
+                                                <a href="#">
+                                                    <i class="zmdi zmdi-power"></i>Déconnexion</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- HEADER DESKTOP-->
+
+            <!-- MAIN CONTENT-->
+            <div class="main-content">
+               <ui:insert name="body" />
+            </div>
+        </div>
+
+    </div>
+    
+    <script src="../vendoradmin/vendor/jquery-3.2.1.min.js"></script>
+    <script src="../vendoradmin/vendor/bootstrap-4.1/popper.min.js"></script>
+    <script src="../vendoradmin/vendor/bootstrap-4.1/bootstrap.min.js"></script>
+    <script src="../vendoradmin/vendor/slick/slick.min.js"></script>
+    <script src="../vendoradmin/vendor/wow/wow.min.js"></script>
+    <script src="../vendoradmin/vendor/animsition/animsition.min.js"></script>
+    <script src="../vendoradmin/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+    <script src="../vendoradmin/vendor/counter-up/jquery.waypoints.min.js"></script>
+    <script src="../vendoradmin/vendor/counter-up/jquery.counterup.min.js"></script>
+    <script src="../vendoradmin/vendor/circle-progress/circle-progress.min.js"></script>
+    <script src="../vendoradmin/vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="../vendoradmin/vendor/chartjs/Chart.bundle.min.js"></script>
+    <script src="../vendoradmin/vendor/select2/select2.min.js"></script>
+    <script src="../vendoradmin/js/main.js"></script>
+</body>
+</html>

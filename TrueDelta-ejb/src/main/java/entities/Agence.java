@@ -3,6 +3,7 @@ package entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
@@ -32,6 +33,9 @@ public class Agence implements Serializable {
 	@Column(nullable=true)
 	private long telephone;
 	private String password;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dernierenvoi ;
 	
 	@OneToMany(mappedBy="agence", cascade = { CascadeType.PERSIST,CascadeType.REMOVE }, fetch=FetchType.EAGER)
 	private List<Compte> comptes= new ArrayList<Compte>();
@@ -81,15 +85,16 @@ public class Agence implements Serializable {
 
 	public void setConfirmPassword(String confirmPassword) { this.confirmPassword = confirmPassword; }
 
-	
+	public Date getDernierenvoi() {
+		return dernierenvoi;
+	}
+
+	public void setDernierenvoi(Date dernierenvoi) {
+		this.dernierenvoi = dernierenvoi;
+	}
+
 	public List<Compte> getComptes() { return comptes; }
 
 	public void setComptes(List<Compte> comptes) { this.comptes = comptes; }
-
-	@Override
-	public String toString() {
-		return "Agence [id=" + id + ", banqueName=" + banqueName + ", code_BIC=" + code_BIC + ", code_BCT=" + code_BCT
-				+ ", agenceName=" + agenceName + ", adresse=" + adresse + ", siegeSocial=" + siegeSocial
-				+ ", telephone=" + telephone + ", password=" + password + ", confirmPassword=" + confirmPassword + "]";
-	}	
+	
 }

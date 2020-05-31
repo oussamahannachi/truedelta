@@ -37,7 +37,6 @@ public class FichierBean implements Serializable {
 	@ManagedProperty(value = "#{loginBean}")
 	private LoginBean lb;
 	
-	//allowTypes="/(\.|\/)(xls)$/"
 	@EJB
 	CompteService cs;
 	
@@ -70,10 +69,6 @@ public class FichierBean implements Serializable {
 	        
 			InputStream inputStream = file.getInputStream();
 	        OutputStream outputStream = null;
-			/*
-			 * String[] s= file.getFileName().split(".xls"); System.out.println(s[1]);
-			 * System.out.println(s[0]);
-			 */
 	        if(file.getFileName().endsWith(".xlsx")){
 	        	name = name.concat("xlsx");
 	        }
@@ -81,8 +76,6 @@ public class FichierBean implements Serializable {
 	        else if(file.getFileName().endsWith(".xls")){
 	        	name = name.concat("xls");
 	        }
-	  
-	        System.out.println(name);
 	        
 	        File f = new File(path + name);
 	        outputStream = new FileOutputStream(f);

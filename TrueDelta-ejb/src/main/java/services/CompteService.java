@@ -56,8 +56,16 @@ public class CompteService implements CompteServiceRemote {
 	MongoDatabase db = con.getDatabase("truedelta");
 	Document doc = new Document();
 	private static final DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm");	 
-	private Calendar cal = Calendar.getInstance();
+	
 		
+	public EntityManager getEm() {
+		return em;
+	}
+
+	public void setEm(EntityManager em) {
+		this.em = em;
+	}
+
 	@Override
 	public long ajouterCompte(Compte c) {
 		c.setIsAutorise(false);
@@ -112,6 +120,23 @@ public class CompteService implements CompteServiceRemote {
 		return  em.createQuery("select c from compte c where idClient = ?", Compte.class)
 							  .setParameter(1, id)
 							  .getResultList();
+	}
+
+	@Override
+	public List<Agence> getAllAgence(String banquename,int id){
+		List <Agence> l = new ArrayList<Agence>();
+		List<Agence> list = em.createQuery("select a from Agence a where a.banqueName = ? ", Agence.class)
+				 .setParameter(1, banquename)
+				 .getResultList();
+		List<Compte> comptes = getAllCompteByClient(id);
+		for (Compte compte : comptes) {
+			for (Agence agence : list) {
+				if(agence.getId()!=compte.getAgence().getId()) {
+					l.add(em.find(Agence.class, agence.getId()));
+				}
+			}
+		}
+		return l;
 	}
 	
 	@Override
@@ -211,6 +236,7 @@ public class CompteService implements CompteServiceRemote {
 	//Creation d'un doc à partir d'un compte
 	@Override
 	public Document createDocByCompte(Compte c) {
+		Calendar cal = Calendar.getInstance();
 		return doc.append("_id", new ObjectId())
 				  .append("numero",c.getNumero())
 				  .append("devise", c.getDevise().toString())
@@ -224,6 +250,7 @@ public class CompteService implements CompteServiceRemote {
 	//Creation d'un doc à partir d'un fichier excel
 	@Override
 	public Document createDocByExcel(Compte c) {
+		Calendar cal = Calendar.getInstance();
 		return doc.append("_id", new ObjectId())
 				  .append("numero",c.getNumero())
 				  .append("devise", c.getDevise().toString())
@@ -234,20 +261,31 @@ public class CompteService implements CompteServiceRemote {
 				  .append("date", formatter.format(cal.getTime()));
 					
 	}
-
+	
  	@Override
 	public void exceltoMongoDB(File f, int idAgence) throws IOException {
+ 		Calendar cal = Calendar.getInstance();
  		Agence agence = em.find(Agence.class, idAgence);
  		String nom = (agence.getBanqueName()+agence.getAgenceName()).toLowerCase();
+ 		
  		if((verifierCollection(nom))) 
  			db.getCollection(nom).deleteMany(Filters.in("source","excel","truedelta"));
  		else 
  			db.createCollection(nom);
  		MongoCollection<Document> collection = db.getCollection(nom);
-		List<Compte> comptes = getAllCompteByAgence(idAgence);
+		
+ 		List<Compte> comptes = getAllCompteByAgence(idAgence);
 		FileInputStream excelFile = new FileInputStream(f);
-		Workbook workbook = new XSSFWorkbook(excelFile);
+		
+		Workbook workbook ;
+		if (f.getName().toLowerCase().endsWith("xls")) {
+			workbook = new HSSFWorkbook(excelFile);
+		} else {
+			workbook = new XSSFWorkbook(excelFile);
+		}
+		
 		Sheet sheet = workbook.getSheet("comptes");
+		agence.setDernierenvoi(new Date(formatter.format(cal.getTime())));
 		if(!(comptes.isEmpty())) 
 		{
 			for(Compte compte : comptes) {
@@ -358,8 +396,8 @@ public class CompteService implements CompteServiceRemote {
 		int action =0;
 		for(Row row : sheet) 
 		{
-			for(Cell cell : row) 
-			{
+			if(row.getRowNum()>0) {
+				Cell cell=row.getCell(0);
 				if(cell.getCellType()==0) {
 					if(cell.getNumericCellValue()==num) {
 						action++;
@@ -385,8 +423,8 @@ public class CompteService implements CompteServiceRemote {
 		int oblgation =0;
 		for(Row row : sheet) 
 		{
-			for(Cell cell : row) 
-			{
+			if(row.getRowNum()>0) {
+				Cell cell=row.getCell(0);
 				if(cell.getCellType()==0) {
 					if(cell.getNumericCellValue()==num) {
 						oblgation++;
@@ -450,6 +488,7 @@ public class CompteService implements CompteServiceRemote {
 					default:
 						break;
 					}
+ 					Calendar cal = Calendar.getInstance();
  					compte.setLastVerif(new Date(formatter.format(cal.getTime())));
  				}
  			  }

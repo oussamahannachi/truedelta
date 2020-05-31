@@ -2,13 +2,13 @@
 <application xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/application_7.xsd" version="7">
   <display-name>TrueDelta-ear</display-name>
   <module>
+    <ejb>TrueDelta-ejb.jar</ejb>
+  </module>
+  <module>
     <web>
       <web-uri>TrueDelta-web.war</web-uri>
       <context-root>/TrueDelta-web</context-root>
     </web>
-  </module>
-  <module>
-    <ejb>TrueDelta-ejb.jar</ejb>
   </module>
   <library-directory>lib</library-directory>
 </application>

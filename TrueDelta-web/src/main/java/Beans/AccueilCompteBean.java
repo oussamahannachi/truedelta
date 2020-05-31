@@ -22,6 +22,8 @@ public class AccueilCompteBean implements Serializable {
 	private float solde;
 	private String devise;
 	
+	private Agence agence;
+	
 	@ManagedProperty(value = "#{loginBean}")
 	private LoginBean lb;
 	
@@ -199,6 +201,16 @@ public class AccueilCompteBean implements Serializable {
 
 	public void setComptesbanques(List<Compte> comptesbanques) {
 		this.comptesbanques = comptesbanques;
+	}
+
+	public Agence getAgence() {
+		if(lb.getAgence()==null)
+			return null;
+		return cs.getEm().find(Agence.class, lb.getAgence().getId());
+	}
+
+	public void setAgence(Agence agence) {
+		this.agence = agence;
 	}
 	
 }

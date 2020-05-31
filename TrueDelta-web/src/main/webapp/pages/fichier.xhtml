@@ -188,7 +188,17 @@
 			</c:when>
 			<c:when test="#{fichierBean.etat==0}">
 				<div class="alert alert-danger" role="alert">
-					<h6 style="margin-top: 10px">Format invalide</h6>
+					<h6 style="margin-top: 10px">Type de fichier non valide ! Merci de télécharger un fichier excel</h6>
+				</div>
+			</c:when>
+			<c:when test="#{fichierBean.etat==1}">
+				<div class="alert alert-danger" role="alert">
+					<h6 style="margin-top: 10px">Fichier excel non valide ! Nombre de feuilles inférieur à trois</h6>
+				</div>
+			</c:when>
+			<c:when test="#{fichierBean.etat==2}">
+				<div class="alert alert-danger" role="alert">
+					<h6 style="margin-top: 10px">Vérifier la structure et les noms des feuilles du fichier !</h6>
 				</div>
 			</c:when>
 		</c:choose>
@@ -234,7 +244,7 @@
 								</ul>
 							</div>
 							<div class="file-upload-buttons"
-								style="margin-top: 10px; margin-bottom: 10px">
+								style="margin-top: 10px; margin-bottom: 20px">
 								<ul style="list-style: none;">
 									<li style="padding: 10px;">
 										<div class="add-to-cart">
@@ -253,7 +263,7 @@
 											<h:commandButton styleClass="btn btn-outline-success"
 												style="height:50px;margin-top:2px;width:160px;border-radius: 7px;
 												font-size: 20px;box-shadow: 2px 2px 7px 0px rgba(50, 50, 50, 0.55);"
-												id="uploadFileButt" value="Telecharger"
+												id="uploadFileButt" value="Télécharger"
 												action="#{fichierBean.dummyAction()}" />
 										</div>
 									</li>
@@ -263,28 +273,16 @@
 					</h:form>
 					<div class="about-template-tips">
 						<div class="fieldset about-template">
-							<h4 class="legend">PDF template references:</h4>
-							<p>You can download the PDF template below and follow the
-								specifications inside</p>
+							<h4 class="legend" style="font-style: italic;font-weight: bolder;">Remerciement :</h4>
+							<p>Toute l'équique de <STRONG>TrueDelta </STRONG>vous remercie pour vos coopérations.</p>
 						</div>
 						<div class="fieldset template-prep-tips">
-							<h4 class="legend">Artwork Preparation Tips</h4>
+							<h4 class="legend" style="font-style: italic;font-weight: bolder;">Règles et confidentilaité :</h4>
 							<ol style="list-style-type: decimal; margin-left: 20px;">
-								<li>Download our guides/templates to ensure a more optimal
-									print result.</li>
-								<li>Files must be submitted with proper orientation to
-									ensure proper back up.</li>
-								<li>It is best to try to avoid using borders in your
-									design. If a border is too close to the trim, the trim may be
-									slightly off-center.</li>
-								<li>File must consist of 1/8" bleed and all important art
-									and text must be within the safety margin.</li>
-								<li>Ensure that your PDF is high res and that all images
-									are CMYK at 300 DPI.</li>
-								<li>Black type should have the following values: C0, M0,
-									Y0, K100.</li>
-								<li>Embed or outline all fonts.</li>
-								<li>Ensure your artwork colour is in CMYK format</li>
+								<li>Veuillez respecter le format du fichier demandé pour nous faciliter le traitement des données.</li>
+								<li>Evitez les valeurs manquentes dans vos fichiers.</li>
+								<li>Cette procédure sera quotidienne.</li>
+								<li>Les données envoyées sont autorisés par nos clients.</li>
 							</ol>
 						</div>
 					</div>

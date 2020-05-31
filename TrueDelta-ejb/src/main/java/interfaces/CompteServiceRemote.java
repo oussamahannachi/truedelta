@@ -10,6 +10,7 @@ import javax.ejb.Remote;
 
 import org.bson.Document;
 
+import entities.Agence;
 import entities.Compte;
 
 @Remote
@@ -21,6 +22,9 @@ public interface CompteServiceRemote {
 	public List<Compte> getAllCompte();
 	public List<Compte> getAllCompteByAgence(int id);
 	public List<Compte> getAllCompteByClient(int id); 
+	List<Compte> filtrerComptes(String banquename, String devise, int actif);
+	List<Compte> getAllCompteByBanque(int id);
+	public List<Agence> getAllAgence(String banquename, int id);
 	public long modifierCompte(Compte c);
 	public void supprimerCompte(long num);
 	
@@ -43,7 +47,7 @@ public interface CompteServiceRemote {
 	//Convertisseur Devise
 	public Map<String,Float> lastTaux() throws IOException; // Map contient les devises et les taux
 	public double convertisseur(String de,String a,double quantite) throws IOException;
-	List<Compte> filtrerComptes(String banquename, String devise, int actif);
-	List<Compte> getAllCompteByBanque(int id);
+	
+
 	
 }
