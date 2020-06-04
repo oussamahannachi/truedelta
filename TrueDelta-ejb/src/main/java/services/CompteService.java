@@ -475,7 +475,7 @@ public class CompteService implements CompteServiceRemote {
  					int val = Classification(excel, truedelta);
  					String s1 = excel.getString("devise")+""+excel.getDouble("solde")+excel.getInteger("actions")+""+excel.getInteger("obligations");
  					String s2 = truedelta.getString("devise")+""+truedelta.getDouble("solde")+truedelta.getInteger("actions")+""+truedelta.getInteger("obligations");
- 					gab = FuzzySearch.ratio(s1,"euro2000a0o0")/(float)100;
+ 					gab = FuzzySearch.ratio(s1,s2)/(float)100;
  					switch (val) {
 					case 0:
 						compte.setRemarque("Devise non conforme");
