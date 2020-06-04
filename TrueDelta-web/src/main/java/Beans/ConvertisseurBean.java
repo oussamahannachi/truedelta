@@ -102,6 +102,7 @@ public class ConvertisseurBean implements Serializable  {
 			if(!(val.get(i).text().contains(",")))
 			list.add(val.get(i).text());
 		}
+		System.out.println(list);
 		return list;
 	}
 

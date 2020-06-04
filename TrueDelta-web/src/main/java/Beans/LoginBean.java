@@ -41,12 +41,24 @@ public class LoginBean implements Serializable {
 		user = us.loginUser(login, password);
 		agence = us.loginAgence(login, password);
 		if (user != null ) {
-			if(user.getClass() != Administrateur.class && role.equals(user.getClass().getSimpleName())) {
-			navigateTo = "/template/template?faces-redirect=true";
-			loggedIn = true;
-			} 
-			else 
-				FacesContext.getCurrentInstance().addMessage("form:btn", new FacesMessage("Verifier votre role"));
+			System.out.println(user.getClass());
+			if(user.getClass() != Administrateur.class ) {
+				if(role.equals(user.getClass().getSimpleName())) {
+					navigateTo = "/template/template?faces-redirect=true";
+					loggedIn = true;
+				} 
+				else 
+					FacesContext.getCurrentInstance().addMessage("form:btn", new FacesMessage("Verifier votre role"));
+			}
+			else {
+				if(role.equals(user.getClass().getSimpleName())) {
+					navigateTo = "/template/templateadmin?faces-redirect=true";
+					loggedIn = true;
+				} 
+				else 
+					FacesContext.getCurrentInstance().addMessage("form:btn", new FacesMessage("Verifier votre role"));
+				
+			}
 		}
 		else if(agence != null && role.toLowerCase().equals("agence")){
 			navigateTo = "/template/template?faces-redirect=true";

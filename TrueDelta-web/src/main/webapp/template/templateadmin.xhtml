@@ -39,19 +39,19 @@
                                 <i class="fas fa-tachometer-alt"></i>Accueil</a>
                         </li>
                         <li>
-                            <a href="chart.html">
+                            <a href="../pages/listcomptes.jsf">
                                 <i class="fas fa-chart-bar"></i>Comptes bancaires</a>
                         </li>
                         <li>
-                            <a href="table.html">
+                            <a href="../pages/rapport.jsf">
                                 <i class="fas fa-table"></i>Banques</a>
                         </li>
                         <li>
-                            <a href="form.html">
+                            <a href="#">
                                 <i class="far fa-check-square"></i>Procurations</a>
                         </li>
                         <li>
-                            <a href="calendar.html">
+                            <a href="#">
                                 <i class="fas fa-calendar-alt"></i>Transactions</a>
                         </li>
                         <li class="has-sub">
@@ -153,8 +153,10 @@
                                                 </div>
                                             </div>
                                             <div class="account-dropdown__footer">
-                                                <a href="#">
-                                                    <i class="zmdi zmdi-power"></i>Déconnexion</a>
+                                               	<h:form>
+                                                <h:commandLink action="#{loginBean.doLogout}">
+                                                    <i class="zmdi zmdi-power"></i>Déconnexion</h:commandLink>
+                                                </h:form>
                                             </div>
                                         </div>
                                     </div>

@@ -55,11 +55,6 @@ public class AjouterBean implements Serializable {
 	
 	public AjouterBean() {}
 	
-	@PostConstruct
-	public void init() {
-		
-	}
-	
 	public String choisirBanque() {
 		FacesContext fc = FacesContext.getCurrentInstance();
 		Map<String, String> params = fc.getExternalContext().getRequestParameterMap();
@@ -141,7 +136,12 @@ public class AjouterBean implements Serializable {
 	}
 
 	public List<Agence> getAgences() {
-		return cs.getAllAgence(banquename, lb.getUser().getId());
+		List<Agence> list= cs.getAllAgence(banquename, lb.getUser().getId());
+		System.out.println(list.size());
+		for (Agence agence : list) {
+			System.out.println(agence.getAgenceName());
+		}
+		return list;
 		
 	}
 
@@ -170,6 +170,7 @@ public class AjouterBean implements Serializable {
 		c.setNumero((long)numero);
 		c.setNbAction(nbactions);
 		c.setNbObligation(nbobligation);
+		c.setSolde(solde);
 		c.setDateOuverture(format.parse(dateouverture));
 		c.setDevise(Devise.valueOf(devise));
 		

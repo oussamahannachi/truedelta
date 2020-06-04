@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -67,14 +68,14 @@ public class CompteService implements CompteServiceRemote {
 	}
 
 	@Override
-	public long ajouterCompte(Compte c) {
+	public long ajouterCompte(Compte c) throws ParseException {
+		DateFormat format= new SimpleDateFormat("dd/MM/YYYY");
 		c.setIsAutorise(false);
 		c.setIsVerifie(false);
 		c.setIsActif(true);
 		c.setScore(0);
 		c.setGab(0);
-		c.setNbAction(0);
-		c.setNbObligation(0);
+		c.setLastVerif(format.parse("01/01/2020"));
 		c.setRemarque("Le compte n'est pas encore vérifié");
 		em.persist(c);
 		return c.getNumero();
@@ -109,7 +110,7 @@ public class CompteService implements CompteServiceRemote {
 	
 	@Override
 	public List<Compte> getAllCompteByBanque(int id) {
-		return  em.createQuery("select c from compte c where idAgence=? ", Compte.class)
+		return  em.createQuery("select c from compte c where idAgence=? ORDER BY c.lastVerif DESC", Compte.class)
 							  .setParameter(1, id)
 							  .getResultList();
 	}
@@ -129,14 +130,26 @@ public class CompteService implements CompteServiceRemote {
 				 .setParameter(1, banquename)
 				 .getResultList();
 		List<Compte> comptes = getAllCompteByClient(id);
-		for (Compte compte : comptes) {
+		if(comptes.isEmpty()) {
+			return list;
+		}
+		else { 
 			for (Agence agence : list) {
-				if(agence.getId()!=compte.getAgence().getId()) {
+				Compte c = null;
+				try {
+					c=em.createQuery("select c from compte c where idClient=? and idAgence=?", Compte.class)
+							.setParameter(1, id)
+							.setParameter(2, agence.getId())
+							.getSingleResult();
+					}catch (NoResultException e) {
+							System.err.println("Aucun compte dans cette agence");
+				}
+				if(c==null) {
 					l.add(em.find(Agence.class, agence.getId()));
 				}
-			}
 		}
 		return l;
+		}
 	}
 	
 	@Override
@@ -318,7 +331,11 @@ public class CompteService implements CompteServiceRemote {
  	  
  	}
  	
- 	
+ 	@Override
+ 	public Document getDoc(String nom,long num) {
+ 		Document excel= db.getCollection(nom).find(Filters.and(Filters.eq("numero", num),Filters.eq("source","excel"))).first();
+ 		return excel;
+ 	}
  	
  	
  	//----------------------------------------------------------------Excel service----------------------------------------------------------
@@ -463,27 +480,27 @@ public class CompteService implements CompteServiceRemote {
 					case 0:
 						compte.setRemarque("Devise non conforme");
 						compte.setGab(gab);
-						compte.setIsAutorise(false);
+						compte.setIsVerifie(false);
 						break;
 					case 10:
-						compte.setRemarque("Problème du solde");
+						compte.setRemarque("Problème de solde");
 						compte.setGab(gab);
-						compte.setIsAutorise(false);
+						compte.setIsVerifie(false);
 						break;
 					case 20:
 						compte.setRemarque("Problème des actions");
 						compte.setGab(gab);
-						compte.setIsAutorise(false);
+						compte.setIsVerifie(false);
 						break;
 					case 30:
 						compte.setRemarque("Problème des obligations");
 						compte.setGab(gab);
-						compte.setIsAutorise(false);
+						compte.setIsVerifie(false);
 						break;
 					case 1:
 						compte.setRemarque("Aucun problème");
 						compte.setGab(1-gab);
-						compte.setIsAutorise(true);
+						compte.setIsVerifie(true);
 						break;
 					default:
 						break;

@@ -52,6 +52,7 @@
             <artifactId>TrueDelta-ejb</artifactId>
             <type>ejb</type>
         </dependency>
+          <!-- mongodb -->
     </dependencies>
 
     <build>

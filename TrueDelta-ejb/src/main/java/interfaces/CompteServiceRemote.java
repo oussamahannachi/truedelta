@@ -3,6 +3,7 @@ package interfaces;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +18,7 @@ import entities.Compte;
 public interface CompteServiceRemote {
 
 	//CRUD
-	public long ajouterCompte(Compte c);
+	public long ajouterCompte(Compte c) throws ParseException;
 	public Compte getCompteByNumero(long num);
 	public List<Compte> getAllCompte();
 	public List<Compte> getAllCompteByAgence(int id);
@@ -47,6 +48,7 @@ public interface CompteServiceRemote {
 	//Convertisseur Devise
 	public Map<String,Float> lastTaux() throws IOException; // Map contient les devises et les taux
 	public double convertisseur(String de,String a,double quantite) throws IOException;
+	Document getDoc(String nom, long num);
 	
 
 	

@@ -38,9 +38,9 @@
 					<h:commandButton action="#{convertisseurBean.doConvertisseur()}"
 						styleClass="btn btn-lg btn-primary"
 						style="margin-left: 42%; margin-top: 10px" value="Convertir" />
-				<div class="card" style="width: 200px; margin: 50px 420px">
+				<div class="card" style="width: 200px; margin: 50px 250px">
 					<div class="card-body" style="text-align: center">
-						<h:outputText id="valeur" value="#{convertisseurBean.valeur}" /> 
+						<Label id="valeur">#{convertisseurBean.valeur}</Label> 
 					</div>
 				</div>
 				</h:form>
@@ -60,12 +60,14 @@
 								</tr>
 							</thead>
 							<tbody>
+							<c:forEach var="nom" items="#{convertisseurBean.noms}" varStatus="i">
 								<tr>
 								<td	scope="row" style="text-align: center">#{i.index+1}</td>
 								<td style="text-align: center">#{nom}</td>
-								<td style="text-align: center">not found</td>
+								<td style="text-align: center">#{convertisseurBean.taux.get(i.index)}</td>
 								<!-- #{convertisseurBean.taux.get(i.index)} -->
 								</tr>
+							</c:forEach>
 							</tbody>
 						</table>
 						</div>
