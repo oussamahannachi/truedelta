@@ -8,5 +8,17 @@
         <dependent-module archiveName="TrueDelta-ejb.jar" deploy-path="/" handle="module:/resource/TrueDelta-ejb/TrueDelta-ejb">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="itextpdf.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/itextpdf/itextpdf/5.5.10/itextpdf-5.5.10.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="pdfbox.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/apache/pdfbox/pdfbox/2.0.4/pdfbox-2.0.4.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="fontbox.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/apache/pdfbox/fontbox/2.0.4/fontbox-2.0.4.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-logging.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/commons-logging/commons-logging/1.2/commons-logging-1.2.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
     </wb-module>
 </project-modules>

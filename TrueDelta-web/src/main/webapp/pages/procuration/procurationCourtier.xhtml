@@ -1,0 +1,125 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:t="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui"
+	template="../../template/template.xhtml">
+	<ui:param name="page_name" value="Procurations" />
+	<h:head>
+		<h:messages />
+	</h:head>
+	<ui:define name="body">
+
+		<div class="col-lg-6">
+			<div class="faq_ask pl-68" style="padding-top: 50px">
+				<h:form>
+
+
+					<h3>Vos Procurations : (#{procurationBean.sizec})</h3>
+
+					<p></p>
+
+				</h:form>
+				<table id="tab">
+					<tr>
+						<th>Date de creation</th>
+						<th style="width: 100px">Etat</th>
+						<th>Type</th>
+						<th>Description</th>
+						<th>Nom et Prénom du client</th>
+						<th>Date de traitement</th>
+						<th></th>
+					</tr>
+
+					<ui:repeat value="#{procurationBean.ProcurationCourtier()}"
+						var="var">
+						<tr>
+							<td><h:outputText value="#{var.dateCreation}">
+									<f:convertDateTime type="date" pattern="dd-MM-yyyy" />
+								</h:outputText></td>
+							<td><h:outputText
+									styleClass="#{procurationBean.EtatColor(var.etat) == 'N' ? 'red': 'green'}"
+									value="#{var.etat} " /></td>
+							<td>#{var.type}</td>
+							<td>#{var.description}</td>
+							<td>#{var.client.nom} #{var.client.prenom}</td>
+							<td><h:outputText value="#{var.dateTraitement}">
+
+									<f:convertDateTime type="date" pattern="dd-MM-yyyy" />
+								</h:outputText></td>
+							<td><h:form>
+
+
+									<h:commandButton id="supp" value="Valider"
+										styleClass="#{procurationBean.EtatColor(var.etat) == 'T' ? 'disabled': 'btn btn-primary'}"
+										action="#{procurationBean.ValiderProcuration(var)}" />
+								</h:form></td>
+						</tr>
+					</ui:repeat>
+
+
+				</table>
+			</div>
+		</div>
+
+
+
+		<style>
+#tab {
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	border-collapse: collapse;
+	width: 900px;
+}
+
+#tab td, #tab th {
+	border: 1px solid #ddd;
+	padding: 8px;
+}
+
+#tab tr:nth-child(even) {
+	background-color: #f2f2f2;
+}
+
+#tab tr:hover {
+	background-color: #ddd;
+}
+
+#tab th {
+	padding-top: 12px;
+	padding-bottom: 12px;
+	text-align: left;
+	background-color: #0973D2;
+	color: white;
+	text-align: center;
+}
+
+#center2 {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.red {
+	color: red;
+	font-weight: bold;
+}
+
+.green {
+	color: green;
+	font-weight: bold;
+}
+
+.disabled {
+	visibility: visible;
+	background-image: url(img/checked.png);
+	width: 35px;
+	height: 35px;
+	background-size: 30px 30px;
+	color: white;
+	text-indent: -9999em;
+}
+</style>
+	</ui:define>
+</ui:composition>

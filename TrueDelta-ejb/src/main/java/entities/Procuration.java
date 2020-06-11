@@ -19,26 +19,39 @@ public class Procuration implements Serializable {
 	
 	
 	
-	@Column(unique=true)
-	//@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="numero")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int numero;
 	
 	@Enumerated(EnumType.STRING)
 	private Type type;
+	
 	@Column(name="date_creation")
 	private Date dateCreation;
+	
 	@Column(nullable=true)
 	private Date dateTraitement;
+	
 	@Column(nullable=true)
-	private String etat; // Etat de procuration : en cours , terminé , bloqué ...
+	private String etat; 
+	// Etat de procuration : en cours , terminé , bloqué ...
+	
 	@Column(nullable=true)
 	private int score;
+	
 	@Column(nullable=true)
 	private String avisContrat;
+	
 	@Column(nullable=true)
 	private float gain; 
+	
 	@Column(nullable=true)
-	private String description; // Pour ecrire la proposition
+	private String description; 
+	
+	
+	@Column(nullable=true)
+	private String url_contrat;
+	
 	
 	@ManyToOne
 	@JoinColumn(name="idClient", referencedColumnName="utilisateurID", insertable=false , updatable=false, unique=false)
@@ -50,15 +63,7 @@ public class Procuration implements Serializable {
 
 	public Procuration() {
 		super();
-	}
-
-	public Procuration(ProcurationPK id, int numero, Type type, Date dateCreation, String description) {
-		super();
-		this.id = id;
-		this.numero = numero;
-		this.type = type;
-		this.dateCreation = dateCreation;
-		this.description = description;
+		// TODO Auto-generated constructor stub
 	}
 
 	public ProcurationPK getId() {
@@ -140,7 +145,15 @@ public class Procuration implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-/*
+
+	public String getUrl_contrat() {
+		return url_contrat;
+	}
+
+	public void setUrl_contrat(String url_contrat) {
+		this.url_contrat = url_contrat;
+	}
+
 	public Client getClient() {
 		return client;
 	}
@@ -157,13 +170,40 @@ public class Procuration implements Serializable {
 		this.courtier = courtier;
 	}
 
-*/
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public Procuration(ProcurationPK id, int numero, Type type, Date dateCreation, Date dateTraitement, String etat,
+			int score, String avisContrat, float gain, String description, String url_contrat, Client client,
+			Courtier courtier) {
+		super();
+		this.id = id;
+		this.numero = numero;
+		this.type = type;
+		this.dateCreation = dateCreation;
+		this.dateTraitement = dateTraitement;
+		this.etat = etat;
+		this.score = score;
+		this.avisContrat = avisContrat;
+		this.gain = gain;
+		this.description = description;
+		this.url_contrat = url_contrat;
+		this.client = client;
+		this.courtier = courtier;
+	}
 
 	@Override
 	public String toString() {
-		return "Procuration [id=" + id + ", numero=" + numero + ", type=" + type + ", dateCreation=" + dateCreation
-				+ "]";
+		// TODO Auto-generated method stub
+		return "Procuration [ id :"+id+" type :"+type+"]";
 	}
+	
+	
+
+
+	
+
 	
 	
 	
