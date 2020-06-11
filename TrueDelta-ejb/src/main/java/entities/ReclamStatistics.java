@@ -30,11 +30,11 @@ public class ReclamStatistics implements Serializable{
 		private int id;
 		
 		@Column(name = "NbinprogressReclam")
-		private int NbinprogressReclam;
+		private float NbinprogressReclam;
 		@Column(name = "NbOpenedReclam")
-		private int NbOpenedReclam;
+		private float NbOpenedReclam;
 		@Column(name = "NbTreatedReclam")
-		private int NbTreatedReclam;	
+		private float NbTreatedReclam;	
 		@Column(name = "NbReclams")
 		private int NbReclams;
 		@Column(name = "DateStat")
@@ -45,19 +45,19 @@ public class ReclamStatistics implements Serializable{
 		public void setId(int id) {
 			this.id = id;
 		}
-		public int getNbinprogressReclam() {
+		public float getNbinprogressReclam() {
 			return NbinprogressReclam;
 		}
 		public void setNbinprogressReclam(int nbinprogressReclam) {
 			NbinprogressReclam = nbinprogressReclam;
 		}
-		public int getNbOpenedReclam() {
+		public float getNbOpenedReclam() {
 			return NbOpenedReclam;
 		}
 		public void setNbOpenedReclam(int nbOpenedReclam) {
 			NbOpenedReclam = nbOpenedReclam;
 		}
-		public int getNbTreatedReclam() {
+		public float getNbTreatedReclam() {
 			return NbTreatedReclam;
 		}
 		public void setNbTreatedReclam(int nbTreatedReclam) {

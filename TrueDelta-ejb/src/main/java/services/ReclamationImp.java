@@ -8,17 +8,21 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.ejb.LocalBean;
+import javax.ejb.Stateful;
 import javax.ejb.Stateless;
 import javax.mail.MessagingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
@@ -26,15 +30,17 @@ import entities.Administrateur;
 import entities.Reclamation;
 import entities.State;
 import entities.Utilisateur;
+
 import entities.Client;
 import interfaces.ReclamationServiceLocal;
 import interfaces.ReclamationServiceRemote;
 
 
-@Stateless
+@Stateful
 @LocalBean
 public class ReclamationImp implements  ReclamationServiceLocal,ReclamationServiceRemote {
 	@PersistenceContext(unitName = "truedelta-ejb")
+	
 	EntityManager em;
 	Mail_API mail;
 	
@@ -49,24 +55,35 @@ public class ReclamationImp implements  ReclamationServiceLocal,ReclamationServi
 	            {
 	            	
 	              rec.setUser(user);
-
+	              rec.setState(State.Opened);
+	              rec.setResponse("---");
+	              
+	            
 	            em.persist(rec);
+	            
+	            try {
+	       		 verifBadWord(rec.getId());
+	   	            }
+	   	            catch ( Exception e)
+	   	            {
+	   	             System.out.println("errrrrrrr");
+	   	             e.getMessage();}
+	           
+	            
+	           searchWord(rec.getId());
+	            
+	            
 	            return 1;
 	            }
 	            else
 	            	return 0;}
 
-	    
-
-	        
 		
+	
+	
+	
 
-	@Override
-	public void deleteReclamById(int RecId) {
-		em.remove(em.find(Reclamation.class, RecId));
-
-	}
-
+	
 	@Override
 	public void UpdateReclam(Reclamation rec) {
 		  {
@@ -79,18 +96,12 @@ public class ReclamationImp implements  ReclamationServiceLocal,ReclamationServi
 			    }
 
 	}
-
 	@Override
 	public List<Reclamation> GetAllReclams() {
 	    TypedQuery<Reclamation> q = em.createQuery("SELECT c FROM Reclamation c", Reclamation.class);
         return (List<Reclamation>) q.getResultList();
 	}
 
-	@Override
-	public Reclamation GetReclamById(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public List<Reclamation> GetReclamByState(String state) {
@@ -98,6 +109,15 @@ public class ReclamationImp implements  ReclamationServiceLocal,ReclamationServi
 		TypedQuery<Reclamation> q = em.createQuery("SELECT R FROM Reclamation R WHERE R.state = :state",
 				Reclamation.class);
 		q.setParameter("state", cm);
+		return (List<Reclamation>) q.getResultList();
+	}
+	
+	@Override
+	public List<Reclamation> GetReclamByclient(int CltID) {
+		
+		TypedQuery<Reclamation> q = em.createQuery("SELECT R FROM Reclamation R WHERE R.user.id = :CltID",
+				Reclamation.class);
+		q.setParameter("CltID", CltID);
 		return (List<Reclamation>) q.getResultList();
 	}
 
@@ -118,6 +138,12 @@ public class ReclamationImp implements  ReclamationServiceLocal,ReclamationServi
 
 		return (List<Reclamation>) q.getResultList();
 	}
+	
+	
+
+	
+	
+	
 
 	@Override
 	public List<Reclamation> GetReclamsOrderByDateDESC() {
@@ -143,8 +169,42 @@ public class ReclamationImp implements  ReclamationServiceLocal,ReclamationServi
 	}
 	
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public boolean TreatComplaint(int idcomplaint, String state) {
+	public List<Object[]> NbTrimestreRec() {
+
+		
+		
+		Query q = em.createQuery("SELECT QUARTER(dateCreation) ,COUNT(*) as nb from Reclamation  WHERE YEAR(dateCreation)= YEAR(CURRENT_DATE) GROUP BY QUARTER(dateCreation) " );
+		 List<Object[]> resultList = q.getResultList();
+		// resultList.forEach(r -> System.out.println(Arrays.toString(r)));
+		return resultList;
+	}
+	
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Object[]> NbTrimestreOpenedRec(String state) {
+
+		State st = State.valueOf(state);
+		
+		Query q = em.createQuery("SELECT QUARTER(dateCreation) ,COUNT(*) as nb from Reclamation r WHERE YEAR(dateCreation)= YEAR(CURRENT_DATE) AND r.state =:state GROUP BY QUARTER(dateCreation) " );
+		 q.setParameter("state", st);
+		 List<Object[]> resultList = q.getResultList();
+		// resultList.forEach(r -> System.out.println(Arrays.toString(r)));
+		return resultList;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	@Override
+	public boolean TreatComplaint(int idcomplaint, String state, String resp) {
 
 
 		Calendar currenttime = Calendar.getInstance();
@@ -168,24 +228,26 @@ public class ReclamationImp implements  ReclamationServiceLocal,ReclamationServi
 			
 		   
 			
-		    	 try {
+		    	/* try {
                 mail.sendMail(email, "Your complaint is being processed",
                 		complaintBD.getSubject()+ "  is being processed at" + complaintBD.getAssignmentDate());
 
             } catch (MessagingException e) {
                 System.out.println("error");
                 e.printStackTrace();
-            }
+            }*/
 			
 		} else if (cm.equals(State.treated)) {
 
 			complaintBD.setClosingDate(now);
 			complaintBD.setState(cm);
-			em.merge(complaintBD);
 			
+			complaintBD.setResponse(resp);
+			em.merge(complaintBD);
+		
 			try {
 
-                mail.sendMail(email, "Your complaint is treated",
+                mail.sendMail(email, "Your complaint has been treated thank you for consulting your space ",
                 		complaintBD.getSubject() + " is treated at " + complaintBD.getClosingDate()
                                 + " with state : " + complaintBD.getState());
 
@@ -213,16 +275,12 @@ public class ReclamationImp implements  ReclamationServiceLocal,ReclamationServi
 	}
 
 	
-	
-		
 
-	    
-	    
-	    
-	    
 
-		
-	    @Override
+
+
+
+		@Override
 		public List<Reclamation> SearchComplaint(String motclé) {
 			TypedQuery<Reclamation> query = em.createQuery(
 					"select c from Reclamation c WHERE c.description LIKE :code or c.subject LIKE :code or c.state LIKE :code ORDER BY c.dateCreation DESC",
@@ -247,8 +305,8 @@ public class ReclamationImp implements  ReclamationServiceLocal,ReclamationServi
 	if (( input1!=output1)||(input2!=output2))
 	    	       
 	{
-		deleteReclamById(idRec);
-		
+	
+		deleteComplain(idRec);
           Client c = (Client)Rec.getUser();
     	
     	
@@ -273,7 +331,80 @@ public class ReclamationImp implements  ReclamationServiceLocal,ReclamationServi
 	}
 	    	return ("Success");
 	    
-}}
+} 
+	    
+	    //@Override
+	    
+	    public  String searchWord(int  idRec)  {
+	    	
+	    	Reclamation Rec = em.find(Reclamation.class, idRec);
+	    	String descIn = Rec.getDescription();
+			String bestMatch = null;
+			TreeMap<Integer, String> myMorphoMatchMap = new TreeMap<Integer, String>();
+			List<Reclamation> myallList = GetReclamByState(State.treated.toString()) ;
+			List<String> maList = new ArrayList<String>();
+			for (int i = 0; i < myallList.size(); i++)
+			{
+				if ( myallList.get(i).getId()!=idRec)
+				{String descOut = myallList.get(i).getDescription();
+				maList.add(descOut);}
+			}
+			
+	    	for (int j = 0; j < maList.size(); j++) {
+	    		myMorphoMatchMap.putAll(EditDistance.calculate(maList.get(j), descIn));
+	    		
+	    		
+			}
+	    	if (myMorphoMatchMap.firstKey() <30) {
+	    		bestMatch = myMorphoMatchMap.get(myMorphoMatchMap.firstKey());
+	    		
+	    		TypedQuery<Reclamation> q = em.createQuery("SELECT R FROM Reclamation R WHERE R.description =:match and R.state=:state",
+	    				Reclamation.class);
+	    		q.setParameter("match", bestMatch);
+	    		q.setParameter("state", State.treated);
+	    		List<Reclamation> recMatch =q.getResultList();
+	    		System.out.println(recMatch.size());
+	    			
+	    		Rec.setResponse(recMatch.get(0).getResponse()+"   "+" ( Cette Reponse est envoyé automatique par notre system )  ");
+	    		Rec.setState(State.treated_Automatically);}
+	    		
+	    	else {
+	    		bestMatch = "";
+	    	}
+	    	
+	    	return bestMatch;
+	    	
+		}
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+		@Override
+		public int  deleteComplain(int id_c) {
+		   
+		  
+			//em.remove(em.find(Reclamation.class, id_c));
+
+			
+			javax.persistence.Query query = em.createQuery("delete from Reclamation where id = :id");
+			query.setParameter("id", id_c);
+			int deletedRows = query.executeUpdate();
+			
+			return deletedRows;
+		}
+
+
+}
 	
 	
 	

@@ -1,0 +1,77 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+
+	 xmlns:p="http://primefaces.org/ui"
+	template="../template/template.xhtml">
+
+
+	
+
+	
+	<ui:define name="body">
+          <h:form>
+            
+
+                <div class="ui-g-12">
+   
+                
+                    <p:panel header="DataTable" styleClass="card no-border">
+                       
+                        <p:dataTable value="#{ReclamationBean.reclamations}" var="Reclamation" widgetVar="RecTable1">                   
+                
+           
+          
+                            <p:column headerText="Id">
+                                <h:outputText value="#{Reclamation.id}"/>
+                            </p:column>
+
+                          
+
+                            <p:column headerText="Description">
+                                <h:outputText value="#{Reclamation.description}"/>
+                            </p:column>
+                            <p:column headerText="Response">
+                                <h:outputText value="#{Reclamation.response}"/>
+                            </p:column>
+
+                            <p:column headerText="Subjet">
+                                <h:outputText value="#{Reclamation.subject}"/>
+                            </p:column>
+                            
+                            <p:column headerText="State"  filterBy="#{Reclamation.state}" footerText="exact" filterMatchMode="exact">
+                             <f:facet name="filter">
+                <p:selectOneMenu onchange="PF('RecTable1').filter()" styleClass="custom-filter">
+                   
+                     
+            
+                    <f:selectItems value="#{ReclamationBean.states}" />
+                </p:selectOneMenu>
+            </f:facet>
+                                <h:outputText value="#{Reclamation.state}"/>
+                                
+                            </p:column>
+                            
+                            
+                            
+                            <p:column headerText="Action">
+                             <p:commandButton action="#{ReclamationBean.DeleteReclamclt(Reclamation.id)}"  class="btn-danger" onclick="return confirm('Voulez-vous suprimer votre réclamation ?')" value="delete"> 
+                              <i class="icon-delete icon-white" />
+                              </p:commandButton>
+                             <p:commandButton action="#" onclick="return confirm('Voulez-vous Vraiment prendre en charge cette réclamation maintenant?')" value="treat"/>
+                             
+                            </p:column>
+                              
+                        </p:dataTable>
+                 
+                    </p:panel>
+                </div>
+
+        </h:form>
+    </ui:define>
+
+   
+</ui:composition>
+
+                

@@ -1,0 +1,125 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	template="../template/templateadmin.xhtml">
+	<ui:param name="page_name" value="Comptes" />
+	<ui:define name="body">
+	<div style="margin: 20px">
+		<div class="row">
+<div class="col-md-12">
+                     
+                          
+<h3 class="title-5 m-b-35">data table</h3>
+<div class="table-data__tool">
+<div class="table-data__tool-left">
+
+
+<button class="au-btn-filter">
+<i class="zmdi zmdi-filter-list"></i>filters</button>
+</div>
+
+ 
+ 
+
+
+</div>
+ <div class="table-responsive table-responsive-data2">
+<table class="table table-data2">
+<thead>
+<tr>
+
+<th>id</th>
+<th>description</th>
+<th>subject</th>
+<th>date</th>
+<th>response</th>
+<th>status
+
+
+
+<h:selectOneMenu>
+    <f:selectItems value="#{ReclamtionBean.states}"   var="Reclamtion" itemValue="#{ReclamtionBean.state}"/>
+</h:selectOneMenu>
+
+
+</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<c:forEach var="Reclamation" items="#{ReclamationBean.reclamationsA}" widgetVar="Table"
+>
+
+<tr class="tr-shadow">
+
+<td>
+<span class="id"> #{Reclamation.id}</span>
+</td>
+<td class="desc"> #{Reclamation.description}</td>
+<td class="subject"> #{Reclamation.subject}</td>
+<td>
+<span class="date">#{Reclamation.dateCreation}</span>
+</td>
+<td class="response"> #{Reclamation.response}</td>
+
+
+<td class="state" >#{Reclamation.state}
+
+</td>
+
+
+
+<td>
+									<div class="table-data-feature">
+									<h:form class="form">
+										<h:commandButton styleClass="form-group btn btn-sm btn-outline-primary" style="width:100px"
+										value="Treat" action="#{ReclamationBean.goToTreatComplain(Reclamation)}"  onclick="return confirm('Voulez-vous Vraiment prendre en charge cette réclamation ?')" />
+										<h:commandButton styleClass=" form-group btn btn-sm btn-outline-danger" style="width:100px"
+										 action="#{ReclamationBean.DeleteReclam(Reclamation.id)}" value="Supprimer" onclick="return confirm('Voulez-vous suprimer votre réclamation ?')" />
+									</h:form>
+									</div>
+								</td>
+</tr>
+
+</c:forEach>
+
+</tbody>
+</table>
+</div>
+ 
+</div>
+</div>
+	</div>
+
+
+
+
+<script src="./Tables_files/jquery-3.2.1.min.js.téléchargement" type="text/javascript"></script>
+
+<script src="./Tables_files/popper.min.js.téléchargement" type="text/javascript"></script>
+<script src="./Tables_files/bootstrap.min.js.téléchargement" type="text/javascript"></script>
+
+<script src="./Tables_files/slick.min.js.téléchargement" type="text/javascript">
+    </script>
+<script src="./Tables_files/wow.min.js.téléchargement" type="text/javascript"></script>
+<script src="./Tables_files/animsition.min.js.téléchargement" type="text/javascript"></script>
+<script src="./Tables_files/bootstrap-progressbar.min.js.téléchargement" type="text/javascript">
+    </script>
+<script src="./Tables_files/jquery.waypoints.min.js.téléchargement" type="text/javascript"></script>
+<script src="./Tables_files/jquery.counterup.min.js.téléchargement" type="text/javascript">
+    </script>
+<script src="./Tables_files/circle-progress.min.js.téléchargement" type="text/javascript"></script>
+<script src="./Tables_files/perfect-scrollbar.js.téléchargement" type="text/javascript"></script>
+<script src="./Tables_files/Chart.bundle.min.js.téléchargement" type="text/javascript"></script>
+<script src="./Tables_files/select2.min.js.téléchargement" type="text/javascript">
+    </script>
+
+<script src="./Tables_files/main.js.téléchargement" type="text/javascript"></script>
+
+	</ui:define>
+</ui:composition>

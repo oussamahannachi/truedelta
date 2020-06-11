@@ -1,16 +1,27 @@
 package entities;
 
 import java.io.Serializable;
+
 import java.util.Date;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+
+
+
+
+
+
 
 /**
  * Entity implementation class for Entity: Reclamation
  *
  */
 @Entity
-@Table(name="reclamation")
+
+@Table(name="reclamation") 
 public class Reclamation implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -21,6 +32,8 @@ public class Reclamation implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dateCreation;
 	private String description;
+	@Column(name="response")
+	private String response ;
 	private String subject;
 	@Column(name="STATE")
     @Enumerated(EnumType.STRING)
@@ -73,8 +86,9 @@ public class Reclamation implements Serializable {
 	
 	
 
-
+	
 	@ManyToOne
+	@JsonBackReference
 	private Utilisateur user;
 	
 	public Reclamation() {}
@@ -162,6 +176,51 @@ public class Reclamation implements Serializable {
 	public String toString() {
 		return "Reclamation [dateCreation=" + dateCreation  + "]";
 	}
+
+	public String getResponse() {
+		return response;
+	}
+
+	public void setResponse(String response) {
+		this.response = response;
+	}
+
+	public Reclamation(int id, Date dateCreation, String description, String response, String subject, State state,
+			Date assignmentDate, Date closingDate, Utilisateur user) {
+		super();
+		this.id = id;
+		this.dateCreation = dateCreation;
+		this.description = description;
+		this.response = response;
+		this.subject = subject;
+		this.state = state;
+		this.assignmentDate = assignmentDate;
+		this.closingDate = closingDate;
+		this.user = user;
+	}
+
+	public Reclamation(String description, String subject) {
+		super();
+		this.description = description;
+		this.subject = subject;
+	}
+
+	public Reclamation(Date dateCreation, String description, String subject) {
+		super();
+		this.dateCreation = dateCreation;
+		this.description = description;
+		this.subject = subject;
+	}
+	
+	public Reclamation( Integer id ,String description, String subject,Date dateCreation,State state) {
+		
+		this.id=id;
+		this.dateCreation = dateCreation;
+		this.description = description;
+		this.subject = subject;
+		this.state=state;	}
+	
+	
 	
 	
 }

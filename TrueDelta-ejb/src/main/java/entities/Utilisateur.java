@@ -3,10 +3,20 @@ package entities;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+
+
+
+
+
+
 @Entity
+
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="role")
 public class Utilisateur implements Serializable {
@@ -35,8 +45,12 @@ public class Utilisateur implements Serializable {
 	private String confirmPassword;
 	
 	
-	@OneToMany(mappedBy="user", cascade = CascadeType.ALL)
-	private List<Reclamation> reclamations= new ArrayList<Reclamation>();
+
+	@OneToMany(mappedBy="user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	@JsonBackReference
+
+	private Set<Reclamation> reclamations;
+
 	
 	public Utilisateur() {}
 
@@ -117,11 +131,11 @@ public class Utilisateur implements Serializable {
 		return "Utilisateur [id=" + id + ", email=" + email + ", username=" + username + "]";
 	}
 
-	public List<Reclamation> getReclamations() {
+	public Set<Reclamation> getReclamations() {
 		return reclamations;
 	}
 
-	public void setReclamations(List<Reclamation> reclamations) {
+	public void setReclamations(Set<Reclamation> reclamations) {
 		this.reclamations = reclamations;
 	}
 	

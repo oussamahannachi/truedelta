@@ -45,17 +45,18 @@ public class ReclamStatisticsImp implements IReclamStatisticsLocal, IReclamStati
 		Calendar currenttime = Calendar.getInstance();
 		Date now = new Date((currenttime.getTime()).getTime());
 		Cs.setDateStat(now);
-		Cs.setNbOpenedReclam(nbrO);
-		Cs.setNbinprogressReclam(nbrIP);
 		Cs.setNbReclams(nbrTot);
-		Cs.setNbTreatedReclam(nbrT);
+		Cs.setNbOpenedReclam((nbrO*100)/nbrTot);
+		Cs.setNbinprogressReclam((nbrIP*100)/nbrTot);
+		
+		Cs.setNbTreatedReclam((nbrT*100)/nbrTot);
 		em.persist(Cs);
-
+		
 	}
 
 	@Override
 	public List<ReclamStatistics> GetAllStatReclam() {
-		TypedQuery<ReclamStatistics> q = em.createQuery("SELECT c FROM ReclamStatistics c", ReclamStatistics.class);
+		TypedQuery<ReclamStatistics> q = em.createQuery("SELECT c FROM ReclamStatistics c ORDER BY c.DateStat DESC", ReclamStatistics.class);
 		return (List<ReclamStatistics>) q.getResultList();
 	}
 

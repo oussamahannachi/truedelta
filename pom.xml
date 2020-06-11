@@ -68,6 +68,12 @@
 
     <dependencyManagement>
         <dependencies>
+       
+        <dependency>
+        <groupId>SportunionParent</groupId>
+        <artifactId>SportunionEJBModule</artifactId>
+        <version>${project.version}</version>
+    </dependency>
 
             <!-- Define the version of the EJB jar so that we don't need 
                 to repeat ourselves in every module -->
@@ -77,6 +83,8 @@
                 <version>${project.version}</version>
                 <type>ejb</type>
             </dependency>
+            
+            
             
             <!-- Define the version of the WAR so that we don't need to repeat 
                 ourselves in every module -->
