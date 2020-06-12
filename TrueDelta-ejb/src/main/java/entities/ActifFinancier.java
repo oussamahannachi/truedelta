@@ -49,12 +49,18 @@ public class ActifFinancier implements Serializable {
 	private Date dateEcheance; // Pour obligation
 	private BigDecimal BondPrice  ;
 	private BigDecimal Parvalue;
-	private double Tauxcoupon ;
+	private BigDecimal Tauxcoupon ;
 	private int Duree;
-	private double TauxActuariel;
+	private BigDecimal TauxActuariel;
 	private int Fréquence;
-	
-	
+	@Column(nullable=true)
+	private String  Categorie;
+	@Column(name="date_emission",nullable=true)
+	private Date DateEmission; // Pour obligation
+	@Column(name="date_dernierCoupon",nullable=true)
+	private Date DatedernierCoupon; // Pour obligation
+	@Column(name="date_prochaincoupon",nullable=true)
+	private Date DateprochainCoupon; // Pour obligation
 	 public ActifFinancier() {}
 	
 	public ActifFinancier(String entreprise, float prix, float rendement, float risque, TypeActif type,
@@ -255,13 +261,7 @@ public class ActifFinancier implements Serializable {
 		Parvalue = parvalue;
 	}
 
-	public double getTauxcoupon() {
-		return Tauxcoupon;
-	}
 
-	public void setTauxcoupon(double tauxcoupon) {
-		Tauxcoupon = tauxcoupon;
-	}
 
 	public int getDuree() {
 		return Duree;
@@ -271,15 +271,23 @@ public class ActifFinancier implements Serializable {
 		Duree = duree;
 	}
 
-	public double getTauxActuariel() {
+	public BigDecimal getTauxActuariel() {
 		return TauxActuariel;
 	}
 
-	public void setTauxActuariel(double tauxActuariel) {
+	public void setTauxActuariel(BigDecimal tauxActuariel) {
 		TauxActuariel = tauxActuariel;
 	}
 
 	
+	public BigDecimal getTauxcoupon() {
+		return Tauxcoupon;
+	}
+
+	public void setTauxcoupon(BigDecimal tauxcoupon) {
+		Tauxcoupon = tauxcoupon;
+	}
+
 	public int getFréquence() {
 		return Fréquence;
 	}
@@ -287,13 +295,48 @@ public class ActifFinancier implements Serializable {
 	public void setFréquence(int fréquence) {
 		Fréquence = fréquence;
 	}
+	
+
+	public String getCategorie() {
+		return Categorie;
+	}
+
+	public void setCategorie(String categorie) {
+		Categorie = categorie;
+	}
+
+	public Date getDateEmission() {
+		return DateEmission;
+	}
+
+	public void setDateEmission(Date dateEmission) {
+		DateEmission = dateEmission;
+	}
+
+	public Date getDatedernierCoupon() {
+		return DatedernierCoupon;
+	}
+
+	public void setDatedernierCoupon(Date datedernierCoupon) {
+		DatedernierCoupon = datedernierCoupon;
+	}
+
+	public Date getDateprochainCoupon() {
+		return DateprochainCoupon;
+	}
+
+	public void setDateprochainCoupon(Date dateprochainCoupon) {
+		DateprochainCoupon = dateprochainCoupon;
+	}
 
 	//@Override
 	public String GetBonds() {
 		return "ActifFinancier [id=" + id + ", type=" + type + ", date=" + date + ", compte=" + compte
 				+ ", transaction=" + transaction + ", Currency=" + Currency + ", Company=" + Company + ", dateEcheance="
 				+ dateEcheance + ", BondPrice=" + BondPrice + ", Parvalue=" + Parvalue + ", Tauxcoupon=" + Tauxcoupon
-				+ ", Duree=" + Duree + ", TauxActuariel=" + TauxActuariel + "]"+ "\n";
+				+ ", Duree=" + Duree + ", TauxActuariel=" + TauxActuariel  + ", Fréquence=" + Fréquence + ", Categorie=" + Categorie + ", DateEmission="
+						+ DateEmission + ", DatedernierCoupon=" + DatedernierCoupon + ", DateprochainCoupon="
+						+ DateprochainCoupon + "]"+ "\n";
 	}
 
 	@Override
@@ -304,8 +347,12 @@ public class ActifFinancier implements Serializable {
 				+ ", ClosedPrice=" + ClosedPrice + ", OpenPrice=" + OpenPrice + ", AdjClose=" + AdjClose + ", Currency="
 				+ Currency + ", Company=" + Company + ", dateEcheance=" + dateEcheance + ", BondPrice=" + BondPrice
 				+ ", Parvalue=" + Parvalue + ", Tauxcoupon=" + Tauxcoupon + ", Duree=" + Duree + ", TauxActuariel="
-				+ TauxActuariel + "]"+ "\n";
+				+ TauxActuariel + ", Fréquence=" + Fréquence + ", Categorie=" + Categorie + ", DateEmission="
+				+ DateEmission + ", DatedernierCoupon=" + DatedernierCoupon + ", DateprochainCoupon="
+				+ DateprochainCoupon + "]";
 	}
+
+
 
 
 	

@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>  
+<!--  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
+<!DOCTYPE persistence PUBLIC "http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd" "">  
+<html xmlns="http://www.w3.org/1999/xhtml"  
+xmlns:h="http://xmlns.jcp.org/jsf/html"  
+xmlns:p="http://primefaces.org/ui"
+xmlns:ui="http://java.sun.com/jsf/facelets">  
+
+<!--  <ui:composition xmlns="http://www.w3.org/1999/xhtml"  
+xmlns:h="http://xmlns.jcp.org/jsf/html"  
+xmlns:p="http://primefaces.org/ui"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+template="../template/template.xhtml">
+
+	<ui:param name="page_name" value="cotisation" />
+	<ui:define name="body"> -->
+	
+
+<h:head>  
+<title>PieChart</title>  
+</h:head>  
+<h:body>  
+<p:chart type="pie" model="#{pieChart.pieModel}" style="width:400px;height:300px" />  
+<h:form>  
+<p:growl id="msgs" showDetail="true" />  
+<h:panelGrid columns="2" cellpadding="5">  
+<p:outputLabel value="symbol: " />  
+<p:autoComplete value="#{actifBean.search}" completeMethod="#{actifBean.countryList()}" />  
+</h:panelGrid>  
+<h:commandButton action="#{actifBean.seearch()}" value="Chercher " />
+			<table border="1">
+					<tr>
+						<td>symbol cherché</td>
+						<td>#{actifBean.search}</td>
+					</tr>
+					<ui:repeat value="#{actifBean.actifs}" var="item">
+						<tr>
+							<td>symbol</td>
+							<td>#{item.company.symbol}</td>
+						</tr>
+					</ui:repeat>
+				</table>	
+</h:form> 
+</h:body>  
+
+</html>  
+<!--  </ui:composition>	-->

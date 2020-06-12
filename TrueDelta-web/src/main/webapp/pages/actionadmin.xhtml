@@ -1,0 +1,122 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	template="../template/templateadmin.xhtml">
+	<ui:param name="page_name" value="action" />
+	<ui:define name="body">
+	<div class="container-fluid">
+			<div class="section__content section__content--p30">
+				<div class="col-md-12" style="margin-bottom: 30px">	
+
+<h:panelGroup columns="2"> <h:form> 
+<div class="row">
+<div class="col-4">
+
+<div class="card">
+<div class="card-header">
+<h:inputText value="#{actionBean.search}"></h:inputText>
+<h:commandButton action="#{actionBean.getaction(actionBean.search)}" value="voir marche"  class="btn btn-info" />
+</div>
+<div class="card-body card-block">
+	<div class="visit">symbol : <h:outputText value="#{actionBean.a.company.symbol}" /></div>
+    <div class="visit">HighPrice : <h:outputText value="#{actionBean.a.highPrice}" /></div>
+	<div class="visit">LowPrice : <h:outputText value="#{actionBean.a.lowPrice}" /></div>
+	<div class="visit">Closedprice : <h:outputText value="#{actionBean.a.closedPrice}" /></div>
+	<div class="visit">OpenPrice : <h:outputText value="#{actionBean.a.openPrice}" /></div>
+	<div class="visit">devise : <h:outputText value="#{actionBean.a.currency}" /></div>
+	<div class="visit">date : <h:outputText value="#{actionBean.a.date}" /></div>	
+	<h:commandButton action="#{actionBean.addaction(actionBean.a)}" value="ajouter" class="btn btn-primary btn-sm"/>						
+	</div>
+	</div>		
+			
+</div>
+<div class="col-7">
+<div class="row">
+
+<h:commandButton action="#{actionBean.getAll()}" value="getall"  class="btn btn-info" />
+					   <div class="btn-group">
+					   <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					   Sector
+					  </button>
+					  <div class="dropdown-menu">
+					  	<ui:repeat value="#{actifBean.listsector}" var="item">
+					  
+					   
+					    <h:commandLink   value="#{item}" class="dropdown-item" action="#{actionBean.sector(item)}" />
+					   
+					    </ui:repeat>
+					   </div>
+					  </div>
+						
+						
+						
+						  	<div class="btn-group">
+						   <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						   <img src="../vendor/icon/line.png" alt=""  width="20" height="20"/>
+						  </button>
+						  <div class="dropdown-menu">
+						  
+						     <h:commandLink class="dropdown-item"  value="Closed Price" action="#{actionBean.asc()}" />
+						  <h:commandLink  class="dropdown-item" value="Open Price" action="#{actionBean.asc()}" />
+						    
+						   </div>
+						  </div>
+		   
+						   	<div class="btn-group">
+						   <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						   <img src="../vendor/icon/business.png" alt=""  width="20" height="20"/>
+						  </button>
+						  <div class="dropdown-menu">
+						  <h:commandLink class="dropdown-item"  value="Closed Price" action="#actionBean.dsc('ClosedPrice')}" />
+						  <h:commandLink  class="dropdown-item" value="Open Price" action="#{actionBean.dsc('OpenPrice')}" />
+						   </div>
+						  </div>
+					
+						</div>
+						<table class="table table-hover table-dark">
+							
+								<tr >
+									<td> <h:outputText value="symbol"/> </td>
+									<td>HighPrice </td>
+									<td>LowPrice</td>
+									<td>Closedprice</td>
+									<td>OpenPrice</td>
+									<td>devise </td>
+									<td >date </td>
+								</tr>
+		        				<ui:repeat value="#{actionBean.actions}" var="actif">
+								<tr >
+							
+			
+								<td class="visit">
+								<h:outputText value="#{actif.company.symbol}" />
+								
+								</td>
+								<td > <h:outputText value="#{actif.highPrice}" /></td>
+								<td class="visit"> <h:outputText value="#{actif.lowPrice}" /></td>
+								<td class="visit"><h:outputText value="#{actif.closedPrice}" /></td>
+								<td class="visit"><h:outputText value="#{actif.openPrice}" /></td>
+								<td class="visit"><h:outputText value="#{actif.currency}" /></td>
+								<td class="visit"><h:outputText value="#{actif.date}" /></td>			
+								</tr>
+						      </ui:repeat>   
+		
+						
+						</table>
+		
+</div>			
+</div>								
+ </h:form> </h:panelGroup>
+</div>
+</div>
+
+</div>
+
+	</ui:define>
+</ui:composition>

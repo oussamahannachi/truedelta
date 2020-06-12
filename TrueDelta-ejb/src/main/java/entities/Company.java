@@ -179,6 +179,47 @@ public class Company implements Serializable{
 	public void setLogo(String logo) {
 		this.logo = logo;
 	}
+	public Company(String name, String symbol, String sector, String industry, String address, String site,
+			String description, long fullTimeEmployer, float revenu, int telephoneNumber, BigDecimal annualYield,
+			BigDecimal annualYieldPercent, Date exDate, Date payDate, String logo) {
+		super();
+		Name = name;
+		Symbol = symbol;
+		Sector = sector;
+		Industry = industry;
+		Address = address;
+		Site = site;
+		Description = description;
+		FullTimeEmployer = fullTimeEmployer;
+		Revenu = revenu;
+		TelephoneNumber = telephoneNumber;
+		AnnualYield = annualYield;
+		AnnualYieldPercent = annualYieldPercent;
+		ExDate = exDate;
+		PayDate = payDate;
+		this.logo = logo;
+	}
+	public Company(int id, String name, String symbol, String sector, String industry, String address, String site,
+			String description, long fullTimeEmployer, float revenu, int telephoneNumber, BigDecimal annualYield,
+			BigDecimal annualYieldPercent, Date exDate, Date payDate, String logo) {
+		super();
+		this.id = id;
+		Name = name;
+		Symbol = symbol;
+		Sector = sector;
+		Industry = industry;
+		Address = address;
+		Site = site;
+		Description = description;
+		FullTimeEmployer = fullTimeEmployer;
+		Revenu = revenu;
+		TelephoneNumber = telephoneNumber;
+		AnnualYield = annualYield;
+		AnnualYieldPercent = annualYieldPercent;
+		ExDate = exDate;
+		PayDate = payDate;
+		this.logo = logo;
+	}
 	
 	
 }

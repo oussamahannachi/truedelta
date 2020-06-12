@@ -3,82 +3,176 @@
 
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	template="../template/template.xhtml">
-
+	
 
 	<ui:param name="page_name" value="cotisation" />
 	<ui:define name="body">
-	  <!-- Toolbar    -->  
-	  <div class="navbar navbar-light bg-light">
-  <a class="navbar-brand">Actif</a>
-  
-  
-   <h:commandButton  value="pdf" action="#{actifBean.pdf(1)}"/>
-   <h:commandButton   action="#{actifBean.Asc('OpenPrice')}"/>
-     <div class="btn-group">
-   <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-   Sector
-  </button>
-  <div class="dropdown-menu">
-  	<ui:repeat value="#{actifBean.listsector}" var="item">
-  
-    <a class="dropdown-item" href="#">#{item}</a>
-   
-    </ui:repeat>
-   </div>
-  </div>
-  <div class="btn-group">
-   <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-   <img src="../vendor/icon/line.png" alt=""  width="20" height="20"/>
-  </button>
-  <div class="dropdown-menu">
-  <a class="dropdown-item"  action="#{actifBean.Asc('ClosedPrice')}"> Closed Price</a>
-    <a class="dropdown-item" href="../pages/actif.jsf" action="#{actifBean.Asc('OpenPrice')}">Open Price</a>
-    <a class="dropdown-item" href="#">Something else here</a>
-   </div>
-  </div>
-   <div class="btn-group">
-   <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-   <img src="../vendor/icon/business.png" alt=""  width="20" height="20"/>
-  </button>
-  <div class="dropdown-menu">
-    <a class="dropdown-item" href="../pages/actif.jsf" action="#{actifBean.Redirect()}">Closed Price</a>
-    <a class="dropdown-item" href="../pages/actif.jsf" action="#{actifBean.Redirect()}">Open Price</a>
-    <a class="dropdown-item" href="#">Something else here</a>
-   </div>
-  </div>
-  <h:form>  
-<p:growl id="msgs" showDetail="true" />  
-<h:panelGrid columns="2" cellpadding="5">  
-<p:outputLabel value="symbol: " />  
-<p:autoComplete value="#{actifBean.countryName}" completeMethod="#{actifBean.countryList()}" />  
-</h:panelGrid>  
-</h:form> 
-  <form class="form-inline">
-  <h:inputText value="#{actifBean.search}" class="form-control mr-sm-2"  />
-    <!--  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->
-    <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
-  </form>
-</div>
-	  <!-- end toolbar -->
-	  
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		
+	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" />
 
-	  <!-- table  -->
-		<div class="row">
+       
+		<script src="https://cdn.jsdelivr.net/npm/luxon@1.24.1"></script>
+		<script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0-alpha"></script>
+		<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@0.2.1"></script>
 	
-	 
-	 
-	   
-	  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-  <ol class="carousel-indicators">
-    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-    <c:forEach  var="i" begin="1" end="#{companyBean.companies.size()}">
-   
+		<link rel="stylesheet" type="text/css" href="style.css"/>
+	
+	<h:outputStylesheet library="css" name="style.css"  />
+    <h:outputScript library="js" name="script.js" />
+	  <!-- table  -->
+	 <br/>
 
+	 <h:panelGroup >
+      <h:form >
+<div class="row">
+<!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+  <div class="tradingview-widget-container__widget"></div>
+  <div class="tradingview-widget-copyright"><a href="https://fr.tradingview.com" rel="noopener" target="_blank"><span class="blue-text">Ticker Tape</span></a> par TradingView</div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async='async'>
+  {
+  "symbols": [
+    {
+      "description": "",
+      "proName": "NASDAQ:FB"
+    },
+    {
+      "description": "",
+      "proName": "NASDAQ:GOOG"
+    },
+    {
+      "description": "",
+      "proName": "NYSE:KO"
+    },
+    {
+      "description": "",
+      "proName": "NASDAQ:NFLX"
+    },
+    {
+      "description": "",
+      "proName": "NASDAQ:INTC"
+    },
+    {
+      "description": "",
+      "proName": "NASDAQ:AMZN"
+    }
+  ],
+  "colorTheme": "light",
+  "isTransparent": false,
+  "displayMode": "adaptive",
+  "locale": "fr"
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+</div>
+	 	<div class="row">
+	 	<br/>
+	 	<div class="col-lg-1"></div>
+			<div class="col-lg-9 mb-5 mb-lg-0">
+			<ul class="nav nav-tabs" id="myTab" role="tablist">
+			  <li class="nav-item">
+			    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"><h3> accueil </h3></a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false" action="#{actifBean.redirect()}" ><h3> les actions</h3></a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false"> <h3>les obligations</h3></a>
+			  </li>
+			</ul>
+		<div class="tab-content" id="myTabContent">
+		<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab" >
+		<div class="row"> <div  class="col">
+		<!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+  <div class="tradingview-widget-container__widget"></div>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com" rel="noopener" target="_blank"><span class="blue-text">stock</span></a> by TradingView</div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js"  async='async'>
+  {
+  "colorTheme": "light",
+  "dateRange": "12m",
+  "showChart": true,
+  "locale": "en",
+  "largeChartUrl": "",
+  "isTransparent": false,
+  "width": "400",
+  "height": "660",
+  "plotLineColorGrowing": "rgba(33, 150, 243, 1)",
+  "plotLineColorFalling": "rgba(33, 150, 243, 1)",
+  "gridLineColor": "rgba(240, 243, 250, 1)",
+  "scaleFontColor": "rgba(120, 123, 134, 1)",
+  "belowLineFillColorGrowing": "rgba(33, 150, 243, 0.12)",
+  "belowLineFillColorFalling": "rgba(33, 150, 243, 0.12)",
+  "symbolActiveColor": "rgba(33, 150, 243, 0.12)",
+  "tabs": [
+    {
+      "title": "Bonds",
+      "symbols": [
+        {
+          "s": "CBOT:ZB1!",
+          "d": "T-Bond"
+        },
+        {
+          "s": "CBOT:UB1!",
+          "d": "Ultra T-Bond"
+        },
+        {
+          "s": "EUREX:FGBL1!",
+          "d": "Euro Bund"
+        },
+        {
+          "s": "EUREX:FBTP1!",
+          "d": "Euro BTP"
+        },
+        {
+          "s": "EUREX:FGBM1!",
+          "d": "Euro BOBL"
+        }
+      ],
+      "originalTitle": "Bonds"
+    },
+    {
+      "title": "stock",
+      "symbols": [
+        {
+          "s": "CURRENCYCOM:FB"
+        },
+        {
+          "s": "NASDAQ:INTC"
+        },
+        {
+          "s": "NASDAQ:GOOG"
+        },
+        {
+          "s": "NASDAQ:NFLX"
+        },
+        {
+          "s": "NYSE:KO"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+ </div>
+ <div  class="col">
+	<h3>les sociétés</h3>
+					<div class="row align-items-center">
+	  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+    <c:forEach  var="i" begin="1" end="#{companyBean.getAllCompanies().size()}">
   
     <li data-target="#carouselExampleIndicators" data-slide-to="${ i}"></li>
   
@@ -86,18 +180,16 @@
   </ol>
   <div class="carousel-inner">
     <div class="carousel-item active">
-    <div class="row">
-    <div class="col"><img src="../vendor/img/about/about.png" class="d-block w-100" alt="..."/></div>
-      
+     <div><h:outputText value="tous les companies" /></div>
+   <img src="../vendor/img/about/about.png"  style="width:100px;height:50px;"/> 
     </div>
-    </div>
-    <ui:repeat value="#{companyBean.companies}" var="company">
+   
+    <ui:repeat value="#{companyBean.getAllCompanies()}" var="company">
     <div class="carousel-item">
     <div><h:outputText value="#{company.name}" /></div>
  
+    <img   src="../vendor/img/Company/#{company.symbol}gif.gif"  style="width:80px;height:50px;"/>
      
-    <img   src="../vendor/img/Company/#{company.symbol}.png" class="d-block w-100" alt="..."/>
-    
     </div>
     </ui:repeat>
     
@@ -113,92 +205,263 @@
 </div>
 	
 	 <!-- end carousel -->
-	 
+
 	 </div>
-	 	<div class="row">
-	 <div>laebel :  <h:outputText value="#{companyBean.companies.size()}" /></div>
-			<div class="col-lg-10 mb-5 mb-lg-0">
-				<div class="section-top-border">
-				<h3 class="mb-30"></h3>
-				<div class="progress-table-wrap">
-					<div class="progress-table">
-						<div class="table-head">
-							<div class="serial">#</div>
-							<div class="visit">symbol </div>
-							<div class="visit">HighPrice</div>
-							<div class="visit">LowPrice</div>
-							<div class="visit">Closedprice</div>
-							<div class="visit">OpenPrice</div>
-							<div class="visit">Currency</div>
-							<div class="percentage">xxxx</div>
-			
-						</div>
-						 <h:form>
-        				<ui:repeat value="#{actifBean.actifs}" var="actif">
-						<div class="table-row">
-						<div class="serial">
-							
-						</div>
-						<div class="visit">
-						<img src="img/elements/f1.jpg" alt=""/>
-						<h:link outcome="/pages/company.jsf" value="#{actif.company.symbol}" action="#{actifBean.getCompany(actif)}" />
-						<h:commandButton  value="#{actif.company.symbol}" action="#{actifBean.getCompany(actif)}" />
-						</div>
-						<div class="visit"> <h:outputText value="#{actif.highPrice}" /></div>
-						<div class="visit"> <h:outputText value="#{actif.lowPrice}" /></div>
-						<div class="visit"><h:outputText value="#{actif.closedPrice}" /></div>
-						<div class="visit"><h:outputText value="#{actif.openPrice}" /></div>
-						<div class="visit"><h:outputText value="#{actif.currency}" /></div>
-								
-							<div class="percentage">
-								<div class="progress">
-									<div class="progress-bar color-1" role="progressbar" style="width: 80%"
-										aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+	
+	
+
+			</div>
+		</div>
+		  </div>
+		 
+				  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+				  
+				  		  <h3 class="mb-30"> </h3>
+		  <div class="row">
+			 	<br/>
+			 								
+					<div class="col-lg-9 mb-5 mb-lg-0">
+						 les actions sont des titres de propriété (capital)
+						<div class="progress-table-wrap">
+							<div class="progress-table">
+								<div class="table-head">
+									<div class="serial">#</div>
+									<div class="visit">symbol </div>
+									<div class="visit">HighPrice</div>
+									<div class="visit">LowPrice</div>
+									<div class="visit">Closedprice</div>
+									<div class="visit">OpenPrice</div>
+									<div class="visit">devise</div>
+									<div class="visit">date</div>
 								</div>
+		        				<ui:repeat value="#{actifBean.actifs}" var="actif">
+								<div class="table-row">
+								<div class="serial">#</div>
+			
+								<div class="visit">
+								 <!--  <img src="../vendor/img/Company/#{actif.company.symbol}.png" alt=""  style="width:25;height:25"/> -->
+							
+								<h:commandLink  value="#{actif.company.symbol}" action="#{actifBean.go(actif)}" />
+								</div>
+								<div class="visit"> <h:outputText value="#{actif.highPrice}" /></div>
+								<div class="visit"> <h:outputText value="#{actif.lowPrice}" /></div>
+								<div class="visit"><h:outputText value="#{actif.closedPrice}" /></div>
+								<div class="visit"><h:outputText value="#{actif.openPrice}" /></div>
+								<div class="visit"><h:outputText value="#{actif.currency}" /></div>
+								<div class="visit"><h:outputText value="#{actif.date}" /></div>			
+								</div>
+						      </ui:repeat>   
+		
 							</div>
 						</div>
-				
-				</ui:repeat>   
-				
-					<p:chart type="pie" model="#{pieChart.pieModel}" style="width:400px;height:300px" />
-   			 </h:form>
-			
-					</div>
-				</div>
-			</div>
-			</div>
-			<div class="col-lg-2">
-				<div class="blog_right_sidebar">
-					<aside class="single_sidebar_widget search_widget">
+		  
+		  </div>
+		  <div class="col-lg-3">
 					
-						<!-- <p:chart type="pie" model="#{pieChart.pieModel}" style="width:400px;height:300px" /> -->
-						
+						<div class="blog_right_sidebar">
+							<aside class="single_sidebar_widget search_widget">
+							<br/>
 				
-						<p:chart type="pie" model="#{pieChart.pieModel}" style="width:400px;height:300px" />
-
-						<button
-							class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
-							style="margin-top: 10px" >
-							<h:link outcome="/pages/portefeuil.jsf" />add</button>
-							<h:link outcome="/pages/portefeuil.jsf" value="add" />
-					</aside>
+					     <div class="btn-group">
+					   <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					   Sector
+					  </button>
+					  <div class="dropdown-menu">
+					  	<ui:repeat value="#{actifBean.listsector}" var="item">
+					  
+					   
+					    <h:commandLink   value="#{item}" class="dropdown-item" action="#{actifBean.sector(item)}" />
+					   
+					    </ui:repeat>
+					   </div>
+					  </div>
+		  					
+						  	<div class="btn-group">
+						   <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						   <img src="../vendor/icon/line.png" alt=""  width="20" height="20"/>
+						  </button>
+						  <div class="dropdown-menu">
+						  
+						     <h:commandLink class="dropdown-item"  value="Closed Price" action="#{actifBean.asc()}" />
+						  <h:commandLink   value="Open Price" action="#{actifBean.asc()}" />
+						    <a class="dropdown-item" href="#">Something else here</a>
+						   </div>
+						  </div>
+		   
+						   	<div class="btn-group">
+						   <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						   <img src="../vendor/icon/business.png" alt=""  width="20" height="20"/>
+						  </button>
+						  <div class="dropdown-menu">
+						  <h:commandLink class="dropdown-item"  value="Closed Price" action="#{actifBean.dsc('ClosedPrice')}" />
+						  <h:commandLink   value="Open Price" action="#{actifBean.dsc('OpenPrice')}" />
+						    
+						    
+						    <a class="dropdown-item" href="#">Something else here</a>
+						   </div>
+						  </div>
+		
+							<br/>
+							
+							<div class="accordion" id="accordionExample">
+		  <div class="card">
+		    <div class="card-header" id="headingOne">
+		      <h2 class="mb-0">
+		        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+		         Chercher par nom
+		        </button>
+		      </h2>
+		    </div>
+		
+		    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+		      <div class="card-body">
+			<h:inputText value="#{actifBean.search1}"  class="form-control mr-sm-2"  />
+			 <h:commandButton action="#{actifBean.namesearch()}" value="Chercher"  styleClass="btn btn-outline-info my-2 my-sm-0"/>
+								
+		      </div>
+		    </div>
+		  </div>
+		  <div class="card">
+		    <div class="card-header" id="headingTwo">
+		      <h2 class="mb-0">
+		        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+		          chercher par nom et date
+		        </button>
+		      </h2>
+		    </div>
+		    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+		      <div class="card-body">
+		      	<h:inputText value="#{actifBean.search}"  class="form-control mr-sm-2"  />
+				 <input type="date" class="form-control mr-sm-2" jsf:value="#{actifBean.stringdate}"/>
+				 <h:commandButton action="#{actifBean.seearch()}" value="Chercher"  styleClass="btn btn-outline-info my-2 my-sm-0"/>
+		      </div>
+		    </div>
+		  </div>
+		  <div class="card">
+		    <div class="card-header" id="headingThree">
+		      <h2 class="mb-0">
+		        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+		          chercher par nom et periode 
+		        </button>
+		      </h2>
+		    </div>
+		    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+		      <div class="card-body">
+		      	<h:inputText value="#{actifBean.search2}"  class="form-control mr-sm-2"  />
+		      	
+		      	<input type="date" class="form-control mr-sm-2" jsf:value="#{actifBean.stringdate1}"/>
+		      	<input type="date" class="form-control mr-sm-2" jsf:value="#{actifBean.stringdate2}"/>
+				
+				<h:commandButton action="#{actifBean.seearchperiode()}" value="Chercher"  styleClass="btn btn-outline-info my-2 my-sm-0"/>
+								
+		      
+		      </div>
+		    </div>
+		  </div>
+		</div>
+								
+							</aside>
+						</div>
+					</div>
+				
+				 
 				</div>
+				  
+				  </div>
+				  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+				  
+				 
+  Les obligations représentent des titres de créance (dette)			
+								<div class="progress-table-wrap">
+									<div class="progress-table">
+										<div class="table-head">
+											<div class="serial">#</div>
+											<div class="serial">Libelilé </div>
+											<div class="serial">Price</div>
+											<div class="serial">Taux acturiel</div>
+											<div class="serial">categorie</div>
+											<div class="serial">devise</div>
+											<div class="serial">dateEmission</div>
+											<div class="serial">Echéance</div>
+											
+											<div class="percentage">Sensibilite</div>
+										</div>
+										<ui:repeat value="#{obligationBean.getObligationbase()}" var="obligation">
+										<div class="table-row">
+										<div class="serial">#</div>
+										<div class="visit">
+										
+										 <h:commandLink value="#{obligation.company.symbol}"   action="#{obligationBean.goObligation(obligation)}" />
+										</div>
+										<div class="visit"> <h:outputText value="#{obligation.bondPrice}" /></div>
+										<div class="visit"> <h:outputText value="#{obligation.tauxActuariel}" /></div>
+										<div class="visit"><h:outputText value="#{obligation.categorie}"/></div>
+										<div class="visit"><h:outputText value="#{obligation.currency}" /></div>
+										<div class="visit"><h:outputText value="#{obligation.dateEmission}" /></div>
+										<div class="visit"><h:outputText value="#{obligation.dateEcheance}" /></div>
+											
+											
+											<div class="percentage">
+												<div class="progress">
+													<div class="progress-bar color-1" role="progressbar" style="width: #{obligationBean.sensibilite(obligation)}%"
+														aria-valuenow="#{obligationBean.sensibilite(obligation)}" aria-valuemin="0" aria-valuemax="100"></div>
+												</div>
+											</div>
+										</div>
+								
+								</ui:repeat>   
+				        				<ui:repeat value="#{obligationBean.obligations}" var="obligation">
+										<div class="table-row">
+										<div class="serial">#</div>
+										<div class="visit">
+										
+										<h:commandLink  value="#{obligation.company.symbol}" action="#{obligationBean.goObligation(obligation)}" />
+										</div>
+										<div class="visit"> <h:outputText value="#{obligation.bondPrice}" /></div>
+										<div class="visit"> <h:outputText value="#{obligation.tauxActuariel}" /></div>
+										<div class="visit"><h:outputText value="#{obligation.categorie}"/></div>
+										<div class="visit"><h:outputText value="#{obligation.currency}" /></div>
+										<div class="visit"><h:outputText value="#{obligation.dateEmission}" /></div>
+										<div class="visit"><h:outputText value="#{obligation.dateEcheance}" /></div>		
+											<div class="percentage">
+												<div class="progress">
+													<div class="progress-bar color-1" role="progressbar" style="width: 80%"
+														aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+												</div>
+											</div>
+										</div>
+								
+								</ui:repeat>   
+				
+									</div>
+								</div>
+								
+				  
+				  </div>
+		</div>
 			</div>
-		
-		
+			<div class="col">
 	
+       
+   
+
+	<a class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn" style="margin-top: 10px" href="../pages/portefeuil.jsf" >portefeuil</a>
+			
+		
+			</div>
 		</div>
-		<div  class="row">
-		<p:chart type="pie" model="#{pieChart.pieModel}" style="width:400px;height:300px" />
-		</div>
-		<div  class="row">
-	<h:form>  
-<p:growl id="msgs" showDetail="true" />  
-<h:panelGrid columns="2" cellpadding="5">  
-<p:outputLabel value="Provide Country: " />  
-<p:autoComplete value="#{actifBean.countryName}" completeMethod="#{actifBean.countryList()}" />  
-</h:panelGrid>  
-</h:form> 
-	</div>
+
+     
+	     
+        
+        <!-- JavaScript includes -->
+		<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+		
+		
+ </h:form>
+            </h:panelGroup>
+
+
+		
 	</ui:define>
 </ui:composition>

@@ -6,6 +6,7 @@ import java.util.Date;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -38,7 +39,13 @@ public class ActifResource {
 	        int id = metier.AddStock(a);
 	        return Response.ok(id).build();
 	    }
-		
+		@DELETE
+		@Produces(MediaType.APPLICATION_JSON)
+		@Path("delete/{id}")
+	    public Response RemoveCompany(@PathParam("id") int id) {
+			metier.RemoveActif(id);
+	        return Response.ok().build();
+	    }
 		
 		@GET
 		@Produces(MediaType.APPLICATION_JSON)

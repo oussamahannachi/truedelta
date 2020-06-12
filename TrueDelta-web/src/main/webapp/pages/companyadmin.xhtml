@@ -1,0 +1,111 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	template="../template/templateadmin.xhtml">
+	<ui:param name="page_name" value="company" />
+	<ui:define name="body">
+	<div class="container-fluid">
+			<div class="section__content section__content--p30">
+				<div class="col-md-12" style="margin-bottom: 30px">	
+	<h:panelGroup columns="2">
+	<h:form enctype="multipart/form-data"  prependId="false">
+<div class="row">
+<div class="col-lg-6">
+ <div class="card">
+<div class="card-header">
+<strong>Company</strong> form
+</div>
+<div class="card-body card-block">
+<table >
+<tr><td><h:outputText value="nom"></h:outputText></td><td><input value="#{companyBean.name}" required="required" class="single-input"/></td></tr>
+<tr><td><h:outputText value="labelle"></h:outputText></td> <td><h:inputText value="#{companyBean.symbol}" required="required" class="single-input"></h:inputText></td></tr>
+<tr><td><h:outputText value="Description"></h:outputText></td> <td><h:inputText value="#{companyBean.description}" required="required" class="single-input"></h:inputText></td></tr>
+<tr><td><h:outputText value="Industry"></h:outputText></td> <td><h:inputText value="#{companyBean.industry}" required="required" class="single-input"></h:inputText></td></tr>
+<tr><td><h:outputText value="Sector"></h:outputText></td> <td><h:inputText value="#{companyBean.sector}" required="required" class="single-input"></h:inputText></td></tr>
+<tr><td><h:outputText value="Site"></h:outputText></td> <td><h:inputText value="#{companyBean.site}" required="required" class="single-input"></h:inputText></td></tr>
+<tr><td><h:outputText value="TelephoneNumber"></h:outputText></td> <td><h:inputText value="#{companyBean.telephoneNumber}" required="required" class="single-input"></h:inputText></td></tr>
+<tr><td><h:outputText value="FullTimeEmployer"></h:outputText></td> <td><h:inputText value="#{companyBean.fullTimeEmployer}"></h:inputText></td></tr>
+
+<h:outputText value="logo: "></h:outputText>
+<h:inputFile value="#{companyBean.uploadedFile}"  />
+
+ 
+</table>
+</div>
+<div class="card-footer">
+<h:commandButton value="Ajouter " action="#{companyBean.addcompany()}" class="btn btn-primary btn-sm"/>
+<h:commandButton value="Mettre A jour " action="#{companyBean.updatecompany()}" class="btn btn-success btn-sm" />
+<h:commandButton value="annuler " action="#{companyBean.reset()}" class="btn btn-danger btn-sm" />
+
+
+</div>
+</div>
+
+</div>
+<div class="col-sm-6 col-lg-3">
+ <img   src="../vendor/img/Company/#{companyBean.symbol}gif.gif" class="d-block w-100" alt="..."/>
+</div>
+<div class="col-sm-6 col-lg-3">
+<div class="overview-item overview-item--c4">
+<div class="overview__inner">
+<div class="overview-box clearfix">
+ <div class="icon">
+<i class="zmdi zmdi-money"></i>
+</div>
+<div class="text">
+
+<span></span>
+<a class="js-arrow" href="../pages/actionadmin.jsf">
+                               voir action</a>
+</div>
+</div>
+<div class="overview-chart">
+<canvas id="widgetChart4"></canvas>
+</div>
+</div>
+</div></div>
+
+
+</div>
+</h:form>
+
+
+<div class="row">
+<div class="col-lg-12">
+<div class="table-responsive table--no-card m-b-30">
+
+
+<h:panelGroup columns="2"> <h:form> 
+<h:inputText value="#{companyBean.search}"></h:inputText>
+<h:commandButton action="#{companyBean.GetCompByAdresse()}" value="chercher"  class="btn btn-info" />
+<h:commandButton action="#{companyBean.getAllCompanies()}" value="getall"  class="btn btn-secondary" />
+<h:dataTable value="#{companyBean.companies}" var="company" border="1" class="table table-borderless table-striped table-earning ">
+<h:column><f:facet name="header"><h:outputText value="Nom" /></f:facet> <h:outputText value="#{company.name}"  /></h:column>
+<h:column><f:facet name="header"><h:outputText value="Labelle"/></f:facet> <h:outputText value="#{company.symbol}" /></h:column>
+<h:column><f:facet name="header"><h:outputText value="address" /></f:facet>    <h:outputText value="#{company.address}" /></h:column>
+<h:column><f:facet name="header"><h:outputText value="Industry" /></f:facet> <h:outputText value="#{company.industry}" /></h:column>
+<h:column><f:facet name="header"><h:outputText value="Sector" /></f:facet> <h:outputText value="#{company.sector}" /></h:column>
+<h:column><f:facet name="header"><h:outputText value="site" /></f:facet> <h:outputText value="#{company.site}" /> </h:column>
+<h:column><f:facet name="header"><h:outputText value="TelephoneNumber" /></f:facet> <h:outputText value="#{company.telephoneNumber}" /> </h:column>
+<h:column><f:facet name="header"><h:outputText value="FullTimeEmployer" /></f:facet> <h:outputText value="#{company.fullTimeEmployer}" /></h:column>
+<h:column><f:facet name="header"><h:outputText value="Action" /></f:facet> 
+<h:commandButton action="#{companyBean.removeCompany(company.id)}" value="Supprimer" class="btn btn-danger btn-sm"/>
+<h:commandButton action="#{companyBean.displayCompany(company)}" value="Afficher"  class="btn btn-warning btn-sm" />
+ </h:column>
+
+</h:dataTable> </h:form> </h:panelGroup>
+</div>
+</div>
+</div>
+</h:panelGroup>
+
+</div></div></div>
+
+	</ui:define>
+</ui:composition>

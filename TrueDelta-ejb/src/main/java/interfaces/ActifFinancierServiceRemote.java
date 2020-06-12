@@ -1,13 +1,17 @@
 package interfaces;
 
+import java.awt.Desktop;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import javax.ejb.Remote;
+import javax.swing.JOptionPane;
 
 import entities.ActifFinancier;
 import yahoofinance.Stock;
@@ -71,5 +75,29 @@ public interface ActifFinancierServiceRemote {
 
 	List<ActifFinancier> getStockBynumeroCompte(String numeroCompte);
 
-	void pdfToGenerate(int clientId) throws IOException;
+	void pdfToGenerate(int clientId) throws IOException, ParseException;
+
+	void openpdf(int clientId);
+
+	long getQuantite(String name, int idp);
+
+	double getPriceInstantly(String Sym);
+
+	List<ActifFinancier> getStockByClient2(int idp);
+
+	String name(int clientId);
+
+	List<ActifFinancier> GetStockBySector(String sector);
+
+	List GetPrices(String name);
+
+	List<ActifFinancier> getobligationScraping() throws ParseException, IOException;
+
+	Map<String, String> Detait(String Libellé) throws ParseException, IOException;
+
+	void RemoveActif(int id);
+
+	
+
+	
 }

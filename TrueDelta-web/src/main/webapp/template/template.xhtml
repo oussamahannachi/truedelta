@@ -4,7 +4,8 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core">
 <head>
 <title>#{page_name}</title>
 <meta http-equiv="x-ua-compatible" content="ie=edge" />
@@ -49,7 +50,10 @@
 									<li><a href="#">Bourse<i class="ti-angle-down"></i></a>
 										<ul class="submenu">
 											<li><a href="#">Actualités du marché</a></li>
-											<li><a href="../pages/actif.jsf" action="#{actifBean.Redirect()}"> Contations de A à Z</a></li>
+											
+											
+											
+											<li><a href="../pages/actif.jsf" > Contations de A à Z</a></li>
 											<li><a href="../pages/convertisseur.jsf">Convertisseur de devises</a></li>
 											<li><a href="#">Transactions</a></li>
 											<li><a href="../pages/devises.jsf">Devises</a></li>
@@ -64,7 +68,8 @@
 						<div class="col-xl-3 col-lg-3 d-none d-lg-block">
 							<div class="Appointment">
 								<div class="d-none d-lg-block">
-									<a class="boxed-btn4" href="#">Logout</a>
+									<a class="boxed-btn4" href="../accueil.xhtml">Logout</a>
+								
 								</div>
 							</div>
 						</div>
