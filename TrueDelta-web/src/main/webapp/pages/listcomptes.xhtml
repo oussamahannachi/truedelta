@@ -1,0 +1,74 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	template="../template/templateadmin.xhtml">
+	<ui:param name="page_name" value="Comptes" />
+	<ui:define name="body">
+	<div style="margin: 20px">
+		<div class="row">
+			<div class="col-md-12">
+				<!-- DATA TABLE -->
+				<h3 class="title-5 m-b-35">Liste des comptes</h3>
+				<div class="table-responsive table-responsive-data2">
+					<table class="table table-data2">
+						<thead>
+							<tr>
+								<th>Numero</th>
+								<th>Agence</th>
+								<th>Proprietaire</th>
+								<th>Etat</th>
+								<th>Dernière verification</th>
+								<th>Problème</th>
+								<th>Gab</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+						<c:forEach var="compte" items="#{adminBean.comptes}">
+							<tr class="tr-shadow">
+								<td style="position: absolute;padding: 50px;font-weight: bold;">#{compte.numero}</td>
+								<td><span class="block-email">#{compte.agence.banqueName} #{compte.agence.agenceName}</span></td>
+								<td class="desc">#{compte.proprietaire.username}</td>
+								<c:choose>
+								<c:when test="#{compte.isVerifie}">
+									<td><span class="status--process">Vérifié</span></td>
+								</c:when>
+								<c:otherwise>
+									<td><span class="status--process" style="color:red">Bloqué</span></td>
+								</c:otherwise>
+								</c:choose>
+								<td>#{compte.lastVerif}</td>
+								<td>#{compte.remarque}</td>
+								<td>#{compte.gab}</td>
+								<td>
+									<div class="table-data-feature">
+									<h:form class="form">
+										<h:commandButton styleClass="form-group btn btn-sm btn-outline-primary" style="width:100px"
+										value="Informations" action="#{adminBean.informations(compte.numero)}" />
+										<h:commandButton styleClass=" form-group btn btn-sm btn-outline-danger" style="width:100px"
+										 action="#{adminBean.supprimer(compte.numero)}" value="Supprimer"  />
+									</h:form>
+									</div>
+								</td>
+							</tr>
+							<tr class="spacer"></tr>
+							</c:forEach>
+						</tbody>
+					</table>
+				</div>
+				<!-- END DATA TABLE -->
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+	</ui:define>
+</ui:composition>

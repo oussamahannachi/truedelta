@@ -1,0 +1,25 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap");
+.tableConvertisseur {
+border: medium solid #6495ed;
+border-collapse: collapse;
+width: auto;
+margin-bottom: 5px;
+}
+.tableConvertisseurth {
+font-family: monospace;
+border: thin solid #6495ed;
+width: 50%;
+padding: 6px;
+text-align:center;
+background-color: #D0E3FA;
+background-image: url(sky.jpg);
+}
+.tableConvertisseurtd {
+font-family: sans-serif;
+border: thin solid #6495ed;
+width: 50%;
+padding: 5px;
+text-align: center;
+background-color: #ffffff;
+}

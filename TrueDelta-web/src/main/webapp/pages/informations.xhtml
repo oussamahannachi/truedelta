@@ -1,0 +1,102 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	template="../template/templateadmin.xhtml">
+	<ui:param name="page_name" value="Informations" />
+	<ui:define name="body">
+		<div class="container-fluid">
+			<div class="col-md-12" style="margin-bottom: 30px">
+					<div class="overview-wrap">
+						<h2 class="text-left"
+							style="color: #000000; font-weight: bold; font-style: italic;">Dernière mise à jour  :  #{adminBean.doc.get('date')}
+						</h2>
+					</div>
+			</div>			
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="au-card m-b-30">
+						<div class="au-card-inner">
+							<h2 class="title-2 m-b-40" style="font-weight: bolder;font-style: italic;">Données Banque</h2>
+							<div class="form-input">
+								<label style="color: #FFA07A;font-size: large;font-weight: bold;">Nom :</label>
+								<label>#{adminBean.compte.proprietaire.nom}</label>
+							</div>
+							<div class="form-input">
+								<label style="color: #FFA07A;font-size: large;font-weight: bold;">Prenom :</label>
+								<label>#{adminBean.compte.proprietaire.prenom}</label>
+							</div>
+							<div class="form-input">
+								<label style="color: #FFA07A;font-size: large;font-weight: bold;">Numero compte :</label>
+								<label>#{adminBean.doc.get('numero')}</label>
+							</div>
+							<div class="form-input">
+								<label style="color: #FFA07A;font-size: large;font-weight: bold;">Devise :</label>
+								<label>#{adminBean.doc.get('devise')}</label>
+							</div>
+							<div class="form-input">
+								<label style="color: #FFA07A;font-size: large;font-weight: bold;">Solde :</label>
+								<label>#{adminBean.doc.get('solde')}</label>
+							</div>
+							<div class="form-input">
+								<label style="color: #FFA07A;font-size: large;font-weight: bold;">Nombres actions :</label>
+								<label>#{adminBean.doc.get('actions')}</label>
+							</div>
+							<div class="form-input">
+								<label style="color: #FFA07A;font-size: large;font-weight: bold;">Nombres obligations :</label>
+								<label>#{adminBean.doc.get('obligations')}</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="au-card m-b-30">
+						<div class="au-card-inner">
+							<h2 class="title-2 m-b-40" style="font-weight: bold;font-style: italic;">Données Client</h2>
+							<div class="form-input">
+								<label style="color: #87CEFA;font-size: large;font-weight: bold;">Nom :</label>
+								<label>#{adminBean.compte.proprietaire.nom}</label>
+							</div>
+							<div class="form-input">
+								<label style="color: #87CEFA;font-size: large;font-weight: bold;">Prenom :</label>
+								<label>#{adminBean.compte.proprietaire.prenom}</label>
+							</div>
+							<div class="form-input">
+								<label style="color: #87CEFA;font-size: large;font-weight: bold;">Numero compte :</label>
+								<label>#{adminBean.compte.numero}</label>
+							</div>
+							<div class="form-input">
+								<label style="color: #87CEFA;font-size: large;font-weight: bold;">Devise :</label>
+								<label>#{adminBean.compte.devise}</label>
+							</div>
+							<div class="form-input">
+								<label style="color: #87CEFA;font-size: large;font-weight: bold;">Solde :</label>
+								<label>#{adminBean.compte.solde}</label>
+							</div>
+							<div class="form-input">
+								<label style="color: #87CEFA;font-size: large;font-weight: bold;">Nombres actions :</label>
+								<label>#{adminBean.compte.nbAction}</label>
+							</div>
+							<div class="form-input">
+								<label style="color: #87CEFA;font-size: large;font-weight: bold;">Nombres obligations :</label>
+								<label>#{adminBean.compte.nbObligation}</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+
+
+
+
+
+	</ui:define>
+</ui:composition>

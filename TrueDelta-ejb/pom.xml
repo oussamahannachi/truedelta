@@ -96,7 +96,34 @@
             <artifactId>arquillian-protocol-servlet</artifactId>
             <scope>test</scope>               
         </dependency>
-
+        
+        <!-- mongodb -->
+        <dependency>
+    		<groupId>org.mongodb</groupId>
+    		<artifactId>mongo-java-driver</artifactId>
+		</dependency>
+		
+		<!-- Excel -->
+		<dependency>
+    		<groupId>org.apache.poi</groupId>
+    		<artifactId>poi-ooxml</artifactId>
+    		<version>3.15</version>
+  		</dependency>
+  		
+  		<!-- Fuzzy Matching -->
+		<dependency>
+    		<groupId>me.xdrop</groupId>
+    		<artifactId>fuzzywuzzy</artifactId>
+    		<version>1.2.0</version>
+		</dependency>
+		
+		<!-- Web scraping -->
+		<dependency>
+    		<groupId>org.jsoup</groupId>
+    		<artifactId>jsoup</artifactId>
+    		<version>1.13.1</version>
+		</dependency>
+		
     </dependencies>
 
     <build>
