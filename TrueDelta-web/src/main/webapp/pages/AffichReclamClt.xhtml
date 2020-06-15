@@ -1,0 +1,109 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+
+	 xmlns:p="http://primefaces.org/ui"
+	template="../template/template.xhtml">
+
+
+	
+
+	
+	<ui:param name="page_name" value="Reclamations" />
+	<ui:define name="body">
+	    
+				
+		
+				
+				<div class="container box_1170 border-top-generic">
+         
+ 
+	
+	  <!-- table  -->
+	  <div class="row" >											
+				<div class="section-top-border" >
+				
+				<h3 class="mb-30"><FONT face="Verdana" color ="green">Hey !! thank you for consulting  Your Reclamations </FONT>&#128522;</h3>
+				
+				
+				
+				<div class="progress-table-wrap">
+					<div class="progress-table">
+						<div class="table-head" >
+							
+							<div class="visit">subject</div>
+							<div class="visit">description</div>
+							<div class="visit">response</div>
+							<div class="visit">State</div>
+					
+						
+							<div class="visit">Update</div>
+						<div class="visit">Delete</div>
+			
+						</div>
+							 <h:form>
+        				<ui:repeat  value="#{ReclamationBean.reclamations}" var="Reclamation" >
+        				  
+             
+         
+						<div class="table-row">
+						
+						
+						<div class="visit"><h:outputText value="#{Reclamation.subject}" /></div>
+						<div class="visit"> <h:outputText value="#{Reclamation.description}" /></div>
+						<div class="visit"><h:outputText value="#{Reclamation.response}" /></div>
+						
+					
+						<div class="visit"><h:outputText value="#{Reclamation.state}" /></div>
+						
+						
+							<div class="visit">
+							<button>
+											<h:commandLink class="genric-btn success"
+									action="#{ReclamationBean.displayReclam(Reclamation)}">Update</h:commandLink>
+												</button>
+											</div>	
+											
+										<div class="visit">
+							<button>
+											<h:commandLink class="genric-btn danger" onclick="return confirm('Do you really want to delete your complaint ?')"
+									action="#{ReclamationBean.DeleteReclamclt(Reclamation.id)}">Delete</h:commandLink>
+												</button>
+											</div>	
+											
+							
+						</div>	
+											
+									</ui:repeat>	
+    </h:form>
+						</div>
+						
+						
+	
+			
+					</div>
+					
+		
+					
+					
+					
+				</div>
+			</div>
+		</div>
+			
+		
+											<h:form class="form">
+	
+	<div class="col-xl-4 col-md-6 col-lg-4">
+	
+										<h:commandButton styleClass="btn btn-success" 
+										value="Add a Reclamation " action="#{ReclamationBean.DoAjoutRec()}"   />
+										
+										</div>
+									</h:form>
+		
+	</ui:define>
+	
+	
+</ui:composition>

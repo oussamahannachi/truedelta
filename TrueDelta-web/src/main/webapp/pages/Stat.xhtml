@@ -1,0 +1,156 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:ct="http://www.chartistjsf.org/charts"
+	template="../template/templateadmin.xhtml">
+	<ui:param name="page_name" value="ReclamationAdmin" />
+	<ui:define name="body">
+	
+	
+	
+	<h:form class="form">
+	
+	<h3 class="title-5 m-b-35">Here you are Our Complaints Statistics</h3>
+	
+										<h:commandButton styleClass="form-group btn btn-sm btn-outline-primary" 
+										value="Get statistics of the day " action="#{ComplainStatBean.addstatClaim()}"   />
+										
+										
+									</h:form>
+	
+	
+      
+	<div class="row">
+	
+	
+<div class="table-data__tool">
+
+
+ 
+ 
+
+
+</div>
+ <div class="table-responsive table-responsive-data2">
+<table class="table table-data2" id="selectedItemText">
+<thead>
+<tr>
+
+
+<th>Date of rapport </th>
+<th>Pourcent of Opened</th>
+<th>Pourcent of Treated</th>
+<th >Pourcent of InProgress
+    </th>
+<th> Total </th>
+</tr>
+
+</thead>
+<tbody>
+<c:forEach var="Reclamationstat"  items="#{ComplainStatBean.complainstats}"  widgetVar="Table"
+>
+
+<tr class="tr-shadow">
+
+
+<td class="DateStat"> #{Reclamationstat.dateStat}</td>
+<td class="Pourcent of  Opened"> #{Reclamationstat.nbOpenedReclam}%</td>
+
+<td class="Pourcent of Treated">#{Reclamationstat.nbTreatedReclam}%</td>
+
+
+<td class="Pourcent of InProgress" >#{Reclamationstat.nbinprogressReclam}%
+
+</td>
+
+<td>
+<span class="Total">#{Reclamationstat.nbReclams} Reclamations</span>
+</td>
+
+
+</tr>
+
+</c:forEach>
+
+</tbody>
+</table>
+	</div>
+	
+	
+	</div>
+	
+	
+	
+		<div class="col-lg-6">
+
+	
+	</div>
+	
+	
+	<div class="row">
+	
+	
+	
+	
+	
+	<div class="col-lg-6">
+<div class="au-card m-b-30">
+	
+<div style="width: 60%; height: 60%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto;">
+   <ct:chart id="pieChart" type="pie" model="#{pieChartBean.pieChartModel}" >
+      <p:ajax event="itemSelect" listener="#{pieChartBean.pieItemSelect}" update="pieChartMessage" />
+   </ct:chart>
+   <p:message id="pieChartMessage" for="pieChart" showDetail="true" />
+ </div>
+ 
+ </div>
+ </div>
+ 
+ 
+ 
+ 
+ <div class="col-lg-6">
+<div class="au-card m-b-30">
+<div>
+    <ct:chart id="barChart" type="bar" model="#{barChartDataBean.barChartModel}">
+      <p:ajax event="itemSelect" listener="#{barChartDataBean.barItemSelect}" update="barChartMessage"  />
+    </ct:chart>
+      <p:message id="barChartMessage" for="barChart" showDetail="true" />
+</div>
+
+
+</div>
+
+</div>
+ </div>
+ 
+
+<script src="./Tables_files/jquery-3.2.1.min.js.téléchargement" type="text/javascript"></script>
+
+<script src="./Tables_files/popper.min.js.téléchargement" type="text/javascript"></script>
+<script src="./Tables_files/bootstrap.min.js.téléchargement" type="text/javascript"></script>
+
+<script src="./Tables_files/slick.min.js.téléchargement" type="text/javascript">
+    </script>
+<script src="./Tables_files/wow.min.js.téléchargement" type="text/javascript"></script>
+<script src="./Tables_files/animsition.min.js.téléchargement" type="text/javascript"></script>
+<script src="./Tables_files/bootstrap-progressbar.min.js.téléchargement" type="text/javascript">
+    </script>
+<script src="./Tables_files/jquery.waypoints.min.js.téléchargement" type="text/javascript"></script>
+<script src="./Tables_files/jquery.counterup.min.js.téléchargement" type="text/javascript">
+    </script>
+<script src="./Tables_files/circle-progress.min.js.téléchargement" type="text/javascript"></script>
+<script src="./Tables_files/perfect-scrollbar.js.téléchargement" type="text/javascript"></script>
+<script src="./Tables_files/Chart.bundle.min.js.téléchargement" type="text/javascript"></script>
+<script src="./Tables_files/select2.min.js.téléchargement" type="text/javascript">
+    </script>
+
+<script src="./Tables_files/main.js.téléchargement" type="text/javascript"></script>
+
+	</ui:define>
+</ui:composition>

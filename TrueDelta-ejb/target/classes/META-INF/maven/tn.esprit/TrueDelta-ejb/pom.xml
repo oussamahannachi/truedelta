@@ -96,7 +96,6 @@
             <artifactId>arquillian-protocol-servlet</artifactId>
             <scope>test</scope>               
         </dependency>
-        
         <!-- mongodb -->
         <dependency>
     		<groupId>org.mongodb</groupId>
@@ -124,6 +123,18 @@
     		<version>1.13.1</version>
 		</dependency>
 		
+
+        <dependency>
+		    <groupId>org.json</groupId>
+		    <artifactId>json</artifactId>
+		    <version>20190722</version>
+		</dependency>
+		<dependency>
+    <groupId>com.fasterxml.jackson.dataformat</groupId>
+    <artifactId>jackson-dataformat-xml</artifactId>
+    <version>2.8.5</version>
+</dependency>
+
     </dependencies>
 
     <build>
@@ -176,6 +187,12 @@
                     <artifactId>wildfly-arquillian-container-managed</artifactId>
                     <scope>test</scope>
                 </dependency>
+                <dependency>
+        <groupId>org.jboss.resteasy</groupId>
+        <artifactId>resteasy-jackson2-provider</artifactId>
+        <version>3.0.19.Final</version>
+    </dependency>
+                
             </dependencies>
         </profile>
 

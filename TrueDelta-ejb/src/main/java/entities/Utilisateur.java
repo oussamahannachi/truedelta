@@ -1,7 +1,19 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+
+
+
+
+
 
 @Entity
 @Table(name="utilisateur")
@@ -31,6 +43,14 @@ public class Utilisateur implements Serializable {
 	private String password;
 	@Transient 
 	private String confirmPassword;
+	
+	
+
+	@OneToMany(mappedBy="user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	@JsonBackReference
+
+	private Set<Reclamation> reclamations;
+
 	
 	public Utilisateur() {}
 
@@ -109,6 +129,14 @@ public class Utilisateur implements Serializable {
 	@Override
 	public String toString() {
 		return "Utilisateur [id=" + id + ", email=" + email + ", username=" + username + "]";
+	}
+
+	public Set<Reclamation> getReclamations() {
+		return reclamations;
+	}
+
+	public void setReclamations(Set<Reclamation> reclamations) {
+		this.reclamations = reclamations;
 	}
 	
    

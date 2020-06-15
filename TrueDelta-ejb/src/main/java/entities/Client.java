@@ -29,8 +29,7 @@ public class Client extends Utilisateur implements Serializable {
 	@OneToMany(mappedBy="client", cascade = CascadeType.ALL)
 	private List<Procuration> procurations= new ArrayList<Procuration>();
 	
-	@OneToMany(mappedBy="client", cascade = CascadeType.ALL)
-	private List<Reclamation> reclamations= new ArrayList<Reclamation>();
+	
 	
 	public Client() { super(); }
 
@@ -84,13 +83,7 @@ public class Client extends Utilisateur implements Serializable {
 		this.procurations = procurations;
 	}
 
-	public List<Reclamation> getReclamations() {
-		return reclamations;
-	}
 
-	public void setReclamations(List<Reclamation> reclamations) {
-		this.reclamations = reclamations;
-	}
 
 	@Override
 	public String toString() {

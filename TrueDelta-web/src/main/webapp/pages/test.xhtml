@@ -1,0 +1,70 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+       xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      >
+      
+ 
+
+        <h1>JSF 2 dataTable example</h1>
+        <ui:define name="body">
+ <h:form>
+            <p:dataTable value="#{ReclamationBean.reclamations}" var="Reclamation" widgetVar="RecTable1"
+                styleClass="order-table"
+                headerClass="order-table-header"
+                rowClasses="order-table-odd-row,order-table-even-row"
+            >
+            
+            
+
+                <p:column>
+                    <!-- column header -->
+                    <f:facet name="header">Id</f:facet>
+                    <!-- row record -->
+                    <p:outputText value="#{Reclamation.id}"/>
+                </p:column>
+
+                <p:column>
+                    <f:facet name="header">description</f:facet>
+                  <p:outputText value="#{Reclamation.description}"/>
+                </p:column>
+
+                <p:column>
+                    <f:facet name="header">response</f:facet>
+                    <p:outputText value="#{Reclamation.response}"/>
+                </p:column>
+
+                <p:column>
+                    <f:facet name="header">subject</f:facet>
+                     <p:outputText value="#{Reclamation.subject}"/>
+                </p:column>
+                
+                 <p:column>
+                    <f:facet name="header">subject</f:facet>
+                     <p:outputText value="#{Reclamation.subject}"/>
+                </p:column>
+                
+                  <p:column  headerText="State"  filterBy="#{Reclamation.state}" footerText="exact" filterMatchMode="exact">
+                  
+                                     <f:facet name="filter">
+                                      <p:selectOneMenu   onchange="PF('RecTable1').filter()" styleClass="custom-filter">
+	 <f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true" />
+   	<f:selectItems value="#{ReclamationBean.states}" />
+   	
+</p:selectOneMenu>
+                                      
+                                      </f:facet>
+                  
+                 
+                                <p:outputText value="#{Reclamation.state}"/>
+
+</p:column>
+                            
+
+            </p:dataTable>
+            </h:form>
+
+  </ui:define>
+
+</ui:composition>
