@@ -22,8 +22,7 @@ public class Courtier extends Utilisateur implements Serializable {
 	private int experience;
 	private float score;
 	private int nbPF ; // Nombre portefeuilles
-	@Column(nullable=true)
-	private File cv;
+	
 	
 	@OneToMany(mappedBy="courtier", cascade = CascadeType.ALL)
 	private List<Procuration> procurations= new ArrayList<Procuration>();
@@ -56,13 +55,7 @@ public class Courtier extends Utilisateur implements Serializable {
 		this.score = score;
 	}
 
-	public File getCv() {
-		return cv;
-	}
-
-	public void setCv(File cv) {
-		this.cv = cv;
-	}
+	
 
 	
 	public int getNbPF() {

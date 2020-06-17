@@ -24,6 +24,7 @@ public class ActifFinancier implements Serializable {
 	private float risque;
 	private String type; // action ou obligation 
 	private float interet;
+	private String Currency;
 	@Temporal(TemporalType.DATE)
 	@Column(name="date_echeane",nullable=true)
 	private Date dateEcheance; // Pour obligation
@@ -31,7 +32,7 @@ public class ActifFinancier implements Serializable {
 	@ManyToOne()
 	private Compte compte;
 	
-	@OneToOne(mappedBy="actif")
+	@OneToOne(mappedBy="actif", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Transaction transaction;
 	
 	public ActifFinancier() {}
@@ -47,7 +48,12 @@ public class ActifFinancier implements Serializable {
 	public String getEntreprise() {
 		return entreprise;
 	}
-
+	public String getCurrency() {
+	    return Currency;	
+	}
+    public void setCurrency() {
+    	this.Currency = Currency;
+    }
 	public void setEntreprise(String entreprise) {
 		this.entreprise = entreprise;
 	}

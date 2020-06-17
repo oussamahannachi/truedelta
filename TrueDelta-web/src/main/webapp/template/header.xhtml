@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<c:choose>
+		<c:when test="#{!(loginBean.role.toLowerCase().equals('agence'))}">
+			<div class="main-menu  d-none d-lg-block">
+								<nav>
+								<ul id="navigation">
+									<li><a href="#">Accueil</a></li>
+									<li><a href="../pages/accueil.jsf">Compte Bancaire</a></li>
+									<li><a href="#">Procuration</a></li>
+									<li><a href="#">Bourse<i class="ti-angle-down"></i></a>
+										<ul class="submenu">
+											<li><a href="#">Actualités du marché</a></li>
+											<li><a href="#">Contations de A à Z</a></li>
+											<li><a href="../pages/convertisseur.jsf">Convertisseur de devises</a></li>
+											<li><a href="../pages/welcome.jsf">Transactions</a>
+											</li>
+										</ul>
+									</li>
+									<li><a href="#">Reclamations</a></li>
+									<li><a href="#">Profile</a></li>
+								</ul>
+								</nav>
+							</div>
+		</c:when>
+		<c:otherwise>
+			<div class="main-menu  d-none d-lg-block">
+								<nav>
+								<ul id="navigation">
+									<li><a href="#">Accueil</a></li>
+									<li><a href="../pages/accueil.jsf">Compte Bancaire</a></li>
+									<li><a href="#">Bourse<i class="ti-angle-down"></i></a>
+										<ul class="submenu">
+											<li><a href="#">Actualités du marché</a></li>
+											<li><a href="#">Contations de A à Z</a></li>
+											<li><a href="../pages/convertisseur.jsf">Convertisseur de devises</a></li>
+											<li><a href="../pages/devises.jsf">Devises</a></li>
+										</ul>
+									</li>
+									<li><a href="#">Profile</a></li>
+								</ul>
+								</nav>
+							</div>
+		</c:otherwise>
+	</c:choose>
+</ui:composition>

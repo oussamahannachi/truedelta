@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="../template/template.xhtml">
+	<ui:param name="page_name" value="Transactions" />
+	<ui:define name="body">
+		
+		
+				
+					
+				
+				
+		
+				<b>Information Transaction</b>
+				<h:panelGroup columns="2">
+		<h:form>
+<h:dataTable value="#{ahtc.transactions1}" var="transaction1" border="1">
+<h:column><f:facet name="header"><h:outputText value="IdTransaction"/></f:facet>
+<h:outputText value="#{transaction1.id}" /></h:column>
+<h:column><f:facet name="header"><h:outputText value="DateCreation"/></f:facet>
+<h:outputText value="#{transaction1.date}" /></h:column>
+<h:column><f:facet name="header"><h:outputText value="TypeTransaction"/></f:facet>
+<h:outputText value="#{transaction1.type}" /></h:column>
+<h:column><f:facet name="header"><h:outputText value="RendementTransaction"/></f:facet>
+<h:outputText value="#{transaction1.rendementTransaction}" /></h:column>
+<h:column><f:facet name="header"><h:outputText value="ActifAffecté"/></f:facet>
+<h:outputText value="#{transaction1.actif}" /></h:column>
+<h:column><f:facet name="header"><h:outputText value="NumeroDuCompte"/></f:facet>
+<h:outputText value="#{transaction1.numcompte}" /></h:column>
+<h:column><f:facet name="header"><h:outputText value="ScoreTransaction"/></f:facet>
+<h:outputText value="#{transaction1.scoreTransaction}" /></h:column>
+<h:column><f:facet name="header"><h:outputText value="Validé"/></f:facet>
+<h:outputText value=" #{transaction1.isValide == true ? 'Oui' : 'Non'}"/></h:column>
+</h:dataTable>
+</h:form>
+				
+			
+			</h:panelGroup>
+			</ui:define>
+			</ui:composition>
+			

@@ -28,7 +28,7 @@
    <artifactId>TrueDelta-web</artifactId>
    <packaging>war</packaging>
 
-   <name>TrueDelta: WAR Module</name>
+   <name>TrueDelta1: WAR Module</name>
 
    <url>http://wildfly.org</url>
    <licenses>
@@ -48,6 +48,17 @@
          <type>ejb</type>
          <scope>provided</scope>
       </dependency>
+      <dependency>
+       <groupId>javax</groupId>
+        <artifactId>javaee-api</artifactId> 
+        <version>7.0</version>
+         </dependency> 
+         <!-- Web scraping -->
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>1.13.1</version>
+		</dependency>
 
       <!-- Import the JAX-RS API, we use provided scope as the API is included in JBoss WildFly -->
       <dependency>
@@ -91,12 +102,30 @@
                </exclusion>
            </exclusions>
        </dependency>
-       
-       <dependency>
-       		<groupId>javax</groupId>
-       		<artifactId>javaee-api</artifactId>
-       		<version>7.0</version>
-       </dependency>
+       	<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+       	<!-- https://mvnrepository.com/artifact/org.primefaces/primefaces -->
+		<dependency>
+		    <groupId>org.primefaces</groupId>
+		    <artifactId>primefaces</artifactId>
+		    <version>8.0</version>
+		</dependency>
+		
+		
+		<dependency>
+			<groupId>com.sun.faces</groupId>
+			<artifactId>jsf-api</artifactId>
+			<version>2.2.14</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.sun.faces</groupId>
+			<artifactId>jsf-impl</artifactId>
+			<version>2.2.14</version>
+		</dependency>
 
    </dependencies>
 

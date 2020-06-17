@@ -1,0 +1,67 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="../template/template.xhtml">
+
+    <ui:define name="title">Charts</ui:define>
+
+
+
+    <ui:define name="content">
+    
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-lg-6">
+                <div class="card">
+                    <h1 class="centerText">Linear Chart</h1>
+                    <p:chart id="line" type="line" model="#{chartDemoView.lineModel1}" responsive="true"/>
+                </div>
+                
+                <div class="card">
+                    <h1 class="centerText">Bar Chart</h1>
+                    <p:chart id="bar" type="bar" model="#{chartDemoView.barModel}" responsive="true"/>
+                </div>
+                
+                <div class="card">
+                    <h1 class="centerText">Area Chart</h1>
+                    <p:chart id="area" type="line" model="#{chartDemoView.areaModel}" responsive="true" />
+                </div>
+                
+                <div class="card">
+                    <h1 class="centerText">Bubble Chart</h1>
+                    <p:chart id="bubble" type="bubble" model="#{chartDemoView.bubbleModel1}" responsive="true"/>
+                </div>
+                
+                <div class="card">
+                    <h1 class="centerText">Zoom Chart</h1>
+                    <p:chart id="date" type="line" model="#{chartDemoView.dateModel}" responsive="true"/>
+                </div>
+            </div>
+            <div class="ui-g-12 ui-lg-6">
+                <div class="card">
+                    <h1 class="centerText">Pie Chart</h1>
+                    <p:chart id="pie" type="pie" model="#{chartDemoView.pieModel1}" responsive="true" />
+                </div>
+                
+                <div class="card">
+                    <h1 class="centerText">Donut Chart</h1>
+                    <p:chart id="donut" type="donut" model="#{chartDemoView.donutModel1}" responsive="true" />
+                </div>
+                
+                <div class="card">
+                    <h1 class="centerText">Bar And Line Chart</h1>
+                    <p:chart id="combined" type="bar" model="#{chartDemoView.combinedModel}" responsive="true" />
+                </div>
+                
+                <div class="card">
+                    <h1 class="centerText">Multi Axis Chart</h1>
+                    <p:chart id="multiAxis" type="line" model="#{chartDemoView.multiAxisModel}" responsive="true"/>
+                </div>
+            </div>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

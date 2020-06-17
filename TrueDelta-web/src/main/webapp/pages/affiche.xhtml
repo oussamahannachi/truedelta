@@ -1,0 +1,61 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="../template/template.xhtml">
+	<ui:param name="page_name" value="Transactions" />
+	<ui:define name="body">
+		<h:panelGroup>
+			<h:form><center>
+				<h:outputText value="Transaction #{ch.transaction.id}" />
+					
+				
+				
+				<br />
+				<b>Information Transaction</b>
+				<h:panelGroup columns="2">
+					<h:form>
+						<table border="1">
+							<tr>
+								<td><b>IdTransaction</b></td>
+								<td><h:outputText value="#{ch.transaction.id}"></h:outputText></td>
+							</tr>
+					<tr>
+								<td><b>Date</b></td>
+								<td><h:outputText value="#{ch.transaction.date}"></h:outputText></td>
+							</tr>
+							<tr>
+								<td><b>Rendemant</b></td>
+								<td><h:outputText value="#{ch.transaction.rendementTransaction}"></h:outputText></td>
+							</tr>
+							<tr>
+								<td><b>Type</b></td>
+								<td><h:outputText value="#{ch.transaction.type}"></h:outputText></td>
+							</tr>
+							<tr>
+								<td><b>Actif</b></td>
+								<td><h:outputText value="#{ch.transaction.actif}"></h:outputText></td>
+							</tr>
+							<tr>
+								<td><b>Validé/NonValidé</b></td>
+								<td><h:outputText value="#{ch.transaction.isValide}"></h:outputText></td>
+							</tr>
+							<tr>
+								<td><b>Numero Compte</b></td>
+								<td><h:outputText value="#{ch.transaction.numcompte}"></h:outputText></td>
+							</tr>
+							<tr>
+								<td><b>Score Transaction</b></td>
+								<td><h:outputText value="#{ch.transaction.scoreTransaction}"></h:outputText></td>
+							</tr>
+							
+						</table>
+					</h:form>
+				</h:panelGroup></center>
+			</h:form>
+			</h:panelGroup>
+			</ui:define>
+			</ui:composition>
+			

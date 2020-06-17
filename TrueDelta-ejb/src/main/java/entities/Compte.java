@@ -20,7 +20,7 @@ public class Compte implements Serializable {
 	
 	@Column(unique=true)
 	private String numeroCompte;
-	
+	private long numero ;
 	private float solde;
 	
 	@ManyToOne
@@ -52,6 +52,8 @@ public class Compte implements Serializable {
 	private Date dateOuverture;
 	
 	public Compte() {}
+
+	
 
 	public ComptePK getId() {
 		return id;
@@ -116,6 +118,18 @@ public class Compte implements Serializable {
 	public void setNbObligation(int nbObligation) {
 		this.nbObligation = nbObligation;
 	}
+
+	public long getNumero() {
+		return numero;
+	}
+
+
+
+	public void setNumero(long numero) {
+		this.numero = numero;
+	}
+
+
 
 	public Boolean getIsAutorise() {
 		return isAutorise;
