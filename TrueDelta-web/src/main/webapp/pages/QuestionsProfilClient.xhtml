@@ -1,0 +1,131 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:c="http://java.sun.com/jsp/jstl/core" 
+    xmlns:adm="http://github.com/adminfaces"
+       
+	template="../template/template.xhtml">
+	<ui:param name="page_name" value="QuestionsProfil" />
+     
+
+	<ui:define name="body">
+        <div class="card-header">
+                <h4>Merci de bien remplir ce formulaire afin d'analyser votre compte et vous proposer le contrat le plus convenable pour vous . </h4>
+            </div>
+
+           
+          
+
+            <h:form style="margin-left:250px">
+                <div class="ui-g ui-fluid">
+            <div style="font-size: 12pt; color:#FA8072">Quel est le niveau de risque de perte en capital que vous êtes prêt à accepter ?</div>    
+                         <BR></BR><BR></BR>
+                    
+           <h:selectOneMenu id="NIVEAU" value="#{userBean.NIVEAU}" style="width:500px" >
+                        <f:selectItem itemLabel="Je ne souhaite pas prendre de risque " itemValue="PasdeRisque"/>
+                        <f:selectItem itemLabel="Je recherche des produits qui présentent une prise de risque limitée" itemValue="RisqueLimite"  />
+                        <f:selectItem itemLabel="J'accepte un niveau de risque moyen en vue d'un rendement plus élevé" itemValue="RisqueMoyen"  />
+                        <f:selectItem itemLabel="J'accepte un niveau de risque élevé" itemValue="RisqueEleve"  />
+                       
+                      
+                </h:selectOneMenu> 
+     
+ <br> </br>
+                    <div class="ui-g-12">
+                    
+                          <div style="font-size: 12pt; color:#FA8072">Le graphique suivant présente une gamme de rendements possibles au cours 
+                           <br></br> d'une année pour 4 portefeuilles différents.
+               <br></br>     Quel portefeuille sélectionneriez-vous ? </div>
+                    </div>
+  <h:selectOneMenu id="typePortefeuille" value="#{userBean.typePortefeuille}" style="width:500px">
+                        <f:selectItem itemLabel="Portefeuille A : Une probabilité de rendement plus faible, mais stable et sans risque de perte en capital" itemValue="PortfolioA"/>
+                        <f:selectItem itemLabel="Portefeuille B : Une probabilité de rendement relativement faible avec peu de risque de perte en capital" itemValue="PortfolioB"  />
+                        <f:selectItem itemLabel="Portefeuille C : Une probabilité de rendement moyen avec des risques de perte en capital" itemValue="PortfolioC"  />
+                        <f:selectItem itemLabel="Portefeuille D : Une probabilité de rendement important mais avec des risques de perte en capital très élevés" itemValue="PortfolioB"  />
+                       
+                      
+                </h:selectOneMenu> 
+                
+ <br> </br>
+  <div class="ui-g-12">
+
+  <div style="font-size: 12pt; color:#FA8072">Vos investissements enregistrent une baisse significative (d'au moins 15%).
+   <br></br>  Quelle est votre réaction ? </div>
+
+ <h:selectOneMenu id="Reaction" value="#{userBean.reaction}" style="width:500px">
+                        <f:selectItem itemLabel="Il vaut mieux désinvestir avant de tout perdre" itemValue="Desinvestir"/>
+                        <f:selectItem itemLabel="Je profite de cette opportunité de prix bas et j'augmente mon investissement" itemValue="Investir"  />
+                        <f:selectItem itemLabel="J'accepte et j'attends" itemValue="Accept"  />
+                       
+                </h:selectOneMenu> 
+                            
+                </div> </div>
+               
+                   <div class="ui-g-12">
+
+  <div style="font-size: 12pt; color:#FA8072">Quel est votre objectif principal d'investissement ? </div></div> 
+                  
+                    <h:selectOneMenu id="objectif" value="#{userBean.objectif}" style="width:500px">
+                        <f:selectItem itemLabel="Transmettre un capital" itemValue="Transmettre un Capital"/>
+                        <f:selectItem itemLabel="Valoriser un capital sur le long terme" itemValue="Valoriser un capital sur le long terme"  />
+                        <f:selectItem itemLabel="M'assurer des revenues complémentaires réguliers" itemValue="S'assurer des revenues complémentaires réguliers"  />
+                        <f:selectItem itemLabel="Dynamiser mes placements " itemValue="Dynamiser mes placements"  />
+                        <f:selectItem itemLabel="Préparer ma retraite " itemValue="Préparer ma retraite"  />
+
+                </h:selectOneMenu>
+                
+               <div class="ui-g-12">
+
+  <div style="font-size: 12pt; color:#FA8072">Quelle part de votre épargne cet investissement représente-t-il ?</div></div> 
+                <h:selectOneMenu id="partEpargne" value="#{userBean.partEpargne}" style="width:500px">
+                        <f:selectItem itemLabel="Moins de 10%" itemValue="Moins10"/>
+                        <f:selectItem itemLabel="De 10% à 25%" itemValue="10A25"  />
+                        <f:selectItem itemLabel="De 25% à 50%" itemValue="25A50"  />
+                        <f:selectItem itemLabel="plus de 50%" itemValue="plus50"  />
+                      
+                </h:selectOneMenu> 
+                  <div class="ui-g-12">
+
+  <div style="font-size: 12pt; color:#FA8072">Quel est votre horizon de placement ?</div></div> 
+            <h:selectOneMenu id="HorizonPlacement" value="#{userBean.horizonPlacement}" style="width:500px">
+                        <f:selectItem itemLabel="De 3 à 5 ans(court terme)" itemValue="De 3 à 5 ans(court terme)"/>
+                        <f:selectItem itemLabel="De 5 à 8 ans(moyen terme)" itemValue="De 5 à 8 ans(moyen terme)"  />
+                        <f:selectItem itemLabel="Plus que 8 ans(long terme)" itemValue="Plus que 8 ans(long terme)"  />
+                       
+                      
+                </h:selectOneMenu> 
+                   
+
+<BR></BR>
+<BR></BR>
+
+<h:commandButton id="xDDDD" value="Valider" action="#{userBean.ProfilInvestisseur}" class="btn btn-primary" style=" margin-left: 410px;width:90px;height:40px"/>							
+                       
+                    
+         		
+
+            </h:form>
+            <BR></BR>
+<BR></BR>
+<BR></BR>
+<BR></BR><BR></BR>
+<BR></BR><BR></BR>
+<BR></BR><BR></BR>
+<BR></BR><BR></BR>
+<BR></BR><BR></BR>
+<BR></BR><BR></BR>
+<BR></BR><BR></BR>
+<BR></BR><BR></BR>
+<BR></BR>
+       
+      
+    </ui:define>
+    
+    
+   
+    
+    
+
+</ui:composition>

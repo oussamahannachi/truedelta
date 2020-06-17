@@ -1,0 +1,127 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+    
+	template="../template/template.xhtml">
+	<ui:param name="page_name" value="RegisterBanque" />
+	<ui:define name="body">
+	
+	<div class="apply_form_area">
+		<div class="container">
+		<div class="row justify-content-center">
+		<div class="col-lg-8">
+		<h:form action="#" class="apply_form">
+		
+				<div class="row">
+				<div class="col-lg-12">
+				<div class="apply_info_text text-center">
+				<h3>Créer votre compte</h3>
+				<p>Devenir un membre sur notre plateforme et créer votre propre compte</p>
+				</div>
+				</div>
+					<div class="col-md-12">
+						<div class="single_field">
+						<h:inputText id="nomb" value="#{userBean.nameb}" a:placeholder="Nom de la banque">
+                         </h:inputText>
+					<h:messages for="nomb" styleClass="errorBlock"/>
+						
+						</div>
+					</div>
+				<div class="col-md-12">
+					<div class="single_field">
+					<h:inputText id="noma" value="#{userBean.namea}" a:placeholder="Nom de l'agence"></h:inputText>
+										<h:messages for="noma" styleClass="errorBlock"/>
+						
+					</div>
+				</div>
+				
+				<div class="col-md-12">
+					<div class="single_field">
+					<h:inputText id="s" value="#{userBean.siege}" a:placeholder="Siege sociale"></h:inputText>
+										<h:messages for="s" styleClass="errorBlock"/>
+						
+					</div>
+				</div>
+				
+				<div class="col-md-12">
+					<div class="single_field">
+					<h:inputText id="f" value="#{userBean.bct}" a:placeholder="Code BCT"></h:inputText>
+										<h:messages for="f" styleClass="errorBlock"/>
+						
+					</div>
+				</div>
+					<div class="col-md-12">
+					<div class="single_field">
+					<h:inputText id="p" value="#{userBean.bic}" a:placeholder="Code BIC"></h:inputText>
+										<h:messages for="p" styleClass="errorBlock"/>
+						
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="single_field">
+					<h:inputText id="mail" value="#{userBean.mail}" a:placeholder="Adresse Email">
+					<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+					
+					</h:inputText>
+										<h:messages for="mail" styleClass="errorBlock"/>
+					
+					</div>
+				</div>
+			
+				<div class="col-md-12">
+					<div class="single_field">
+					<h:inputText id="add" value="#{userBean.adress}" a:placeholder="Adresse"></h:inputText>
+											<h:messages for="add" styleClass="errorBlock"/>
+											
+						
+					</div>
+				</div>
+				
+			<div class="col-md-12">
+					<div class="single_field">
+					<h:inputText id="tel" value="#{userBean.tell}" a:placeholder="Numero de téléphone"></h:inputText>
+											<h:messages for="tel" styleClass="errorBlock"/>
+											
+						
+					</div>
+				</div>
+				
+				<div class="col-md-6">
+					<div class="single_field">
+					   <p:password id="pass" value="#{userBean.pass}"  a:placeholder="Mot de passe" match="pwd2" label="Password 1" required="true" />
+										
+					</div>
+				</div>
+			<div class="col-md-6">
+					<div class="single_field">
+			           <p:password id="mpass" value="#{userBean.confirmpass}" a:placeholder="Comfirmer votre mot de passe" label="Password 2" required="true" />
+			</div></div>
+				
+			
+				
+				
+
+
+
+
+<div class="col-md-12">
+<div class="submit_btn">
+								<p class="text-center">Vous avez un compte ? <a href="login.jsf">Connectez-vous</a></p>
+
+<h:form>
+<h:commandButton action="#{userBean.addAgence}"
+						styleClass="boxed-btn3"
+						style="margin-left: 42%; margin-top: 10px" value="Envoyer" /></h:form>
+</div>
+</div>
+</div>
+</h:form>
+</div>
+</div>
+</div>
+</div>
+</ui:define>
+</ui:composition>

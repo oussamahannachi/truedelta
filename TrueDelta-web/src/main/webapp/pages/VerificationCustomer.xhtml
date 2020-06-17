@@ -1,0 +1,52 @@
+ <ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:t="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+   	template="../template/template.xhtml">
+	<ui:param name="page_name" value="VerificationCustomer" />
+	
+
+
+	<ui:define name="body">
+	
+	<div class="wrapper">
+        <div class="container-fluid error">
+			<div>
+				<div class="text-center">
+					<h:form>
+					<div class="big-404" style="font-size: 130px; line-height: 220px; font-weight: 300; margin-top: 100px;">#{userBean.code}</div><br></br>
+					<h3>Verification Robot  </h3>
+                    <p>veuillez entrer le code ci dessus correctement </p>
+                    <h:outputLabel value="#{userBean.t}" ></h:outputLabel>
+                    <br />
+
+
+				
+             <h:inputText class="form-control" a:placeholder="CODE DE VERIFICATION " value="#{userBean.verification}" required="true" requiredMessage="Verification code Required" style="width: 35%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;"/>
+                            <br /><br />
+                       <h:commandButton value="Validate" class="btn btn-primary" action="#{userBean.VerifUser()}"></h:commandButton>
+</h:form>
+                          
+                    
+					
+					<!-- Error 404 Content Starts -->
+				</div>
+			</div>
+		</div>
+        <!-- Template JS Files -->
+      
+
+    </div>
+	</ui:define>
+	
+	
+	</ui:composition>

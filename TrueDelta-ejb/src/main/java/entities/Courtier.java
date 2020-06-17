@@ -5,6 +5,7 @@ import entities.Utilisateur;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
@@ -25,11 +26,22 @@ public class Courtier extends Utilisateur implements Serializable {
 	@Column(nullable=true)
 	private File cv;
 	
+	private boolean disponible;
+	
 	@OneToMany(mappedBy="courtier", cascade = CascadeType.ALL)
 	private List<Procuration> procurations= new ArrayList<Procuration>();
 	
 	public Courtier() {
 		super();
+	}
+	
+	public Courtier(String email,String username,String nom) {
+		super();
+	}
+	public Courtier(String role,String email,String username,String nom,String prenom, Date datenaissance,String adresse,String password,String confirmpassword,int experience, File cv) {
+		super(email,username,nom,prenom,adresse,password,confirmpassword);
+		this.experience = experience;
+		this.cv=cv;
 	}
 
 	public String getGrade() {
@@ -79,6 +91,14 @@ public class Courtier extends Utilisateur implements Serializable {
 
 	public void setProcurations(List<Procuration> procurations) {
 		this.procurations = procurations;
+	}
+	
+	public boolean isDisponible() {
+		return disponible;
+	}
+
+	public void setDisponible(boolean disponible) {
+		this.disponible = disponible;
 	}
 
 	@Override

@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-                
-    
-    
     <wb-module deploy-name="TrueDelta-ear">
-                                
-        
-        
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/ear-resources"/>
-                                
-        
-        
         <wb-resource deploy-path="/" source-path="/src/main/application" tag="defaultRootSource"/>
         <dependent-module archiveName="TrueDelta-web.war" deploy-path="/" handle="module:/resource/TrueDelta-web/TrueDelta-web">
             <dependency-type>uses</dependency-type>
@@ -74,11 +65,11 @@
         <dependent-module archiveName="woodstox-core.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/fasterxml/woodstox/woodstox-core/5.0.3/woodstox-core-5.0.3.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="activation.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/javax/activation/activation/1.1.1/activation-1.1.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module archiveName="javax.ws.rs-api.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/javax/ws/rs/javax.ws.rs-api/2.0-m02/javax.ws.rs-api-2.0-m02.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
     </wb-module>
-            
-
-
 </project-modules>

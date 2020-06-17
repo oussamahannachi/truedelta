@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
+
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -14,121 +15,131 @@ import entities.Administrateur;
 import entities.Agence;
 import entities.Client;
 import entities.Utilisateur;
-import services.UserService;;
+import services.UserService;
 
-@ManagedBean(name="loginBean",eager=true)
+@ManagedBean(name="loginBean")
 @SessionScoped
-public class LoginBean implements Serializable {
-
+public class LoginBean implements Serializable{
 	private static final long serialVersionUID = 1L;
-	private String login; 
-	private String password; 
-	private Utilisateur user;
+	private String email ;
+	private String password ;
+	private Utilisateur user; 
+	private boolean loggedin;
 	private Agence agence;
-	private Boolean loggedIn;
 	private String role;
 	private List<String> roles = Arrays.asList("Client", "Courtier", "Administrateur", "Agence");
-	
+
+
 	@EJB
 	UserService us;
 	
 	public LoginBean() {}
-	
-	public String doLogin() {
-		System.out.println(login);
-		System.out.println(password);
-		String navigateTo = "null";
-		user = us.loginUser(login, password);
-		agence = us.loginAgence(login, password);
-		if (user != null ) {
-			System.out.println(user.getClass());
-			if(user.getClass() != Administrateur.class ) {
-				if(role.equals(user.getClass().getSimpleName())) {
-					navigateTo = "/template/template?faces-redirect=true";
-					loggedIn = true;
-				} 
-				else 
-					FacesContext.getCurrentInstance().addMessage("form:btn", new FacesMessage("Verifier votre role"));
+
+
+	public String Login() {
+			
+			String navigateTo = "null";
+			FacesContext context = FacesContext.getCurrentInstance();
+			user = us.verifierLogin(email, password);
+			agence=us.verifierLoginB(email, password);
+			if (user != null) {
+				loggedin = true;
+				if(user.getClass()==Administrateur.class) {
+					role="Administrateur";
+					navigateTo = "/template/templateadmin?faces-redirect=true";
+				}
+				else {
+					if(user.getClass()==Client.class) {
+						role="Client";
+					}
+					else {
+						role="Courtier";
+					}
+				context.getExternalContext().getSessionMap().put("user", user);
+				navigateTo = "/template/template?faces-redirect=true";
+				}
+			}
+			else if(agence != null ){
+				System.out.println("ahlaaaaaaaaa");
+				role="Agence";
+				loggedin = true;
+				context.getExternalContext().getSessionMap().put("agence", agence);
+				navigateTo = "/template/template?faces-redirect=true";
 			}
 			else {
-				if(role.equals(user.getClass().getSimpleName())) {
-					navigateTo = "/template/templateadmin?faces-redirect=true";
-					loggedIn = true;
-				} 
-				else 
-					FacesContext.getCurrentInstance().addMessage("form:btn", new FacesMessage("Verifier votre role"));
-				
+			FacesContext.getCurrentInstance().addMessage("form:btn", new FacesMessage("Adresse email ou mot de passe incorrecte"));
 			}
+			return navigateTo; 
 		}
-		else if(agence != null && role.toLowerCase().equals("agence")){
-			navigateTo = "/template/template?faces-redirect=true";
-			loggedIn = true;
-		}
-		else {
-			FacesContext.getCurrentInstance().addMessage("form:btn", new FacesMessage("Bad Credentials"));
-		}
-		return navigateTo;
-	}
+	 
+	    
+	    public String doLogout() {
+	    	FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+	    	loggedin = false;
+	    	return "/pages/login?faces-redirect=true"; 
+	    	}
+
 		
-	public String doLogout() {
-		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-		return "/login?faces-redirect=true";
-	}
 
-	public String getLogin() {
-		return login;
-	}
+		public String getEmail() {
+			return email;
+		}
 
-	public void setLogin(String login) {
-		this.login = login;
-	}
 
-	public String getPassword() {
-		return password;
-	}
+		public void setEmail(String email) {
+			this.email = email;
+		}
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
 
-	public Utilisateur getUser() {
-		return user;
-	}
+		public String getPassword() {
+			return password;
+		}
 
-	public void setUser(Utilisateur user) {
-		this.user = user;
-	}
+		public void setPassword(String password) {
+			this.password = password;
+		}
 
-	public Agence getAgence() {
-		return agence;
-	}
+		public Utilisateur getUser() {
+			return user;
+		}
 
-	public void setAgence(Agence agence) {
-		this.agence = agence;
-	}
+		public void setUser(Utilisateur user) {
+			this.user = user;
+		}
 
-	public Boolean getLoggedIn() {
-		return loggedIn;
-	}
+		public boolean isLoggedin() {
+			return loggedin;
+		}
 
-	public void setLoggedIn(Boolean loggedIn) {
-		this.loggedIn = loggedIn;
-	}
+		public void setLoggedin(boolean loggedin) {
+			this.loggedin = loggedin;
+		}
 
-	public String getRole() {
-		return role;
-	}
+		public Agence getAgence() {
+			return agence;
+		}
 
-	public void setRole(String role) {
-		this.role = role;
-	}
+		public void setAgence(Agence agence) {
+			this.agence = agence;
+		}
 
-	public List<String> getRoles() {
-		return roles;
-	}
 
-	public void setRoles(List<String> roles) {
-		this.roles = roles;
-	}
-	
+		public String getRole() {
+			return role;
+		}
+
+
+		public void setRole(String role) {
+			this.role = role;
+		}
+
+
+		public List<String> getRoles() {
+			return roles;
+		}
+
+
+		public void setRoles(List<String> roles) {
+			this.roles = roles;
+		}    
 }

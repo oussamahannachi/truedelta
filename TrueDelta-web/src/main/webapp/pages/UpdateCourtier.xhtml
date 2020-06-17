@@ -1,0 +1,115 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+    
+	template="../template/template.xhtml">
+	<ui:param name="page_name" value="RegisterCourtier" />
+	<ui:define name="body">
+	
+	<div class="apply_form_area">
+		<div class="container">
+		<div class="row justify-content-center">
+		<div class="col-lg-8">
+		<h:form action="#" class="apply_form">
+		
+				<div class="row">
+				<div class="col-lg-12">
+				<div class="apply_info_text text-center">
+				<h3>Modifier vos données</h3>
+				</div>
+				</div>
+					<div class="col-md-12">
+						<div class="single_field">
+						<h:inputText id="n" value="#{userBean.nom}" a:placeholder="Nom">
+                         </h:inputText>
+					<h:messages for="n" styleClass="errorBlock"/>
+						
+						</div>
+					</div>
+				<div class="col-md-12">
+					<div class="single_field">
+					<h:inputText id="p" value="#{userBean.prenom}" a:placeholder="Prénom"></h:inputText>
+										<h:messages for="p" styleClass="errorBlock"/>
+						
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="single_field">
+					<h:inputText id="mail" value="#{userBean.email}" a:placeholder="Adresse Email">
+					<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+					
+					</h:inputText>
+										<h:messages for="mail" styleClass="errorBlock"/>
+					
+					</div>
+				</div>
+				
+					
+				
+				<div class="col-md-12">
+					<div class="single_field">
+					
+					<h:outputLabel for="@next" value="Années d'experience : " />
+                    <h:inputText id="ex" value="#{userBean.experience}" a:placeholder="Nombre des années d'experience" />
+						
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="single_field">
+					<h:inputText id="add" value="#{userBean.adresse}" a:placeholder="Adresse"></h:inputText>
+											<h:messages for="add" styleClass="errorBlock"/>
+											
+						
+					</div>
+				</div>
+				
+			
+				
+				<div class="col-md-12">
+					<div class="single_field">
+					<h:inputText id="nu" value="#{userBean.username}" a:placeholder="Nom de l'utilisateur">
+					
+					</h:inputText>
+										<h:messages for="nu" styleClass="errorBlock"/>
+						
+					</div>
+				</div>
+				
+				<div class="col-md-6">
+					<div class="single_field">
+					   <p:password id="pwd1" value="#{userBean.password}"  a:placeholder="Mot de passe" match="pwd2" label="Password 1" required="true" />
+										
+					</div>
+				</div>
+			<div class="col-md-6">
+					<div class="single_field">
+			           <p:password id="pwd2" value="#{userBean.confirmpassword}" a:placeholder="Comfirmer votre mot de passe" label="Password 2" required="true" />
+			</div></div>
+				
+				
+				 
+				
+
+
+
+
+<div class="col-md-12">
+<div class="submit_btn">
+
+<h:form>
+<h:commandButton action="#{userBean.editUpdateCourtier()}"
+						styleClass="boxed-btn3"
+						style="margin-left: 42%; margin-top: 10px" value="Modifier" /></h:form>
+</div>
+</div>
+</div>
+</h:form>
+</div>
+</div>
+</div>
+</div>
+</ui:define>
+</ui:composition>

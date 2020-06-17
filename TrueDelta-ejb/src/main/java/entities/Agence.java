@@ -30,9 +30,11 @@ public class Agence implements Serializable {
 	private String agenceName;
 	private String adresse; 
 	private String siegeSocial; // Adresse
+	
 	@Column(nullable=true)
-	private long telephone;
+	private String telephone;
 	private String password;
+	private String email; 
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dernierenvoi ;
@@ -44,6 +46,21 @@ public class Agence implements Serializable {
 	private String confirmPassword;
 
 	public Agence() {}
+	
+	public Agence(String banqueName, String code_BIC, int code_BCT, String agenceName, String adresse, String email,
+			String siegeSocial, String telephone, String password, String confirmPassword) {
+		super();
+		this.banqueName = banqueName;
+		this.code_BIC = code_BIC;
+		this.code_BCT = code_BCT;
+		this.agenceName = agenceName;
+		this.adresse = adresse;
+		this.email = email;
+		this.siegeSocial = siegeSocial;
+		this.telephone = telephone;
+		this.password = password;
+		this.confirmPassword = confirmPassword;
+	}
 
 	public int getId() { return id; }
 
@@ -73,10 +90,14 @@ public class Agence implements Serializable {
 
 	public void setSiegeSocial(String siegeSocial) { this.siegeSocial = siegeSocial; }
 
-	public long getTelephone() { return telephone; }
+	public String getTelephone() { return telephone; }
 
-	public void setTelephone(long telephone) { this.telephone = telephone; }
+	public void setTelephone(String telephone) { this.telephone = telephone; }
 	
+	public String getEmail() { return email; }
+
+	public void setEmail(String email) { this.email = email; }
+
 	public String getPassword() { return password; }
 
 	public void setPassword(String password) { this.password = password; }

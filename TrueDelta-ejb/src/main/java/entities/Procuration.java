@@ -43,6 +43,9 @@ public class Procuration implements Serializable {
 	@Column(nullable=true)
 	private String description; // Pour ecrire la proposition
 	
+	@Column(nullable=true)
+	private int score; 
+	
 	public Procuration() {}
 
 	public ProcurationPK getId() {
@@ -131,6 +134,14 @@ public class Procuration implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
 	}
 
 	@Override

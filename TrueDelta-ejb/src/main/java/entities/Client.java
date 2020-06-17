@@ -3,6 +3,7 @@ package entities;
 import entities.Utilisateur;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
@@ -23,16 +24,32 @@ public class Client extends Utilisateur implements Serializable {
 	private String etatCivil;
 	private float salaire;
 	
+	@Column(nullable=true,name="date_naissance", updatable=false)
+	private Date datenaissance;
+	
 	@OneToMany(mappedBy="proprietaire", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	private List<Compte> comptes= new ArrayList<Compte>();
 	
 	@OneToMany(mappedBy="client", cascade = CascadeType.ALL)
 	private List<Procuration> procurations= new ArrayList<Procuration>();
 	
-	
-	
 	public Client() { super(); }
+	
+	public Client(String email,String username,String nom,String prenom,String adresse,String password,String confirmpassword,String etatCivil) {
+		super(email,username,nom,prenom,adresse,password,confirmpassword);
+		this.etatCivil = etatCivil;
+	}
 
+	public Client(String role,String email,String username,String nom,String prenom,String adresse,String password,String confirmpassword,String etatCivil) {
+		super(email,username,nom,prenom,adresse,password,confirmpassword);
+		this.etatCivil = etatCivil;
+	}
+
+	public Client(String role,String email,String username,String nom,String prenom, Date datenaissance,String adresse,String password,String confirmpassword,String etatCivil) {
+		super(email,username,nom,prenom,adresse,password,confirmpassword);
+		this.etatCivil = etatCivil;
+	}
+	
 	public int getAge() {
 		return age;
 	}

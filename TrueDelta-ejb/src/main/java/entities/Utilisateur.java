@@ -9,12 +9,6 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-
-
-
-
-
-
 @Entity
 @Table(name="utilisateur")
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
@@ -39,20 +33,33 @@ public class Utilisateur implements Serializable {
 	@Column(nullable=true)
 	private String adresse;
 	@Column(nullable=true)
-	private long telephone;
+	private String telephone;
 	private String password;
 	@Transient 
 	private String confirmPassword;
 	
-	
-
 	@OneToMany(mappedBy="user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	@JsonBackReference
-
 	private Set<Reclamation> reclamations;
 
-	
 	public Utilisateur() {}
+	
+	public Utilisateur(String username) {
+		super();
+		this.username = username;
+	}
+	
+	public Utilisateur(String email, String username, String nom, String prenom, String adresse, String password,
+			String confirmPassword) {
+		super();
+		this.email = email;
+		this.username = username;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.adresse = adresse;
+		this.password = password;
+		this.confirmPassword = confirmPassword;
+	}
 
 	public int getId() {
 		return id;
@@ -102,11 +109,11 @@ public class Utilisateur implements Serializable {
 		this.adresse = adresse;
 	}
 
-	public long getTelephone() {
+	public String getTelephone() {
 		return telephone;
 	}
 
-	public void setTelephone(long telephone) {
+	public void setTelephone(String telephone) {
 		this.telephone = telephone;
 	}
 

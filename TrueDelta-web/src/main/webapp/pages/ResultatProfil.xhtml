@@ -1,0 +1,106 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:c="http://java.sun.com/jsp/jstl/core" 
+    xmlns:adm="http://github.com/adminfaces"
+       
+	template="../template/template.xhtml">
+	<ui:param name="page_name" value="ResultatProfil" />
+
+
+
+    <ui:define name="body">
+       
+         
+    
+    
+            <h:form > 
+            <p style="border-radius: 10px;">
+              <font size="+2"> <center>VOTRE PROJET</center>  </font>
+            <br></br><center>
+        Objectif :    <font size="+0"> <h:outputText value="#{userBean.objectif}" /></font> 
+            <br></br>
+            Horizon de placement: <font size="+0"><h:outputText value="#{userBean.horizonPlacement}" /></font> 
+           </center>    <br></br>
+            
+          
+        
+           <font size="+2"> <center>   VOTRE PROFIL INVESTISSEUR  </center>  </font> 
+     
+           <font color="#FA8072" size="+1">  <center>  <h:outputText value="#{userBean.PROFIL}" /></center></font> 
+   <br></br>  <font size="+0">       <center><h:outputText value="#{userBean.DESCRIPTION}" /></center> </font>
+           </p> </h:form>
+             
+                    
+          <h:form >
+     
+            <p align="center"> Votre mode de gestion :</p> 
+              <font color="#FA8072" size="+0">       <center><h:outputText value="#{userBean.contrat}" /></center> </font>
+              <br></br>
+             <CENTER> 
+              <table class="table table-striped">
+                    
+                        <thead>
+                            <tr>
+                                <th>Gestion Sous Mondat (accessible dés 1000 €)</th>
+                                <th>Gestion Libre (accessible dés 100 €)</th>
+                               
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                        <tr>
+                                <td class="align-middle">
+                                <div class="badge-outline col-red"><p>Vous déléguez totalement le choix des supports d'investissement de votre
+                          contrat à votre assureur qui prend conseil auprès des sociétés de gestion expertes.
+                          
+                          
+                          Les supports en unités de compte présents dans les mandats ne garantissent pas le
+                          capital versé et sont soumis aux fluctuations des marchés financiers  à la 
+                          hausse comme à la baisse</p></div>
+                                </td>
+                                 <td class="align-middle">
+                                <div class="badge-outline col-red"> <p>Vous sélectionnez vous-meme vos supports d'investissement 
+                                et gérez votre contract en toute autonomie</p></div>
+                                </td>
+                        </tr>
+                        
+                        </tbody>
+               </table>
+             
+                   <h:selectOneRadio  value="#{userBean.contracttypeenum}" styleClass=".iceSelOneRb table tr td" >
+   	                    <f:selectItem itemLabel="GESTION SOUS MANDAT" itemValue="All_in" />
+                       <BR></BR>
+                   <f:selectItem itemLabel="GESTION LIBRE" itemValue="Specific"  />
+    
+                 </h:selectOneRadio>
+ 
+ 
+ </CENTER>          
+                    
+            <BR></BR><BR></BR>
+<h:commandButton id="VALIDER" value="VALIDER" action="#{userBean.doProfil()}" class="btn btn-primary" style=" margin-left: 780px;width:90px;height:40px"/>
+            
+                    
+          </h:form>
+    <BR></BR>
+<BR></BR><BR></BR>
+<BR></BR><BR></BR>
+<BR></BR><BR></BR>
+<BR></BR>
+         <br> </br>
+                    
+      
+      
+    
+    
+    </ui:define>
+    
+    
+   
+    
+    
+
+</ui:composition>
