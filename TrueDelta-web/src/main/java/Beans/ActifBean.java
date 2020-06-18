@@ -52,15 +52,12 @@ public class ActifBean implements Serializable {
 	private float interet;private Date date;private Compte compte;private Transaction transaction;
 	 private BigDecimal HighPrice;private BigDecimal LowPrice;private BigDecimal  closedprice ; private BigDecimal OpenPrice ;
 	 private BigDecimal	AdjClose ; private String Currency;	private Company Company;	 
-	private Date dateEcheance; // Pour obligation 
-	private BigDecimal BondPrice ;private BigDecimal Parvalue;private BigDecimal Tauxcoupon ;private int Duree;
-	private BigDecimal TauxActuariel;private int Fréquence;
 	
 	
 	
 	private String CURRENCYCOM;
 	
-
+	int clientid = 1;
 	
 	@EJB
 	UserService us;
@@ -254,10 +251,10 @@ private ActifFinancier actif;
 	}
 		
 	
-		public List<ActifFinancier> getHist() {
+		public List<ActifFinancier> getHist(String sym) {
 			List<ActifFinancier> hist = new ArrayList<ActifFinancier>();
 			try {
-				hist = ActifFinancierService.getHistory("FB");
+				hist = ActifFinancierService.getHistory(sym);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -271,10 +268,10 @@ private ActifFinancier actif;
 		private List<String> dates = new ArrayList<String>();
 
 	private	 List<BigDecimal> price = new ArrayList<BigDecimal>();
-	public List<String> getDates() {
+	public List<String> getDates(String sym) {
 			dates =new ArrayList<String>();
 			
-			for (ActifFinancier a : getHist()) {
+			for (ActifFinancier a : getHist(sym)) {
 				
 				dates.add("'"+a.getDate().toLocaleString()+"'");
 			}
@@ -285,9 +282,9 @@ private ActifFinancier actif;
 			this.dates = dates;
 		}
 
-		public List<BigDecimal> getPrice() {
+		public List<BigDecimal> getPrice(String sym) {
 			price = new ArrayList<BigDecimal>();
-			for (ActifFinancier a : this.getHist()) {
+			for (ActifFinancier a : this.getHist(sym)) {
 				price.add(a.getClosedPrice());
 				
 			}
@@ -304,8 +301,8 @@ private ActifFinancier actif;
 		public void pdf() throws IOException {
 			System.out.println("msg");
 		    try {
-				ActifFinancierService.pdfToGenerate(1);
-				 ActifFinancierService.openpdf(1);
+				ActifFinancierService.pdfToGenerate(clientid);
+				 ActifFinancierService.openpdf(clientid);
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -315,7 +312,7 @@ private ActifFinancier actif;
 		private List<ActifFinancier> portefeuil ;
 
 		public List<ActifFinancier> getPortefeuil() {
-			portefeuil=ActifFinancierService.getStockByClient2(1);
+			portefeuil=ActifFinancierService.getStockByClient2(clientid);
 			return portefeuil;
 		}
 
@@ -376,7 +373,7 @@ private ActifFinancier actif;
 		}	
 		public double rendementAnuel(String name) {
 			try {
-				RendementAnnuel = ActifFinancierService.RendementAnnuel(name, 1);
+				RendementAnnuel = ActifFinancierService.RendementAnnuel(name, clientid);
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -451,7 +448,7 @@ private ActifFinancier actif;
 		List<String> symboles = new ArrayList<String>();
 		public List<String> symbole(){
 			 symboles = new ArrayList<String>();
-			for (ActifFinancier a : ActifFinancierService.getStockByClient2(1)) {
+			for (ActifFinancier a : ActifFinancierService.getStockByClient2(clientid)) {
 				
 				symboles.add("'"+a.getCompany().getSymbol()+"'");
 			}
@@ -461,14 +458,14 @@ private ActifFinancier actif;
 		public List<Integer> quns(){
 			quns = new ArrayList<Integer>();
 			for (ActifFinancier a : portefeuil) {
-				quns.add((int) quantiite(a.getCompany().getSymbol(),1));
+				quns.add((int) quantiite(a.getCompany().getSymbol(),clientid));
 			}
 			
 		return quns;
 		}
 
 		public List<String> getSympoles() {
-			for (ActifFinancier a : ActifFinancierService.getStockByClient2(1)) {
+			for (ActifFinancier a : ActifFinancierService.getStockByClient2(clientid)) {
 				
 				symboles.add("'"+a.getCompany().getSymbol()+"'");
 			}
@@ -627,59 +624,5 @@ private ActifFinancier actif;
 			Company = company;
 		}
 
-		public Date getDateEcheance() {
-			return dateEcheance;
-		}
-
-		public void setDateEcheance(Date dateEcheance) {
-			this.dateEcheance = dateEcheance;
-		}
-
-		public BigDecimal getBondPrice() {
-			return BondPrice;
-		}
-
-		public void setBondPrice(BigDecimal bondPrice) {
-			BondPrice = bondPrice;
-		}
-
-		public BigDecimal getParvalue() {
-			return Parvalue;
-		}
-
-		public void setParvalue(BigDecimal parvalue) {
-			Parvalue = parvalue;
-		}
-
-		public BigDecimal getTauxcoupon() {
-			return Tauxcoupon;
-		}
-
-		public void setTauxcoupon(BigDecimal tauxcoupon) {
-			Tauxcoupon = tauxcoupon;
-		}
-
-		public int getDuree() {
-			return Duree;
-		}
-
-		public void setDuree(int duree) {
-			Duree = duree;
-		}
-
-		public BigDecimal getTauxActuariel() {
-			return TauxActuariel;
-		}
-
-		public void setTauxActuariel(BigDecimal tauxActuariel) {
-			TauxActuariel = tauxActuariel;
-		}
-
-		public int getFréquence() {
-			return Fréquence;
-		}
-
-		public void setFréquence(int fréquence) {
-			Fréquence = fréquence;
-		}
+	
 }

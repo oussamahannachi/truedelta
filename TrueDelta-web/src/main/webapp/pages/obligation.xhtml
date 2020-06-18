@@ -21,13 +21,13 @@
 
   <li class="list-group-item"> Nature : <h:outputText value="#{obligationBean.getDetail().get('Nature')}" /></li>
     <li class="list-group-item">Emetteur : <h:outputText value="#{obligationBean.getDetail().get('Emetteur')}" /></li>
-  <li class="list-group-item"> Prix : <h:outputText value="#{obligationBean.findObligation().bondPrice}" /></li>
-  <li class="list-group-item"> Taux Actuariel : <h:outputText value="#{obligationBean.findObligation().tauxActuariel}" /></li>
-   <li class="list-group-item"> Taux coupon: <h:outputText value="#{obligationBean.findObligation().tauxcoupon}" /></li>
-  <li class="list-group-item"> Categorie : <h:outputText value="#{obligationBean.findObligation().categorie}"/></li>
-  <li class="list-group-item"> Devise : <h:outputText value="#{obligationBean.findObligation().currency}" /></li>
-  <li class="list-group-item"> Date Emission : <h:outputText value="#{obligationBean.findObligation().dateEmission}" /></li>
-   <li class="list-group-item"> Date Echeance :<h:outputText value="#{obligationBean.findObligation().dateEcheance}" /></li>
+  <li class="list-group-item"> Prix : <h:outputText value="#{obligationBean.obligation.bondPrice}" /></li>
+  <li class="list-group-item"> Taux Actuariel : <h:outputText value="#{obligationBean.obligation.tauxActuariel}" /></li>
+   <li class="list-group-item"> Taux coupon: <h:outputText value="#{obligationBean.obligation.tauxcoupon}" /></li>
+  <li class="list-group-item"> Categorie : <h:outputText value="#{obligationBean.obligation.categorie}"/></li>
+  <li class="list-group-item"> Devise : <h:outputText value="#{obligationBean.obligation.currency}" /></li>
+  <li class="list-group-item"> Date Emission : <h:outputText value="#{obligationBean.obligation.dateEmission}" /></li>
+   <li class="list-group-item"> Date Echeance :<h:outputText value="#{obligationBean.obligation.dateEcheance}" /></li>
 						
   </ul>
 </div>
@@ -50,9 +50,9 @@
    CARACTÉRISTIQUES DYNAMIQUES
   </div>
   <ul class="list-group list-group-flush">
-  <li class="list-group-item">	Duration : <h:outputText value="#{obligationBean.duration(obligationBean.findObligation())}" /> </li>
-  <li class="list-group-item"> Sensibilite : <h:outputText value="#{obligationBean.sensibilite(obligationBean.findObligation())}" /></li>
-  <li class="list-group-item"> Convexite : <h:outputText value="#{obligationBean.convexite(obligationBean.findObligation())}" /></li>
+  <li class="list-group-item">	Duration : <h:outputText value="#{obligationBean.duration(obligationBean.obligation)}" /> </li>
+  <li class="list-group-item"> Sensibilite : <h:outputText value="#{obligationBean.sensibilite(obligationBean.obligation)}" /></li>
+  <li class="list-group-item"> Convexite : <h:outputText value="#{obligationBean.convexite(obligationBean.obligation)}" /></li>
   
   </ul>
 </div>
@@ -64,7 +64,7 @@
     </tr>
   </thead>
   <tbody>
-  <ui:repeat value="#{obligationBean.cashFlow(obligationBean.findObligation())}" var="var">
+  <ui:repeat value="#{obligationBean.cashFlow(obligationBean.obligation)}" var="var">
  
   <tr>    
   <th scope="row"></th>

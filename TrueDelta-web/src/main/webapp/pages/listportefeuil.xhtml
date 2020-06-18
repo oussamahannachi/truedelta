@@ -6,8 +6,8 @@
     <ui:param name="page_name" value="portefeuille"/>
     <ui:define name="body">
      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-    <div class="row">
-    
+    <div class="row ">
+    <div class="col-1"></div>
     <div class="col-7">
    
         <h:panelGroup>
@@ -16,13 +16,15 @@
             <h:panelGroup columns="2">
                 <h:form>
                   <ui:repeat value="#{actifBean.listid}" var="id">
-                    #{actifBean.ratioSharp(actifBean.ttportfeuill().get(id),0.02)} 
-                 
-          
+                    #{actifBean.ratioSharp(actifBean.ttportfeuill().get(id),0.02)} <br/>
+                 	le ratio est compris entre 0 et 1, cela signifie que l’excédent de rendement par rapport au taux sans risque est plus faible que le risque pris.
+
              <div class="percentage">
 					<div class="progress">
+					
 						<div class="progress-bar color-1" role="progressbar" style="width: #{actifBean.ratioSharpperson(actifBean.ratioSharp(actifBean.ttportfeuill().get(id),0.02))}%"
 									aria-valuenow="#{actifBean.ratioSharpperson(actifBean.ratioSharp(actifBean.ttportfeuill().get(id),0.02))}" aria-valuemin="0" aria-valuemax="100"></div>
+						
 						</div>
 					</div>
           <a class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn" style="margin-top: 10px" href="../pages/trandinView.jsf" >trandinView</a>
@@ -83,7 +85,7 @@
             </h:panelGroup>      
         </h:panelGroup>
                 </div>
-      <!--   <div class="col-3">
+      <div class="col-3">
       <div class="card">
   <div class="card-body">
     <h5 class="card-title">Remarque</h5>
@@ -98,7 +100,7 @@ Ainsi, on en conclut que plus le ratio est élevé et plus le portefeuille est p
    
   </div>
 </div>
-         </div>--> 
+         </div>
     </div>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
     </ui:define>
