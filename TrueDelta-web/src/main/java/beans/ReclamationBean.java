@@ -7,8 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.ValueChangeEvent;
@@ -57,14 +59,39 @@ public class ReclamationBean implements Serializable {
     private List<State> states ;
     private String MotCle;
     
+    private int idclient;
+    
+    @ManagedProperty(value = "#{loginBean}")
+	private LoginBean lb;
+    
     @EJB
     ReclamationImp recImp;
     
+    @PostConstruct
+    public void init() {
+    	idclient=lb.getUser().getId();
+    }
     
-    public String AjoutRec() {
+    public int getIdclient() {
+		return idclient;
+	}
+    
+	public void setIdclient(int idclient) {
+		this.idclient = idclient;
+	}
+
+	public LoginBean getLb() {
+		return lb;
+	}
+
+	public void setLb(LoginBean lb) {
+		this.lb = lb;
+	}
+
+	public String AjoutRec() {
     	
     	 Reclamation rec = new Reclamation(new Date(),description,subject);
-    	 recImp.AddReclam(rec,2);
+    	 recImp.AddReclam(rec,idclient);
     	
     	 /*try {
     		 recImp.verifBadWord(rec.getId());
@@ -106,7 +133,7 @@ public class ReclamationBean implements Serializable {
     
     public List<Reclamation> getReclamations()
     {
-    	reclamations = recImp.GetReclamByclient(2);
+    	reclamations = recImp.GetReclamByclient(idclient);
     	return reclamations; 
     	
     }

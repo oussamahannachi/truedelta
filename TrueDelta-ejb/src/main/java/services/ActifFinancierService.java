@@ -612,7 +612,7 @@ public class ActifFinancierService implements ActifFinancierServiceRemote {
 	        Document document = new Document();
 	     
 	        try {
-	            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("C:\\Users\\OUSSAMA HANNACHI\\Documents\\Eclipse-Workspace\\truedelta\\truedelta\\TrueDelta-ejb\\src\\main\\java\\Files"+"portfeuil"+nameClient+"‪.pdf"));
+	            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("C:\\Users\\OUSSAMA HANNACHI\\Documents\\Eclipse-Workspace\\truedelta\\truedelta\\TrueDelta-ejb\\src\\main\\java\\Files\\"+"portfeuil"+nameClient+"‪.pdf"));
 	            
 	            LocalDateTime date = LocalDateTime.now();
 	            document.open();
@@ -717,7 +717,7 @@ public class ActifFinancierService implements ActifFinancierServiceRemote {
 			 String nameClient = em.find(Client.class, clientId).getNom() + em.find(Client.class, clientId).getPrenom();
 
 			 //Path destinationPath = Paths.get("C:\\Product\\eclipse-wildfly-configured\\wildfly-11.0.0.Final-configured\\bin\\" + "portfeuil‪.pdf");
-			 File myFile = new File("C:\\Users\\OUSSAMA HANNACHI\\Documents\\Eclipse-Workspace\\truedelta\\truedelta\\TrueDelta-ejb\\src\\main\\java\\Files" + "portfeuil"+nameClient+"‪.pdf");
+			 File myFile = new File("C:\\Users\\OUSSAMA HANNACHI\\Documents\\Eclipse-Workspace\\truedelta\\truedelta\\TrueDelta-ejb\\src\\main\\java\\Files\\" + "portfeuil"+nameClient+"‪.pdf");
 		        try {
 		        	 if (myFile.exists()) {
 		        		 System.setProperty("java.awt.headless", "false");
