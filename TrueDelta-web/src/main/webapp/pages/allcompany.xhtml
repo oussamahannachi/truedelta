@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	template="../template/template.xhtml">
+
+	<ui:param name="page_name" value="cotisation" />
+	<ui:define name="body">
+	
+	  
+	 <div class="about_area plus_padding">
+        <div class="container">
+          
+	<div class="row">
+	<ui:repeat value="#{companyBean.companies}" var="company">
+	<div class="col">
+	<div class="card" style="width: 18rem;">
+  <img src="../vendor/img/Company/#{company.symbol}.png" class="card-img-top" alt="..."/>
+  <div class="card-body">
+    <h5 class="card-title">#{company.name}</h5>
+    <p class="card-text">#{company.sector}</p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
+    <h:commandButton  value="#{company.symbol}" action="#{actifBean.getCompany(actif)}"  styleClass="btn btn-primary"/>
+  </div>
+</div>
+		
+	</div>
+	</ui:repeat>  	
+	</div>
+	 
+
+</div>
+</div>
+	</ui:define>
+</ui:composition>

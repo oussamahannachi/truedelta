@@ -1,0 +1,107 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="../template/template.xhtml"
+                xmlns:th="http://www.thymeleaf.org"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <ui:param name="page_name" value="portefeuille"/>
+    <ui:define name="body">
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <div class="row ">
+    <div class="col-1"></div>
+    <div class="col-7">
+   
+        <h:panelGroup>
+    <br/>
+            <h:outputText value="List des portefeuilles"/><br/> 
+            <h:panelGroup columns="2">
+                <h:form>
+                  <ui:repeat value="#{actifBean.listid}" var="id">
+                    #{actifBean.ratioSharp(actifBean.ttportfeuill().get(id),0.02)} <br/>
+                 	le ratio est compris entre 0 et 1, cela signifie que l’excédent de rendement par rapport au taux sans risque est plus faible que le risque pris.
+
+             <div class="percentage">
+					<div class="progress">
+					
+						<div class="progress-bar color-1" role="progressbar" style="width: #{actifBean.ratioSharpperson(actifBean.ratioSharp(actifBean.ttportfeuill().get(id),0.02))}%"
+									aria-valuenow="#{actifBean.ratioSharpperson(actifBean.ratioSharp(actifBean.ttportfeuill().get(id),0.02))}" aria-valuemin="0" aria-valuemax="100"></div>
+						
+						</div>
+					</div>
+          <a class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn" style="margin-top: 10px" href="../pages/trandinView.jsf" >trandinView</a>
+         
+			      	<table class="table table-striped">
+			  <thead>
+			    <tr>
+			      <th scope="col">#</th>
+			      <th scope="col">Libelle</th>     
+			      <th scope="col">Quantite</th>
+			      <th  scope="col">numeroCompte</th>
+			      <th scope="col">Montant achat</th>
+			      <th scope="col">Montant actuel</th>
+			      <th scope="col">RendementAnnuel</th>    
+			      <th scope="col">Part moyenne  </th> 
+			      <th scope="col">Gain</th> 
+			      <th scope="col">action</th> 
+			    </tr>
+			  </thead>
+			  <tbody>
+			  <ui:repeat value="#{actifBean.ttportfeuill().get(id)}" var="actif">
+			    <tr>
+			      <th scope="row">	</th>
+			      <td><h:outputText value="#{actif.company.symbol}" /></td>     
+			      <td><h:outputText value="#{actifBean.quantiite(actif.company.symbol,id)}" /></td>
+			      <td><h:outputText value="#{actif.compte.numero}" /></td>
+			       
+			      <td><h:outputText value="#{actif.prix}" /></td>
+			        <td><h:outputText value="#{actifBean.getPriceInstantly(actif.company.symbol)}" /></td>
+			     <td><h:outputText value="#{actifBean.rendementAnuel(actif.company.symbol)}" /></td> 
+			      <td><h:outputText value="#{actifBean.poit(actif.company.symbol,2)}" /></td>
+			      <td><h:outputText value="#{actifBean.gain(actif.company.symbol,actif.prix)}" /></td>
+			      <td>
+			      <div class="d-none d-lg-block"><a class="genric-btn danger circle" href="#">Vendre</a></div>
+					
+			      </td>
+			    </tr>
+			   
+				  </ui:repeat>
+			
+			 	  <tr></tr>
+				 <tr><td colspan="5"> </td>
+				 
+				 <td>prix portfeuil : <h:outputText value="#{actifBean.totalprix(actifBean.ttportfeuill().get(id))}" />
+				 
+				 </td>
+				 <td></td>
+				 <td></td>
+				  <td>total gain : <h:outputText value="#{actifBean.gaintotal(actifBean.ttportfeuill().get(id))}" /></td>
+				  <td></td>
+				  </tr>
+  			 </tbody>
+  			 
+			 </table>
+          
+              </ui:repeat>  
+                </h:form>
+            </h:panelGroup>      
+        </h:panelGroup>
+                </div>
+      <div class="col-3">
+      <div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Remarque</h5>
+    <p class="card-text">
+    -Si le ratio est négatif, on en conclut que le portefeuille sous performe un placement sans risque et donc il n’est pas logique d’investir dans un tel portefeuille.
+<br/>
+-Si le ratio est compris entre 0 et 1, cela signifie que l’excédent de rendement par rapport au taux sans risque est plus faible que le risque pris.
+<br/>
+-Si le ratio est supérieur à 1, alors le portefeuille surperforme un placement sans risque et donc il génère une plus forte rentabilité.
+
+Ainsi, on en conclut que plus le ratio est élevé et plus le portefeuille est performant.</p>
+   
+  </div>
+</div>
+         </div>
+    </div>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+    </ui:define>
+</ui:composition>

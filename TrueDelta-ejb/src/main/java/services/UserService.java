@@ -446,4 +446,18 @@ public class UserService implements UserServiceRemote {
 		return agence;
 	}
 
+	public List<Integer> listclientid() {
+		TypedQuery<Integer> query = em.createQuery("SELECT e.id FROM Client e ",Integer.class);
+		//query.setParameter("role", "client");
+		return query.getResultList();
+		
+	}
+	public List<Utilisateur> listclient() {
+		System.out.println("test");
+		TypedQuery<Utilisateur> query = em.createQuery("SELECT e FROM Client e",Utilisateur.class);
+		System.out.println(query);
+		//query.setParameter("role", "client");
+		return query.getResultList();
+	}
+	
 }

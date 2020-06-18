@@ -152,6 +152,14 @@
             <artifactId>pdfbox</artifactId>
             <version>2.0.19</version>
         </dependency>
+        
+        <dependency>
+			<groupId>com.yahoofinance-api</groupId>
+			<artifactId>YahooFinanceAPI</artifactId>
+			<version>3.12.3</version>
+		</dependency>
+		
+		
 
 	</dependencies>
 

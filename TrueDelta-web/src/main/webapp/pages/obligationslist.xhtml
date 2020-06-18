@@ -1,0 +1,88 @@
+ 
+ <!DOCTYPE persistence PUBLIC "http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd" "">  
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="../template/template.xhtml">
+	
+
+	<ui:param name="page_name" value="cotisation" />
+	<ui:define name="body">
+ 
+  <h:panelGroup >
+      <h:form >
+ 
+  Les obligations représentent des titres de créance (dette)			
+								<div class="progress-table-wrap">
+									<div class="progress-table">
+										<div class="table-head">
+											<div class="serial">#</div>
+											<div class="serial">Libelilé </div>
+											<div class="serial">Price</div>
+											<div class="serial">Taux acturiel</div>
+											<div class="serial">categorie</div>
+											<div class="serial">devise</div>
+											<div class="serial">dateEmission</div>
+											<div class="serial">Echéance</div>
+											
+											<div class="percentage">Sensibilite</div>
+										</div>
+										<ui:repeat value="#{obligationBean.getObligationbase()}" var="obligation">
+										<div class="table-row">
+										<div class="serial">#</div>
+										<div class="visit">
+										
+										 <h:commandLink value="#{obligation.company.symbol}"   action="#{obligationBean.goObligation(obligation)}" />
+										</div>
+										<div class="visit"> <h:outputText value="#{obligation.bondPrice}" /></div>
+										<div class="visit"> <h:outputText value="#{obligation.tauxActuariel}" /></div>
+										<div class="visit"><h:outputText value="#{obligation.categorie}"/></div>
+										<div class="visit"><h:outputText value="#{obligation.currency}" /></div>
+										<div class="visit"><h:outputText value="#{obligation.dateEmission}" /></div>
+										<div class="visit"><h:outputText value="#{obligation.dateEcheance}" /></div>
+											
+											
+											<div class="percentage">
+												<div class="progress">
+													<div class="progress-bar color-1" role="progressbar" style="width: #{obligationBean.sensibilite(obligation)}%"
+														aria-valuenow="#{obligationBean.sensibilite(obligation)}" aria-valuemin="0" aria-valuemax="100"></div>
+												</div>
+											</div>
+										</div>
+								
+								</ui:repeat>   
+				        				<ui:repeat value="#{obligationBean.obligations}" var="obligation">
+										<div class="table-row">
+										<div class="serial">#</div>
+										<div class="visit">
+										
+										<h:commandLink  value="#{obligation.company.symbol}" action="#{obligationBean.goObligation(obligation)}" />
+										</div>
+										<div class="visit"> <h:outputText value="#{obligation.bondPrice}" /></div>
+										<div class="visit"> <h:outputText value="#{obligation.tauxActuariel}" /></div>
+										<div class="visit"><h:outputText value="#{obligation.categorie}"/></div>
+										<div class="visit"><h:outputText value="#{obligation.currency}" /></div>
+										<div class="visit"><h:outputText value="#{obligation.dateEmission}" /></div>
+										<div class="visit"><h:outputText value="#{obligation.dateEcheance}" /></div>		
+											<div class="percentage">
+												<div class="progress">
+													<div class="progress-bar color-1" role="progressbar" style="width: 80%"
+														aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+												</div>
+											</div>
+										</div>
+								
+								</ui:repeat>   
+				
+									</div>
+								</div>
+								</h:form>
+								</h:panelGroup>
+</ui:define>
+</ui:composition>								

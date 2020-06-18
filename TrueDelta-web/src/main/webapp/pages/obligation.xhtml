@@ -1,0 +1,80 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	template="../template/template.xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	>
+
+	<ui:param name="page_name" value="cotisation" />
+	<ui:define name="body">
+
+	 <div class="container">
+	 <div class="row align-items-center">
+	 <br/>
+	 <div class="card" style="width: 18rem;">
+  <div class="card-header bg-dark text-white ">
+   INFORMATIONS INSTRUMENT
+  </div>
+  <ul class="list-group list-group-flush">
+
+  <li class="list-group-item"> Nature : <h:outputText value="#{obligationBean.getDetail().get('Nature')}" /></li>
+    <li class="list-group-item">Emetteur : <h:outputText value="#{obligationBean.getDetail().get('Emetteur')}" /></li>
+  <li class="list-group-item"> Prix : <h:outputText value="#{obligationBean.obligation.bondPrice}" /></li>
+  <li class="list-group-item"> Taux Actuariel : <h:outputText value="#{obligationBean.obligation.tauxActuariel}" /></li>
+   <li class="list-group-item"> Taux coupon: <h:outputText value="#{obligationBean.obligation.tauxcoupon}" /></li>
+  <li class="list-group-item"> Categorie : <h:outputText value="#{obligationBean.obligation.categorie}"/></li>
+  <li class="list-group-item"> Devise : <h:outputText value="#{obligationBean.obligation.currency}" /></li>
+  <li class="list-group-item"> Date Emission : <h:outputText value="#{obligationBean.obligation.dateEmission}" /></li>
+   <li class="list-group-item"> Date Echeance :<h:outputText value="#{obligationBean.obligation.dateEcheance}" /></li>
+						
+  </ul>
+</div>
+  <div class="card" style="width: 18rem;">
+  <div class="card-header bg-dark text-white ">
+   COUPONS ET REMBOURSEMENTS
+  </div>
+  <ul class="list-group list-group-flush">
+  <li class="list-group-item">	Date du dernier coupon : <h:outputText value="#{obligationBean.getDetail().get('Datederniercoupon')}" /></li>
+  <li class="list-group-item"> Montant brut du dernier coupon : <h:outputText value="#{obligationBean.getDetail().get('Montantbrutderniercoupon')}" /></li>
+  <li class="list-group-item"> Date du prochain coupon : <h:outputText value="#{obligationBean.getDetail().get('Dateprochaincoupon')}" /></li>
+  <li class="list-group-item"> Montant brut du prochain coupon : <h:outputText value="#{obligationBean.getDetail().get('prochain coupon')}" /></li>
+      <li class="list-group-item"> Montant du prochain remboursement : <h:outputText value="#{obligationBean.getDetail().get('prochainremboursement')}" /></li>
+  
+  
+  </ul>
+</div>
+  <div class="card" style="width: 18rem;">
+  <div class="card-header bg-dark text-white ">
+   CARACTÉRISTIQUES DYNAMIQUES
+  </div>
+  <ul class="list-group list-group-flush">
+  <li class="list-group-item">	Duration : <h:outputText value="#{obligationBean.duration(obligationBean.obligation)}" /> </li>
+  <li class="list-group-item"> Sensibilite : <h:outputText value="#{obligationBean.sensibilite(obligationBean.obligation)}" /></li>
+  <li class="list-group-item"> Convexite : <h:outputText value="#{obligationBean.convexite(obligationBean.obligation)}" /></li>
+  
+  </ul>
+</div>
+	<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Periode</th>
+      <th scope="col">cashFlow(flux de trésorerie)</th>
+    </tr>
+  </thead>
+  <tbody>
+  <ui:repeat value="#{obligationBean.cashFlow(obligationBean.obligation)}" var="var">
+ 
+  <tr>    
+  <th scope="row"></th>
+  <th scope="row"><h:outputText value="#{var}" /></th>
+  </tr>
+
+  </ui:repeat>
+  </tbody>
+</table>
+	</div>
+	</div>
+	</ui:define>
+	</ui:composition>

@@ -34,7 +34,6 @@ public class ReclamationBean implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	
 	private int id;
 	
 	private Date dateCreation;
@@ -65,7 +64,7 @@ public class ReclamationBean implements Serializable {
     public String AjoutRec() {
     	
     	 Reclamation rec = new Reclamation(new Date(),description,subject);
-    	recImp.AddReclam(rec,2);
+    	 recImp.AddReclam(rec,2);
     	
     	 /*try {
     		 recImp.verifBadWord(rec.getId());
@@ -206,16 +205,6 @@ public class ReclamationBean implements Serializable {
 		return states;
 	}
 
-
-
-
-
-
-    
-	
-	
-	
-
 	public Integer getComplainIdToBeTreated() {
 		return complainIdToBeTreated;
 	}
@@ -247,12 +236,6 @@ public class ReclamationBean implements Serializable {
 		return recImp;
 	}
 
-
-
-
-	
-
-
 	public void setReclamationsA(List<Reclamation> reclamationsA) {
 		this.reclamationsA = reclamationsA;
 	}
@@ -262,22 +245,9 @@ public class ReclamationBean implements Serializable {
 		this.recImp = recImp;
 	}
 
-
-
-
-
-
-
-
-
 	public void setReclamations(List<Reclamation> reclamations) {
 		this.reclamations = reclamations;
 	}
-
-
-
-
-
 
 	public int getId() {
 		return id;
@@ -343,10 +313,6 @@ public class ReclamationBean implements Serializable {
 		this.closingDate = closingDate;
 	}
 
-	
-    
-    
-
 	public ReclamationBean(String description, String subject) {
 		super();
 		this.description = description;
@@ -365,19 +331,9 @@ public class ReclamationBean implements Serializable {
 		super();
 	}
 
-
-
-
-
-
 	public Integer getReclamIdToBeUpdated() {
 		return ReclamIdToBeUpdated;
 	}
-
-
-
-
-
 
 	public void setReclamIdToBeUpdated(Integer reclamIdToBeUpdated) {
 		ReclamIdToBeUpdated = reclamIdToBeUpdated;
