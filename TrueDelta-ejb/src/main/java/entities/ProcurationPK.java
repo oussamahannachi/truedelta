@@ -15,6 +15,12 @@ public class ProcurationPK implements Serializable {
 	private int idCourtier;
 	
 	public ProcurationPK() {}
+	
+	public ProcurationPK(int idClient, int idCourtier) {
+		super();
+		this.idClient = idClient;
+		this.idCourtier = idCourtier;
+	}
 
 	public int getIdClient() {
 		return idClient;

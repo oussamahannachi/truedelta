@@ -5,13 +5,34 @@
 	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
 	<c:choose>
-		<c:when test="#{!(loginBean.role.toLowerCase().equals('agence'))}">
+		<c:when test="#{loginBean.role.toLowerCase().equals('client')}">
 			<div class="main-menu  d-none d-lg-block">
 								<nav>
 								<ul id="navigation">
 									<li><a href="#">Accueil</a></li>
 									<li><a href="../pages/accueil.jsf">Compte Bancaire</a></li>
-									<li><a href="#">Procuration</a></li>
+									<li><a href="../pages/myprocuration.jsf">Procuration</a></li>
+									<li><a href="#">Bourse<i class="ti-angle-down"></i></a>
+										<ul class="submenu">
+											<li><a href="../pages/Actuality.jsf">Actualités du marché</a></li>
+											<li><a href="#">Cotations de A à Z</a></li>
+											<li><a href="../pages/convertisseur.jsf">Convertisseur de devises</a></li>
+											<li><a href="#">Transactions</a></li>
+										</ul>
+									</li>
+									<li><a href="../pages/AffichReclamClt.jsf">Reclamations</a></li>
+									<li><a href="#">Profile</a></li>
+								</ul>
+								</nav>
+							</div>
+		</c:when>
+		<c:when test="#{loginBean.role.toLowerCase().equals('courtier')}">
+			<div class="main-menu  d-none d-lg-block">
+								<nav>
+								<ul id="navigation">
+									<li><a href="#">Accueil</a></li>
+									<li><a href="../pages/accueil.jsf">Compte Bancaire</a></li>
+									<li><a href="../pages/procurationCourtier.jsf">Procuration</a></li>
 									<li><a href="#">Bourse<i class="ti-angle-down"></i></a>
 										<ul class="submenu">
 											<li><a href="../pages/ListCourtier.jsf">Nos Courtiers</a></li>
@@ -27,7 +48,7 @@
 								</nav>
 							</div>
 		</c:when>
-		<c:otherwise>
+		<c:when test="#{loginBean.role.toLowerCase().equals('agence')}">
 			<div class="main-menu  d-none d-lg-block">
 								<nav>
 								<ul id="navigation">
@@ -45,6 +66,9 @@
 								</ul>
 								</nav>
 							</div>
+		</c:when>
+		<c:otherwise>
+			
 		</c:otherwise>
 	</c:choose>
 </ui:composition>
